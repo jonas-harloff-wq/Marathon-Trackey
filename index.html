@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <meta name="theme-color" content="#0f0e0c" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="SUB-3" />
+  <title>SUB-3:00 — Berlin Marathon</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0f0e0c;
+      --bg2: #141310;
+      --bg3: #1a1916;
+      --line: #2a2825;
+      --text: #e8e4dc;
+      --muted: #6b6660;
+      --faint: #2a2825;
+      --easy: #4ade80;
+      --easy-bg: #0f1f12;
+      --easy-border: #1a3520;
+      --long: #93c5fd;
+      --long-bg: #0d1520;
+      --long-border: #162035;
+      --tempo: #fca5a5;
+      --tempo-bg: #1f0d0d;
+      --tempo-border: #351616;
+      --gold: #c9a84c;
+    }
+
+    html { background: var(--bg); }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      max-width: 480px;
+      margin: 0 auto;
+      padding-bottom: env(safe-area-inset-bottom, 20px);
+    }
+
+    .masthead {
+      padding: 48px 24px 28px;
+      border-bottom: 1px solid var(--line);
+      position: relative;
+      overflow: hidden;
+    }
+    .masthead::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .issue-line {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .masthead-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 42px;
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -1px;
+      margin-bottom: 6px;
+    }
+    .masthead-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    .progress-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .progress-bar-outer {
+      flex: 1;
+      height: 2px;
+      background: var(--faint);
+    }
+    .progress-bar-inner {
+      height: 100%;
+      background: linear-gradient(90deg, var(--gold), var(--easy));
+      transition: width 0.5s cubic-bezier(.4,0,.2,1);
+    }
+    .progress-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .phase-nav {
+      display: flex;
+      overflow-x: auto;
+      gap: 0;
+      border-bottom: 1px solid var(--line);
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .phase-nav::-webkit-scrollbar { display: none; }
+    .phase-tab {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      padding: 14px 18px;
+      border: none;
+      background: none;
+      cursor: pointer;
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: all 0.2s;
+      text-transform: uppercase;
+    }
+    .phase-tab.active {
+      color: var(--text);
+      border-bottom-color: var(--gold);
+    }
+
+    .week-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--line);
+    }
+    .week-btn {
+      aspect-ratio: 1;
+      border: 1px solid var(--faint);
+      background: var(--bg2);
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: all 0.15s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      padding: 8px 4px;
+    }
+    .week-btn .wnum { font-size: 13px; font-weight: 700; }
+    .week-btn .wdate { font-size: 8px; color: var(--muted); opacity: 0.6; }
+    .week-btn.active { border-color: var(--text); background: var(--text); color: var(--bg); }
+    .week-btn.active .wdate { color: var(--bg); opacity: 0.5; }
+    .week-btn.complete { border-color: var(--easy-border); background: var(--easy-bg); color: var(--easy); }
+    .week-btn.partial { border-color: var(--line); color: #888; }
+
+    .week-detail { padding: 24px 24px 12px; }
+    .week-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--line);
+    }
+    .week-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .week-meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--muted);
+    }
+    .week-status {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 1px;
+      color: var(--muted);
+      text-align: right;
+    }
+    .week-status.done { color: var(--easy); }
+
+    .sessions { display: flex; flex-direction: column; gap: 10px; }
+
+    .session-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      background: var(--bg2);
+      border: 1px solid var(--faint);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+      -webkit-tap-highlight-color: transparent;
+      min-height: 60px;
+    }
+    .session-card.done-easy { background: var(--easy-bg); border-color: var(--easy-border); }
+    .session-card.done-long { background: var(--long-bg); border-color: var(--long-border); }
+    .session-card.done-tempo { background: var(--tempo-bg); border-color: var(--tempo-border); }
+
+    .checkbox {
+      width: 22px;
+      height: 22px;
+      border-radius: 4px;
+      border: 1.5px solid var(--faint);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s;
+      font-size: 12px;
+    }
+    .session-card.done-easy .checkbox { background: var(--easy); border-color: var(--easy); color: #0a0a0a; }
+    .session-card.done-long .checkbox { background: var(--long); border-color: var(--long); color: #0a0a0a; }
+    .session-card.done-tempo .checkbox { background: var(--tempo); border-color: var(--tempo); color: #0a0a0a; }
+
+    .session-type {
+      font-family: 'DM Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 2.5px;
+      color: var(--muted);
+      text-transform: uppercase;
+      width: 38px;
+      flex-shrink: 0;
+    }
+    .session-card.done-easy .session-type { color: var(--easy); }
+    .session-card.done-long .session-type { color: var(--long); }
+    .session-card.done-tempo .session-type { color: var(--tempo); }
+
+    .session-label {
+      font-size: 14px;
+      font-weight: 400;
+      color: var(--muted);
+      line-height: 1.3;
+    }
+    .session-card.done-easy .session-label,
+    .session-card.done-long .session-label,
+    .session-card.done-tempo .session-label { color: var(--text); }
+
+    .taper-note {
+      margin-top: 12px;
+      padding: 12px 14px;
+      background: #1a180a;
+      border: 1px solid #3a3510;
+      border-radius: 6px;
+      font-size: 12px;
+      font-style: italic;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .legend {
+      display: flex;
+      gap: 20px;
+      padding: 20px 24px;
+      border-top: 1px solid var(--line);
+      margin-top: 12px;
+    }
+    .legend-item { display: flex; align-items: center; gap: 7px; }
+    .legend-dot { width: 7px; height: 7px; border-radius: 50%; }
+    .legend-text {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+    }
+
+    .install-hint {
+      margin: 0 24px 24px;
+      padding: 14px 16px;
+      background: var(--bg2);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+      display: none;
+    }
+    .install-hint.visible { display: block; }
+    .install-hint strong { color: var(--text); font-weight: 500; }
+  </style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="issue-line">Berlin Marathon · September 2026 · Sub-3:00</div>
+  <div class="masthead-title">THE<br>RUNNER'S<br>LOG</div>
+  <div class="masthead-sub">24 Wochen · 3 Sessions/Woche</div>
+  <div class="progress-wrap">
+    <div class="progress-bar-outer">
+      <div class="progress-bar-inner" id="progressBar" style="width:0%"></div>
+    </div>
+    <div class="progress-label" id="progressLabel">0 / 0</div>
+  </div>
+</div>
+
+<div class="phase-nav" id="phaseNav"></div>
+<div class="week-grid" id="weekGrid"></div>
+<div class="week-detail" id="weekDetail"></div>
+
+<div class="legend">
+  <div class="legend-item">
+    <div class="legend-dot" style="background:var(--easy)"></div>
+    <div class="legend-text">Easy</div>
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot" style="background:var(--long)"></div>
+    <div class="legend-text">Long</div>
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot" style="background:var(--tempo)"></div>
+    <div class="legend-text">Tempo</div>
+  </div>
+</div>
+
+<div class="install-hint" id="installHint">
+  <strong>Als App speichern:</strong> Tippe auf <strong>Teilen ↑</strong> → <strong>„Zum Home-Bildschirm"</strong> — dann hast du das als App direkt am Homescreen.
+</div>
+
+<script>
+const PHASES = [
+  { month: "März",   longRun: "12–15 km", startDate: "2026-03-16" },
+  { month: "April",  longRun: "15–18 km", startDate: "2026-04-13" },
+  { month: "Mai",    longRun: "20–25 km", startDate: "2026-05-11" },
+  { month: "Juni",   longRun: "25–28 km", startDate: "2026-06-08" },
+  { month: "Juli",   longRun: "30–32 km", startDate: "2026-07-06" },
+  { month: "August", longRun: "Tapering", startDate: "2026-08-03", taper: true },
+];
+
+function addDays(dateStr, days) {
+  const d = new Date(dateStr);
+  d.setDate(d.getDate() + days);
+  return d;
+}
+
+function fmtShort(date) {
+  return date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' });
+}
+
+const PLAN = [];
+let weekNum = 1;
+PHASES.forEach((phase, pi) => {
+  for (let wi = 0; wi < 4; wi++) {
+    const weekStart = addDays(phase.startDate, wi * 7);
+    const sessions = [
+      { id: `w${weekNum}_e1`, type: "easy",  label: "Zone 2 Easy" },
+      { id: `w${weekNum}_e2`, type: "easy",  label: "Zone 2 Easy" },
+      { id: `w${weekNum}_long`, type: "long", label: phase.taper ? `Long Run (${phase.longRun})` : `Long Run · ${phase.longRun}` },
+      ...(wi % 2 === 1 && !phase.taper
+        ? [{ id: `w${weekNum}_tempo`, type: "tempo", label: "Tempolauf · Marathonpace" }]
+        : []),
+    ];
+    PLAN.push({ weekNum, phase: phase.month, phaseIndex: pi, weekStart, dateLabel: fmtShort(weekStart), sessions, taper: !!phase.taper });
+    weekNum++;
+  }
+});
+
+let checked = {};
+let activeWeek = 1;
+let activePhase = 0;
+
+function loadState() { try { checked = JSON.parse(localStorage.getItem('marathon_v2') || '{}'); } catch {} }
+function saveState() { try { localStorage.setItem('marathon_v2', JSON.stringify(checked)); } catch {} }
+loadState();
+
+const totalSessions = PLAN.reduce((s, w) => s + w.sessions.length, 0);
+
+function weekProgress(w) {
+  const done = w.sessions.filter(s => checked[s.id]).length;
+  return { done, total: w.sessions.length };
+}
+
+function renderProgress() {
+  const done = Object.values(checked).filter(Boolean).length;
+  document.getElementById('progressBar').style.width = `${(done / totalSessions) * 100}%`;
+  document.getElementById('progressLabel').textContent = `${done} / ${totalSessions}`;
+}
+
+function renderPhaseNav() {
+  document.getElementById('phaseNav').innerHTML = PHASES.map((p, i) =>
+    `<button class="phase-tab ${i === activePhase ? 'active' : ''}" onclick="selectPhase(${i})">${p.month}</button>`
+  ).join('');
+}
+
+function renderWeekGrid() {
+  const weeks = PLAN.filter(w => w.phaseIndex === activePhase);
+  document.getElementById('weekGrid').innerHTML = weeks.map(w => {
+    const { done, total } = weekProgress(w);
+    const cls = w.weekNum === activeWeek ? 'active' : done === total ? 'complete' : done > 0 ? 'partial' : '';
+    return `<button class="week-btn ${cls}" onclick="selectWeek(${w.weekNum})">
+      <span class="wnum">W${w.weekNum}</span>
+      <span class="wdate">${w.dateLabel}</span>
+    </button>`;
+  }).join('');
+}
+
+function renderWeekDetail() {
+  const week = PLAN[activeWeek - 1];
+  const { done, total } = weekProgress(week);
+  const allDone = done === total;
+  const sessionsHTML = week.sessions.map(s => {
+    const isDone = !!checked[s.id];
+    const typeLabel = s.type === 'easy' ? 'EASY' : s.type === 'long' ? 'LONG' : 'TEMPO';
+    return `<div class="session-card ${isDone ? `done-${s.type}` : ''}" onclick="toggleSession('${s.id}')">
+      <div class="checkbox">${isDone ? '✓' : ''}</div>
+      <div class="session-type">${typeLabel}</div>
+      <div class="session-label">${s.label}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('weekDetail').innerHTML = `
+    <div class="week-header">
+      <div>
+        <div class="week-title">Woche ${week.weekNum}</div>
+        <div class="week-meta">${week.phase} · ab ${week.dateLabel}</div>
+      </div>
+      <div class="week-status ${allDone ? 'done' : ''}">${allDone ? '✓ DONE' : `${done} / ${total}`}</div>
+    </div>
+    <div class="sessions">${sessionsHTML}</div>
+    ${week.taper ? `<div class="taper-note">Tapering — Volumen runter, Pace bleibt. Vertraue der Arbeit. Die Beine wissen was sie können.</div>` : ''}
+  `;
+}
+
+function render() { renderProgress(); renderPhaseNav(); renderWeekGrid(); renderWeekDetail(); }
+
+function selectPhase(pi) {
+  activePhase = pi;
+  const firstWeek = PLAN.find(w => w.phaseIndex === pi);
+  if (firstWeek) activeWeek = firstWeek.weekNum;
+  render();
+}
+
+function selectWeek(num) {
+  activeWeek = num;
+  const week = PLAN[num - 1];
+  if (week) activePhase = week.phaseIndex;
+  render();
+  document.getElementById('weekDetail').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function toggleSession(id) {
+  checked[id] = !checked[id];
+  saveState();
+  render();
+}
+
+const today = new Date();
+const currentWeek = PLAN.find(w => {
+  const end = addDays(w.weekStart.toISOString().split('T')[0], 7);
+  return today >= w.weekStart && today < end;
+});
+if (currentWeek) { activeWeek = currentWeek.weekNum; activePhase = currentWeek.phaseIndex; }
+
+render();
+
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+if (isIOS && !isStandalone) document.getElementById('installHint').classList.add('visible');
+</script>
+
+<script>
+const manifest = {
+  name: "The Runner's Log — SUB-3:00",
+  short_name: "SUB-3",
+  display: "standalone",
+  background_color: "#0f0e0c",
+  theme_color: "#0f0e0c",
+  icons: [{ src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230f0e0c'/><text y='.9em' font-size='80' x='10'>🏃</text></svg>", sizes: "any", type: "image/svg+xml" }]
+};
+const blob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
+const link = document.createElement('link');
+link.rel = 'manifest';
+link.href = URL.createObjectURL(blob);
+document.head.appendChild(link);
+</script>
+
+</body>
+</html>
