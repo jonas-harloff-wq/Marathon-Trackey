@@ -1,496 +1,1253 @@
 <!DOCTYPE html>
+
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <meta name="theme-color" content="#0f0e0c" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="SUB-3" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+  <meta name="theme-color" content="#0f0e0c"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+  <meta name="apple-mobile-web-app-title" content="SUB-3"/>
   <title>SUB-3:00 — Berlin Marathon</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
-
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    :root{
+      --bg:#0f0e0c;--bg2:#141310;--bg3:#1c1a17;
+      --line:#252320;--text:#e8e4dc;--muted:#6b6660;--faint:#252320;
+      --easy:#4ade80;--easy-bg:#0a1a0d;--easy-border:#1a3520;
+      --long:#93c5fd;--long-bg:#0a1220;--long-border:#162035;
+      --tempo:#fca5a5;--tempo-bg:#1a0a0a;--tempo-border:#351616;
+      --gold:#c9a84c;--gold-dim:#7a6530;--gold-bright:#ffd700;
+      --xp:#a78bfa;--coin:#f59e0b;
+      --shiny:#a78bfa;--golden:#f59e0b;--ultra:#ff6b6b;--legendary:#00d4ff;
+    }
+    html{background:var(--bg);}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;max-width:480px;margin:0 auto;padding-bottom:80px;overflow-x:hidden;}
 
-    :root {
-      --bg: #0f0e0c;
-      --bg2: #141310;
-      --bg3: #1a1916;
-      --line: #2a2825;
-      --text: #e8e4dc;
-      --muted: #6b6660;
-      --faint: #2a2825;
-      --easy: #4ade80;
-      --easy-bg: #0f1f12;
-      --easy-border: #1a3520;
-      --long: #93c5fd;
-      --long-bg: #0d1520;
-      --long-border: #162035;
-      --tempo: #fca5a5;
-      --tempo-bg: #1f0d0d;
-      --tempo-border: #351616;
-      --gold: #c9a84c;
-    }
+```
+/* NAV */
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#0d0c0a;border-top:1px solid var(--line);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom,0px);}
+.nav-btn{flex:1;padding:10px 4px 8px;border:none;background:none;color:var(--muted);font-family:'DM Mono',monospace;font-size:6.5px;letter-spacing:0.8px;text-transform:uppercase;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;transition:color 0.2s;}
+.nav-btn.active{color:var(--gold);}
+.nav-icon{font-size:16px;}
+.screen{display:none;}.screen.active{display:block;}
 
-    html { background: var(--bg); }
+/* HEADERS */
+.masthead{padding:44px 24px 22px;border-bottom:1px solid var(--line);position:relative;overflow:hidden;}
+.masthead::before,.screen-header::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.issue-line{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--gold);text-transform:uppercase;margin-bottom:10px;}
+.masthead-title{font-family:'Playfair Display',serif;font-size:38px;font-weight:900;line-height:0.95;letter-spacing:-1px;margin-bottom:6px;}
+.masthead-sub{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:18px;}
+.screen-header{padding:44px 24px 18px;border-bottom:1px solid var(--line);position:relative;}
+.screen-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:900;line-height:1;margin-bottom:4px;}
+.screen-sub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);}
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      max-width: 480px;
-      margin: 0 auto;
-      padding-bottom: env(safe-area-inset-bottom, 20px);
-    }
+/* XP + PROGRESS */
+.xp-section{margin-bottom:14px;}
+.xp-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;}
+.xp-level{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--xp);}
+.xp-count{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);}
+.xp-bar-outer{height:3px;background:var(--faint);border-radius:2px;overflow:hidden;}
+.xp-bar-inner{height:100%;background:linear-gradient(90deg,var(--xp),#c4b5fd);transition:width 0.6s cubic-bezier(.4,0,.2,1);}
+.progress-wrap{display:flex;align-items:center;gap:12px;}
+.progress-bar-outer{flex:1;height:2px;background:var(--faint);}
+.progress-bar-inner{height:100%;background:linear-gradient(90deg,var(--gold),var(--easy));transition:width 0.5s cubic-bezier(.4,0,.2,1);}
+.progress-label{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);white-space:nowrap;}
 
-    .masthead {
-      padding: 48px 24px 28px;
-      border-bottom: 1px solid var(--line);
-      position: relative;
-      overflow: hidden;
-    }
-    .masthead::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    }
-    .issue-line {
-      font-family: 'DM Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 3px;
-      color: var(--gold);
-      text-transform: uppercase;
-      margin-bottom: 14px;
-    }
-    .masthead-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 42px;
-      font-weight: 900;
-      line-height: 0.95;
-      letter-spacing: -1px;
-      margin-bottom: 6px;
-    }
-    .masthead-sub {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 2px;
-      color: var(--muted);
-      margin-bottom: 24px;
-    }
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;padding:14px 24px;border-bottom:1px solid var(--line);}
+.stat-box{background:var(--bg2);border:1px solid var(--faint);border-radius:6px;padding:10px 6px;text-align:center;}
+.stat-val{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;line-height:1;margin-bottom:3px;}
+.stat-label{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
+.stat-val.streak{color:var(--gold);}.stat-val.xp-val{color:var(--xp);}.stat-val.coin-val{color:var(--coin);}
 
-    .progress-wrap {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .progress-bar-outer {
-      flex: 1;
-      height: 2px;
-      background: var(--faint);
-    }
-    .progress-bar-inner {
-      height: 100%;
-      background: linear-gradient(90deg, var(--gold), var(--easy));
-      transition: width 0.5s cubic-bezier(.4,0,.2,1);
-    }
-    .progress-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      color: var(--muted);
-      white-space: nowrap;
-    }
+/* PLAN */
+.phase-nav{display:flex;overflow-x:auto;border-bottom:1px solid var(--line);scrollbar-width:none;-webkit-overflow-scrolling:touch;}
+.phase-nav::-webkit-scrollbar{display:none;}
+.phase-tab{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);padding:12px 14px;border:none;background:none;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent;transition:all 0.2s;text-transform:uppercase;}
+.phase-tab.active{color:var(--text);border-bottom-color:var(--gold);}
+.week-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;padding:14px 24px;border-bottom:1px solid var(--line);}
+.week-btn{aspect-ratio:1;border:1px solid var(--faint);background:var(--bg2);color:var(--muted);font-family:'DM Mono',monospace;font-size:9px;font-weight:500;cursor:pointer;border-radius:4px;transition:all 0.15s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;}
+.week-btn .wnum{font-size:11px;font-weight:700;}.week-btn .wdate{font-size:6px;color:var(--muted);opacity:0.6;}
+.week-btn.active{border-color:var(--text);background:var(--text);color:var(--bg);}.week-btn.active .wdate{color:var(--bg);opacity:0.5;}
+.week-btn.complete{border-color:var(--easy-border);background:var(--easy-bg);color:var(--easy);}
+.week-btn.partial{border-color:var(--line);color:#888;}
+.week-detail{padding:18px 24px 10px;}
+.week-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--line);}
+.week-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;line-height:1;margin-bottom:3px;}
+.week-meta{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);}
+.week-status{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-align:right;}
+.week-status.done{color:var(--easy);}
+.sessions{display:flex;flex-direction:column;gap:8px;}
+.session-card{display:flex;align-items:center;gap:12px;padding:13px;background:var(--bg2);border:1px solid var(--faint);border-radius:6px;cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent;min-height:54px;}
+.session-card.done-easy{background:var(--easy-bg);border-color:var(--easy-border);}
+.session-card.done-long{background:var(--long-bg);border-color:var(--long-border);}
+.session-card.done-tempo{background:var(--tempo-bg);border-color:var(--tempo-border);}
+.checkbox{width:20px;height:20px;border-radius:4px;border:1.5px solid var(--faint);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;font-size:11px;}
+.session-card.done-easy .checkbox{background:var(--easy);border-color:var(--easy);color:#0a0a0a;}
+.session-card.done-long .checkbox{background:var(--long);border-color:var(--long);color:#0a0a0a;}
+.session-card.done-tempo .checkbox{background:var(--tempo);border-color:var(--tempo);color:#0a0a0a;}
+.session-type{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--muted);width:36px;flex-shrink:0;}
+.session-card.done-easy .session-type{color:var(--easy);}.session-card.done-long .session-type{color:var(--long);}.session-card.done-tempo .session-type{color:var(--tempo);}
+.session-label{font-size:13px;color:var(--muted);flex:1;}.session-card[class*="done"] .session-label{color:var(--text);}
+.session-reward{font-family:'DM Mono',monospace;font-size:9px;color:var(--coin);opacity:0.5;white-space:nowrap;}.session-card[class*="done"] .session-reward{opacity:1;}
+.taper-note{margin-top:10px;padding:12px 14px;background:#1a180a;border:1px solid #3a3510;border-radius:6px;font-size:12px;font-style:italic;color:var(--muted);line-height:1.5;}
+.legend{display:flex;gap:16px;padding:14px 24px;border-top:1px solid var(--line);margin-top:8px;}
+.legend-item{display:flex;align-items:center;gap:6px;}
+.legend-dot{width:6px;height:6px;border-radius:50%;}
+.legend-text{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+.install-hint{margin:0 24px 16px;padding:12px 14px;background:var(--bg2);border:1px solid var(--line);border-radius:6px;font-size:12px;color:var(--muted);line-height:1.6;display:none;}
+.install-hint.visible{display:block;}.install-hint strong{color:var(--text);font-weight:500;}
 
-    .phase-nav {
-      display: flex;
-      overflow-x: auto;
-      gap: 0;
-      border-bottom: 1px solid var(--line);
-      scrollbar-width: none;
-      -webkit-overflow-scrolling: touch;
-    }
-    .phase-nav::-webkit-scrollbar { display: none; }
-    .phase-tab {
-      font-family: 'DM Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 2px;
-      color: var(--muted);
-      padding: 14px 18px;
-      border: none;
-      background: none;
-      cursor: pointer;
-      white-space: nowrap;
-      border-bottom: 2px solid transparent;
-      transition: all 0.2s;
-      text-transform: uppercase;
-    }
-    .phase-tab.active {
-      color: var(--text);
-      border-bottom-color: var(--gold);
-    }
+/* RUN LOGGER */
+.log-form{padding:20px 24px;border-bottom:1px solid var(--line);}
+.log-section-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;margin-bottom:12px;}
+.input-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.input-group{display:flex;flex-direction:column;gap:6px;}
+.input-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;}
+.input-field{background:var(--bg2);border:1px solid var(--faint);border-radius:6px;color:var(--text);font-family:'DM Mono',monospace;font-size:14px;padding:12px;width:100%;outline:none;transition:border-color 0.2s;-webkit-appearance:none;}
+.input-field:focus{border-color:var(--gold-dim);}
+.input-field::placeholder{color:var(--muted);opacity:0.4;}
+.type-select{display:flex;gap:6px;margin-bottom:10px;}
+.type-btn{flex:1;padding:10px;border:1px solid var(--faint);background:var(--bg2);border-radius:6px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;color:var(--muted);cursor:pointer;transition:all 0.15s;text-transform:uppercase;}
+.type-btn.active-easy{border-color:var(--easy-border);background:var(--easy-bg);color:var(--easy);}
+.type-btn.active-long{border-color:var(--long-border);background:var(--long-bg);color:var(--long);}
+.type-btn.active-tempo{border-color:var(--tempo-border);background:var(--tempo-bg);color:var(--tempo);}
+.pace-display{margin-top:10px;padding:10px 14px;background:var(--bg3);border:1px solid var(--faint);border-radius:6px;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);min-height:36px;display:flex;align-items:center;}
+.pace-val{color:var(--text);font-size:14px;}
+.log-btn{width:100%;padding:14px;background:var(--gold);border:none;border-radius:6px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;color:#0a0a0a;font-weight:700;cursor:pointer;text-transform:uppercase;margin-top:10px;}
+.hannah-banner{margin:0 24px 16px;padding:14px 16px;background:linear-gradient(135deg,#1a0820,#200a10);border:1px solid #ff6b6b;border-radius:8px;display:none;}
+.hannah-banner.visible{display:block;}
+.hannah-title{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:#ff6b6b;margin-bottom:3px;}
+.hannah-sub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;color:var(--muted);}
+.run-history{padding:20px 24px;}
+.history-title{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--muted);text-transform:uppercase;margin-bottom:14px;}
+.run-entry{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--faint);}
+.run-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.run-info{flex:1;}
+.run-main{font-size:13px;color:var(--text);margin-bottom:2px;}
+.run-sub{font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);}
+.run-pace{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);text-align:right;}
+.run-delete{background:none;border:none;color:var(--muted);opacity:0.4;cursor:pointer;font-size:16px;padding:4px;}
+.no-runs{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);opacity:0.5;font-style:italic;padding:20px 0;text-align:center;}
+.week-km-badge{font-family:'DM Mono',monospace;font-size:9px;color:var(--coin);padding:6px 0 2px;}
 
-    .week-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 8px;
-      padding: 20px 24px;
-      border-bottom: 1px solid var(--line);
-    }
-    .week-btn {
-      aspect-ratio: 1;
-      border: 1px solid var(--faint);
-      background: var(--bg2);
-      color: var(--muted);
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      font-weight: 500;
-      cursor: pointer;
-      border-radius: 4px;
-      transition: all 0.15s;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 2px;
-      padding: 8px 4px;
-    }
-    .week-btn .wnum { font-size: 13px; font-weight: 700; }
-    .week-btn .wdate { font-size: 8px; color: var(--muted); opacity: 0.6; }
-    .week-btn.active { border-color: var(--text); background: var(--text); color: var(--bg); }
-    .week-btn.active .wdate { color: var(--bg); opacity: 0.5; }
-    .week-btn.complete { border-color: var(--easy-border); background: var(--easy-bg); color: var(--easy); }
-    .week-btn.partial { border-color: var(--line); color: #888; }
+/* STORE */
+.store-balance{display:flex;align-items:center;gap:8px;margin-top:12px;}
+.coin-badge{display:flex;align-items:center;gap:6px;background:#1a1508;border:1px solid #3a2f10;border-radius:20px;padding:6px 14px;}
+.coin-amount{font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--coin);}
+.coin-label{font-family:'DM Mono',monospace;font-size:8px;color:var(--gold-dim);letter-spacing:1px;}
+.store-grid{display:flex;flex-direction:column;gap:16px;padding:20px 24px;}
+.pack-card{background:var(--bg2);border:1px solid var(--faint);border-radius:12px;padding:20px;display:flex;gap:16px;align-items:center;cursor:pointer;transition:all 0.2s;-webkit-tap-highlight-color:transparent;}
+.pack-card:active{transform:scale(0.98);}
+.pack-card.premium{background:linear-gradient(135deg,#0a0820,#150a25);border-color:#4a3a7e;}
+.pack-thumb{width:60px;height:85px;border-radius:8px;border:1.5px solid var(--gold-dim);background:linear-gradient(160deg,#2a1f05,#1a1200);display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;position:relative;overflow:hidden;}
+.pack-thumb::before{content:'';position:absolute;inset:0;background:linear-gradient(45deg,transparent 35%,rgba(201,168,76,0.1) 50%,transparent 65%);animation:sheen 2.5s infinite;}
+.pack-thumb.runner-thumb{background:linear-gradient(160deg,#0a0820,#1a0f35);border-color:#4a3a7e;}
+.pack-thumb.runner-thumb::before{background:linear-gradient(45deg,transparent 35%,rgba(167,139,250,0.15) 50%,transparent 65%);}
+.pack-thumb.nutrition-thumb{background:linear-gradient(160deg,#0a1a08,#1a2f10);border-color:#2d5a2d;}
+.pack-thumb.nutrition-thumb::before{background:linear-gradient(45deg,transparent 35%,rgba(74,222,128,0.1) 50%,transparent 65%);}
+@keyframes sheen{0%{transform:translateX(-100%)}100%{transform:translateX(200%)}}
+.pack-info{flex:1;}
+.pack-card-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;margin-bottom:4px;}
+.pack-card-desc{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:10px;}
+.pack-odds{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
+.odd-pill{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:1px;padding:3px 8px;border-radius:20px;}
+.odd-normal{background:#1a1a1a;color:var(--muted);border:1px solid var(--faint);}
+.odd-golden{background:#1a1200;color:var(--golden);border:1px solid #4a3a00;}
+.odd-shiny{background:#1a0a2e;color:var(--shiny);border:1px solid #4a3a7e;}
+.odd-ultra{background:#1a0808;color:var(--ultra);border:1px solid #4a1a1a;}
+.odd-legendary{background:#001a20;color:var(--legendary);border:1px solid #004a5e;}
+.pack-buy-btn{width:100%;padding:11px;background:var(--gold);border:none;border-radius:6px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;color:#0a0a0a;font-weight:700;cursor:pointer;text-transform:uppercase;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.pack-buy-btn.runner-btn{background:linear-gradient(90deg,#6d28d9,#a78bfa);}
+.pack-buy-btn.nutrition-btn{background:linear-gradient(90deg,#166534,#4ade80);color:#0a1a0a;}
+.pack-buy-btn:disabled{background:var(--faint);color:var(--muted);cursor:not-allowed;}
 
-    .week-detail { padding: 24px 24px 12px; }
-    .week-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 20px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid var(--line);
-    }
-    .week-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 26px;
-      font-weight: 700;
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-    .week-meta {
-      font-family: 'DM Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 2px;
-      color: var(--muted);
-    }
-    .week-status {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 1px;
-      color: var(--muted);
-      text-align: right;
-    }
-    .week-status.done { color: var(--easy); }
+/* PACK OVERLAY */
+.pack-overlay{position:fixed;inset:0;background:#030202;z-index:500;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px;perspective:1200px;}
+.pack-overlay.active{display:flex;}
+.particles{position:absolute;inset:0;pointer-events:none;overflow:hidden;}
+.particle{position:absolute;border-radius:50%;opacity:0;}
 
-    .sessions { display: flex; flex-direction: column; gap: 10px; }
+/* Gear/Nutrition pack opening */
+#openingPhase{display:flex;flex-direction:column;align-items:center;gap:20px;}
+.pack-3d{width:150px;height:215px;position:relative;transform-style:preserve-3d;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.pack-3d-top{position:absolute;top:0;left:0;right:0;height:34%;border-radius:12px 12px 0 0;border:2px solid var(--gold);border-bottom:none;transform-origin:top center;transform-style:preserve-3d;transition:transform 0.7s cubic-bezier(.4,0,.2,1),opacity 0.5s ease;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.pack-3d-top.gear{background:linear-gradient(160deg,#3a2f05,#2a1f00);}
+.pack-3d-top.nutrition{background:linear-gradient(160deg,#0f2a0a,#0a1f05);}
+.pack-3d-top.runner{background:linear-gradient(160deg,#1a0a35,#0a0520);border-color:#6d28d9;}
+.pack-3d-top.torn{transform:rotateX(-150deg) translateZ(10px);opacity:0;}
+.pack-3d-bottom{position:absolute;top:32%;left:0;right:0;bottom:0;border-radius:0 0 12px 12px;border:2px solid var(--gold);border-top:none;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;overflow:hidden;}
+.pack-3d-bottom.gear{background:linear-gradient(160deg,#2a1f05,#1a1200 50%,#2a1f05);}
+.pack-3d-bottom.nutrition{background:linear-gradient(160deg,#0f2a0a,#081508 50%,#0f2a0a);border-color:#2d5a2d;}
+.pack-3d-bottom.runner{background:linear-gradient(160deg,#1a0a35,#0a0520 50%,#1a0a35);border-color:#6d28d9;}
+.pack-3d-bottom::before{content:'';position:absolute;inset:0;background:linear-gradient(45deg,transparent 40%,rgba(201,168,76,0.05) 50%,transparent 60%);animation:sheen 3s infinite;}
+.pack-3d-tear{position:absolute;top:31%;left:0;right:0;height:2px;background:repeating-linear-gradient(90deg,var(--gold) 0,var(--gold) 8px,transparent 8px,transparent 14px);opacity:0.4;}
+.tear-hint-text{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--gold);text-align:center;animation:pulse 1.4s infinite;}
+@keyframes pulse{0%,100%{opacity:0.3}50%{opacity:1}}
+.cancel-btn{background:none;border:none;font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);cursor:pointer;letter-spacing:2px;padding:10px;text-transform:uppercase;}
 
-    .session-card {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 16px;
-      background: var(--bg2);
-      border: 1px solid var(--faint);
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.2s;
-      -webkit-tap-highlight-color: transparent;
-      min-height: 60px;
-    }
-    .session-card.done-easy { background: var(--easy-bg); border-color: var(--easy-border); }
-    .session-card.done-long { background: var(--long-bg); border-color: var(--long-border); }
-    .session-card.done-tempo { background: var(--tempo-bg); border-color: var(--tempo-border); }
+/* Gear/Nutrition card reveal */
+#cardsReveal{display:none;flex-direction:column;align-items:center;gap:20px;width:100%;}
+#cardsReveal.active{display:flex;}
+.reveal-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:900;text-align:center;}
+.reveal-sub{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--muted);text-align:center;}
+.revealed-cards{display:flex;gap:12px;justify-content:center;}
+.card-flip-wrap{width:95px;height:138px;perspective:800px;cursor:pointer;opacity:0;transform:translateY(30px);transition:opacity 0.4s ease,transform 0.4s ease;}
+.card-flip-wrap.appear{opacity:1;transform:translateY(0);}
+.card-flip-inner{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 0.7s cubic-bezier(.4,0,.2,1);}
+.card-flip-inner.flipped{transform:rotateY(180deg);}
+.card-face{position:absolute;inset:0;border-radius:10px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;overflow:hidden;}
+.card-back{border:2px solid var(--gold-dim);}
+.card-back.gear-back{background:linear-gradient(135deg,#2a1f05,#1a1200,#2a1f05);}
+.card-back.nutrition-back{background:linear-gradient(135deg,#0f2a0a,#081508,#0f2a0a);border-color:#2d5a2d;}
+.card-back::after{content:'';position:absolute;inset:0;background:linear-gradient(45deg,transparent 35%,rgba(201,168,76,0.1) 50%,transparent 65%);animation:sheen 2s infinite;}
+.card-front{transform:rotateY(180deg);border:2px solid var(--faint);background:var(--bg2);}
+.card-front.rarity-normal{border-color:var(--faint);background:var(--bg2);}
+.card-front.rarity-golden{border-color:var(--golden);background:linear-gradient(135deg,#1a1200,#2a1f00);box-shadow:0 0 20px rgba(245,158,11,0.3);}
+.card-front.rarity-golden::before{content:'';position:absolute;inset:0;background:linear-gradient(45deg,transparent 30%,rgba(255,215,0,0.15) 50%,transparent 70%);animation:sheen 2.5s infinite;}
+.card-front.rarity-shiny{border-color:var(--shiny);background:linear-gradient(135deg,#0f0820,#1a0f35);animation:shinyPulse 2s infinite;}
+.card-front.rarity-shiny::before{content:'';position:absolute;inset:0;background:linear-gradient(45deg,transparent 30%,rgba(167,139,250,0.15) 50%,transparent 70%);animation:sheen 2s infinite;}
+.card-front.rarity-ultra{border-color:var(--ultra);background:linear-gradient(135deg,#1a0808,#200f20,#0f0820,#1a1200);background-size:300% 300%;animation:ultraBg 3s infinite,ultraGlow 2s infinite;}
+.card-front.rarity-ultra::before{content:'';position:absolute;inset:0;background:linear-gradient(45deg,transparent 30%,rgba(255,107,107,0.12) 50%,transparent 70%);animation:sheen 1.5s infinite;}
+@keyframes shinyPulse{0%,100%{box-shadow:0 0 10px rgba(167,139,250,0.2)}50%{box-shadow:0 0 30px rgba(167,139,250,0.5)}}
+@keyframes ultraBg{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+@keyframes ultraGlow{0%,100%{box-shadow:0 0 15px rgba(255,107,107,0.3),0 0 30px rgba(167,139,250,0.2)}50%{box-shadow:0 0 30px rgba(255,107,107,0.6),0 0 60px rgba(167,139,250,0.4)}}
+.card-emoji-el{font-size:32px;z-index:1;}
+.card-name-el{font-family:'Playfair Display',serif;font-size:7.5px;font-weight:700;color:var(--text);text-align:center;padding:0 5px;z-index:1;line-height:1.3;}
+.card-flavor-el{font-family:'DM Sans',sans-serif;font-size:6px;color:var(--muted);font-style:italic;text-align:center;padding:0 5px;z-index:1;line-height:1.4;}
+.card-rarity-el{font-family:'DM Mono',monospace;font-size:6.5px;z-index:1;}
+.card-rarity-el.normal{color:var(--muted);}.card-rarity-el.golden{color:var(--golden);}.card-rarity-el.shiny{color:var(--shiny);}.card-rarity-el.ultra{color:var(--ultra);}
+.card-badge{position:absolute;top:4px;right:4px;font-size:10px;z-index:2;}
 
-    .checkbox {
-      width: 22px;
-      height: 22px;
-      border-radius: 4px;
-      border: 1.5px solid var(--faint);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: all 0.2s;
-      font-size: 12px;
-    }
-    .session-card.done-easy .checkbox { background: var(--easy); border-color: var(--easy); color: #0a0a0a; }
-    .session-card.done-long .checkbox { background: var(--long); border-color: var(--long); color: #0a0a0a; }
-    .session-card.done-tempo .checkbox { background: var(--tempo); border-color: var(--tempo); color: #0a0a0a; }
+.tap-hint{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);text-align:center;animation:pulse 1.5s infinite;}
+.close-reveal{padding:13px 28px;background:var(--bg2);border:1px solid var(--gold-dim);border-radius:8px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--gold);cursor:pointer;text-transform:uppercase;}
 
-    .session-type {
-      font-family: 'DM Mono', monospace;
-      font-size: 8px;
-      letter-spacing: 2.5px;
-      color: var(--muted);
-      text-transform: uppercase;
-      width: 38px;
-      flex-shrink: 0;
-    }
-    .session-card.done-easy .session-type { color: var(--easy); }
-    .session-card.done-long .session-type { color: var(--long); }
-    .session-card.done-tempo .session-type { color: var(--tempo); }
+/* RUNNER REVEAL — single card epic */
+#runnerReveal{display:none;flex-direction:column;align-items:center;gap:0;width:100%;}
+#runnerReveal.active{display:flex;}
+.runner-card-stage{position:relative;width:200px;height:290px;perspective:1000px;margin-bottom:16px;}
+.runner-card-3d{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 1s cubic-bezier(.4,0,.2,1);cursor:pointer;}
+.runner-card-3d.flipped{transform:rotateY(180deg);}
+.runner-face{position:absolute;inset:0;border-radius:14px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;}
+.runner-back{background:linear-gradient(160deg,#1a0a35,#0a0520,#1a0a35);border:2px solid #6d28d9;}
+.runner-back::before{content:'⚡';font-size:60px;opacity:0.15;position:absolute;}
+.runner-back::after{content:'';position:absolute;inset:0;background:linear-gradient(45deg,transparent 30%,rgba(167,139,250,0.12) 50%,transparent 70%);animation:sheen 2s infinite;}
+.runner-back-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:#6d28d9;z-index:1;}
+.runner-front{transform:rotateY(180deg);border:2px solid var(--gold-dim);background:var(--bg2);padding:0;justify-content:flex-start;}
+.runner-front.rarity-normal{border-color:var(--gold-dim);}
+.runner-front.rarity-golden{border-color:var(--golden);background:linear-gradient(160deg,#1a1200,#2a2000,#1a1200);box-shadow:0 0 30px rgba(245,158,11,0.4);}
+.runner-front.rarity-golden::before{content:'';position:absolute;inset:0;background:linear-gradient(45deg,transparent 30%,rgba(255,215,0,0.1) 50%,transparent 70%);animation:sheen 2.5s infinite;}
+.runner-front.rarity-shiny{border-color:var(--shiny);background:linear-gradient(160deg,#0f0820,#1a0f35,#0f0820);animation:shinyPulse 2s infinite;}
+.runner-front.rarity-shiny::before{content:'';position:absolute;inset:0;background:linear-gradient(45deg,transparent 30%,rgba(167,139,250,0.12) 50%,transparent 70%);animation:sheen 2s infinite;}
+.runner-card-header{width:100%;padding:10px 12px 6px;border-bottom:1px solid var(--faint);display:flex;justify-content:space-between;align-items:center;flex-shrink:0;}
+.runner-card-rarity{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:2px;}
+.runner-card-rarity.normal{color:var(--muted);}.runner-card-rarity.golden{color:var(--golden);}.runner-card-rarity.shiny{color:var(--shiny);}
+.runner-card-num{font-family:'DM Mono',monospace;font-size:7px;color:var(--muted);}
+.runner-emoji-big{font-size:56px;margin:8px 0 4px;z-index:1;}
+.runner-card-name{font-family:'Playfair Display',serif;font-size:13px;font-weight:900;text-align:center;padding:0 10px;line-height:1.2;z-index:1;}
+.runner-card-title{font-family:'DM Mono',monospace;font-size:7.5px;letter-spacing:1px;color:var(--gold);text-align:center;padding:0 8px;margin-bottom:6px;z-index:1;}
+.runner-stats{width:100%;padding:6px 10px;display:flex;flex-direction:column;gap:4px;flex-shrink:0;}
+.runner-stat-row{display:flex;align-items:center;gap:6px;}
+.runner-stat-label{font-family:'DM Mono',monospace;font-size:7px;color:var(--muted);width:52px;flex-shrink:0;letter-spacing:1px;}
+.runner-stat-bar{flex:1;height:4px;background:var(--faint);border-radius:2px;overflow:hidden;}
+.runner-stat-fill{height:100%;border-radius:2px;transition:width 1s ease 0.3s;}
+.runner-stat-val{font-family:'DM Mono',monospace;font-size:7px;color:var(--text);width:18px;text-align:right;}
+.runner-card-flavor{font-family:'DM Sans',sans-serif;font-size:8px;font-style:italic;color:var(--muted);text-align:center;padding:4px 10px 8px;line-height:1.5;flex-shrink:0;}
+.runner-reveal-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:900;text-align:center;}
+.runner-reveal-sub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);text-align:center;margin-bottom:4px;}
 
-    .session-label {
-      font-size: 14px;
-      font-weight: 400;
-      color: var(--muted);
-      line-height: 1.3;
-    }
-    .session-card.done-easy .session-label,
-    .session-card.done-long .session-label,
-    .session-card.done-tempo .session-label { color: var(--text); }
+/* ALBUM */
+.album-tabs{display:flex;border-bottom:1px solid var(--line);}
+.album-tab{flex:1;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);padding:13px 10px;border:none;background:none;cursor:pointer;border-bottom:2px solid transparent;transition:all 0.2s;text-transform:uppercase;}
+.album-tab.active{color:var(--text);border-bottom-color:var(--gold);}
+.album-panel{display:none;padding:16px 24px;}.album-panel.active{display:block;}
+.album-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px;}
+.album-slot{aspect-ratio:0.7;border-radius:8px;border:1px solid var(--faint);background:var(--bg2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;position:relative;overflow:hidden;}
+.album-slot.has-normal{border-color:var(--gold-dim);background:#1a1608;}
+.album-slot.has-golden{border-color:var(--golden);background:linear-gradient(135deg,#1a1200,#2a1f00);box-shadow:0 0 8px rgba(245,158,11,0.2);}
+.album-slot.has-golden::before{content:'';position:absolute;inset:0;background:linear-gradient(45deg,transparent 30%,rgba(255,215,0,0.08) 50%,transparent 70%);animation:sheen 3s infinite;}
+.album-slot.has-shiny{border-color:var(--shiny);background:linear-gradient(135deg,#0f0820,#1a0f35);animation:shinyPulse 2.5s infinite;}
+.album-slot.has-ultra{border-color:var(--ultra);background:linear-gradient(135deg,#1a0808,#200f20);animation:ultraGlow 2s infinite;}
+.slot-emoji{font-size:20px;z-index:1;}
+.slot-name{font-family:'DM Mono',monospace;font-size:5.5px;color:var(--muted);text-align:center;padding:0 3px;z-index:1;text-transform:uppercase;}
+.slot-count{font-family:'DM Mono',monospace;font-size:7px;color:var(--gold-dim);z-index:1;}
+.slot-empty{font-size:16px;opacity:0.1;}
+.slot-badge{position:absolute;top:3px;right:3px;font-size:8px;z-index:2;}
 
-    .taper-note {
-      margin-top: 12px;
-      padding: 12px 14px;
-      background: #1a180a;
-      border: 1px solid #3a3510;
-      border-radius: 6px;
-      font-size: 12px;
-      font-style: italic;
-      color: var(--muted);
-      line-height: 1.5;
-    }
+/* Runner album grid — bigger cards */
+.runner-album-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px;}
+.runner-slot{aspect-ratio:0.69;border-radius:10px;border:1px solid var(--faint);background:var(--bg2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;position:relative;overflow:hidden;cursor:default;}
+.runner-slot.has-normal{border-color:var(--gold-dim);background:#1a1608;}
+.runner-slot.has-golden{border-color:var(--golden);background:linear-gradient(135deg,#1a1200,#2a1f00);animation:goldenGlow 2.5s infinite;}
+@keyframes goldenGlow{0%,100%{box-shadow:0 0 8px rgba(245,158,11,0.2)}50%{box-shadow:0 0 18px rgba(245,158,11,0.4)}}
+.runner-slot.has-shiny{border-color:var(--shiny);background:linear-gradient(135deg,#0f0820,#1a0f35);animation:shinyPulse 2s infinite;}
+.runner-slot-emoji{font-size:28px;z-index:1;}
+.runner-slot-name{font-family:'Playfair Display',serif;font-size:8px;font-weight:700;color:var(--text);text-align:center;padding:0 5px;z-index:1;line-height:1.3;}
+.runner-slot-title{font-family:'DM Mono',monospace;font-size:5.5px;color:var(--gold);text-align:center;padding:0 4px;z-index:1;letter-spacing:0.5px;}
+.runner-slot-empty{font-size:22px;opacity:0.1;}
+.runner-slot-badge{position:absolute;top:4px;right:4px;font-size:9px;z-index:2;}
 
-    .legend {
-      display: flex;
-      gap: 20px;
-      padding: 20px 24px;
-      border-top: 1px solid var(--line);
-      margin-top: 12px;
-    }
-    .legend-item { display: flex; align-items: center; gap: 7px; }
-    .legend-dot { width: 7px; height: 7px; border-radius: 50%; }
-    .legend-text {
-      font-family: 'DM Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 2px;
-      color: var(--muted);
-      text-transform: uppercase;
-    }
+/* ACHIEVEMENTS */
+.achievements-grid{padding:20px 24px;display:flex;flex-direction:column;gap:8px;}
+.achievement-card{display:flex;align-items:center;gap:14px;padding:14px;background:var(--bg2);border:1px solid var(--faint);border-radius:8px;}
+.achievement-card.unlocked{border-color:var(--gold-dim);background:#1a1608;}
+.achievement-card.hannah{border-color:#ff6b6b;background:#1a0808;}
+.achievement-icon{font-size:26px;width:40px;text-align:center;filter:grayscale(1);opacity:0.25;flex-shrink:0;}
+.achievement-card.unlocked .achievement-icon,.achievement-card.hannah .achievement-icon{filter:none;opacity:1;}
+.achievement-name{font-family:'Playfair Display',serif;font-size:14px;font-weight:700;color:var(--muted);margin-bottom:2px;}
+.achievement-card.unlocked .achievement-name,.achievement-card.hannah .achievement-name{color:var(--text);}
+.achievement-desc{font-size:11px;color:var(--muted);opacity:0.7;line-height:1.4;}
+.achievement-reward{font-family:'DM Mono',monospace;font-size:9px;color:var(--coin);white-space:nowrap;}
 
-    .install-hint {
-      margin: 0 24px 24px;
-      padding: 14px 16px;
-      background: var(--bg2);
-      border: 1px solid var(--line);
-      border-radius: 6px;
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.6;
-      display: none;
-    }
-    .install-hint.visible { display: block; }
-    .install-hint strong { color: var(--text); font-weight: 500; }
+/* TOAST */
+.toast{position:fixed;top:24px;left:50%;transform:translateX(-50%) translateY(-100px);background:var(--bg3);border:1px solid var(--gold-dim);border-radius:8px;padding:10px 18px;font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:1px;white-space:nowrap;transition:transform 0.4s cubic-bezier(.4,0,.2,1);z-index:600;pointer-events:none;max-width:90vw;text-align:center;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+/* Screen shake */
+@keyframes shake{0%,100%{transform:translateX(0)}10%,30%,50%,70%,90%{transform:translateX(-6px)}20%,40%,60%,80%{transform:translateX(6px)}}
+.shaking{animation:shake 0.5s ease;}
+```
+
   </style>
 </head>
 <body>
+<div id="toastEl" class="toast"></div>
 
-<div class="masthead">
-  <div class="issue-line">Berlin Marathon · September 2026 · Sub-3:00</div>
-  <div class="masthead-title">THE<br>RUNNER'S<br>LOG</div>
-  <div class="masthead-sub">24 Wochen · 3 Sessions/Woche</div>
-  <div class="progress-wrap">
-    <div class="progress-bar-outer">
-      <div class="progress-bar-inner" id="progressBar" style="width:0%"></div>
+<!-- ── PACK OVERLAY ── -->
+
+<div class="pack-overlay" id="packOverlay">
+  <div class="particles" id="particles"></div>
+
+  <!-- Phase 1: tear open -->
+
+  <div id="openingPhase" style="display:flex;flex-direction:column;align-items:center;gap:20px;">
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--gold-dim);" id="packLabel">MARATHON BOOSTER</div>
+    <div class="pack-3d" id="pack3d" onclick="tearPack()">
+      <div class="pack-3d-top gear" id="pack3dTop"><span style="font-size:18px;">🏃</span></div>
+      <div class="pack-3d-tear"></div>
+      <div class="pack-3d-bottom gear" id="pack3dBottom">
+        <span style="font-size:40px;z-index:1;" id="packEmoji">🏃</span>
+        <span style="font-family:'Playfair Display',serif;font-size:12px;font-weight:700;color:var(--gold);text-align:center;z-index:1;padding:0 12px;" id="packTitle">Marathon<br>Booster</span>
+        <span style="font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--gold-dim);z-index:1;" id="packContents">3 CARDS INSIDE</span>
+      </div>
     </div>
-    <div class="progress-label" id="progressLabel">0 / 0</div>
+    <div class="tear-hint-text">▲ TIPPE ZUM AUFREI&szlig;EN ▲</div>
+    <button class="cancel-btn" onclick="closePack()">Abbrechen</button>
+  </div>
+
+  <!-- Phase 2: gear/nutrition card reveal -->
+
+  <div id="cardsReveal">
+    <div class="reveal-title" id="revealTitle">Pack Geöffnet!</div>
+    <div class="reveal-sub" id="revealSub"></div>
+    <div class="revealed-cards" id="revealedCards"></div>
+    <div class="tap-hint" id="tapHint">TIPPE AUF KARTE ZUM AUFDECKEN</div>
+    <button class="close-reveal" id="closeRevealBtn" style="display:none;" onclick="closePack()">Ins Album →</button>
+  </div>
+
+  <!-- Phase 3: runner single card epic reveal -->
+
+  <div id="runnerReveal">
+    <div class="runner-reveal-title" id="runnerRevealTitle">Slick Runner</div>
+    <div class="runner-reveal-sub" id="runnerRevealSub">TIPPE UM AUFZUDECKEN</div>
+    <div class="runner-card-stage">
+      <div class="runner-card-3d" id="runnerCard3d" onclick="flipRunnerCard()">
+        <div class="runner-face runner-back">
+          <div class="runner-back-label">SLICK RUNNER</div>
+        </div>
+        <div class="runner-face runner-front" id="runnerFront">
+          <!-- filled by JS -->
+        </div>
+      </div>
+    </div>
+    <button class="close-reveal" id="closeRunnerBtn" style="display:none;" onclick="closePack()">Ins Album →</button>
+    <button class="cancel-btn" onclick="closePack()">Abbrechen</button>
   </div>
 </div>
 
-<div class="phase-nav" id="phaseNav"></div>
-<div class="week-grid" id="weekGrid"></div>
-<div class="week-detail" id="weekDetail"></div>
+<!-- ── SCREEN: PLAN ── -->
 
-<div class="legend">
-  <div class="legend-item">
-    <div class="legend-dot" style="background:var(--easy)"></div>
-    <div class="legend-text">Easy</div>
+<div id="screen-plan" class="screen active">
+  <div class="masthead">
+    <div class="issue-line">Berlin Marathon · September 2026</div>
+    <div class="masthead-title">THE<br>RUNNER'S<br>LOG</div>
+    <div class="masthead-sub">24 Wochen · Sub-3:00</div>
+    <div class="xp-section">
+      <div class="xp-row"><div class="xp-level" id="levelLabel">Lv.1 Jogger</div><div class="xp-count" id="xpCount">0 XP</div></div>
+      <div class="xp-bar-outer"><div class="xp-bar-inner" id="xpBar" style="width:0%"></div></div>
+    </div>
+    <div class="progress-wrap">
+      <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressBar" style="width:0%"></div></div>
+      <div class="progress-label" id="progressLabel">0 / 0</div>
+    </div>
   </div>
-  <div class="legend-item">
-    <div class="legend-dot" style="background:var(--long)"></div>
-    <div class="legend-text">Long</div>
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-val streak" id="streakVal">0</div><div class="stat-label">Streak 🔥</div></div>
+    <div class="stat-box"><div class="stat-val" id="doneVal">0</div><div class="stat-label">Sessions</div></div>
+    <div class="stat-box"><div class="stat-val xp-val" id="xpVal">0</div><div class="stat-label">XP</div></div>
+    <div class="stat-box"><div class="stat-val coin-val" id="coinVal">0</div><div class="stat-label">🪙 Coins</div></div>
   </div>
-  <div class="legend-item">
-    <div class="legend-dot" style="background:var(--tempo)"></div>
-    <div class="legend-text">Tempo</div>
+  <div class="phase-nav" id="phaseNav"></div>
+  <div class="week-grid" id="weekGrid"></div>
+  <div class="week-detail" id="weekDetail"></div>
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:var(--easy)"></div><div class="legend-text">Easy</div></div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--long)"></div><div class="legend-text">Long</div></div>
+    <div class="legend-item"><div class="legend-dot" style="background:var(--tempo)"></div><div class="legend-text">Tempo</div></div>
+  </div>
+  <div class="install-hint" id="installHint"><strong>Als App:</strong> Teilen ↑ → „Zum Home-Bildschirm"</div>
+</div>
+
+<!-- ── SCREEN: LOG ── -->
+
+<div id="screen-log" class="screen">
+  <div class="screen-header">
+    <div class="issue-line">Run Logger</div>
+    <div class="screen-title">LOG YOUR RUN</div>
+    <div class="screen-sub">Jeden Lauf festhalten</div>
+  </div>
+  <div class="hannah-banner" id="hannahBanner">
+    <div class="hannah-title">🔥 HANNAH CLASSIC WEEK!</div>
+    <div class="hannah-sub" id="hannahSub">Diese Woche: 0km / 50km</div>
+  </div>
+  <div class="log-form">
+    <div class="log-section-title">Neuer Lauf</div>
+    <div class="type-select">
+      <button class="type-btn active-easy" id="typeEasy" onclick="setRunType('easy')">Easy</button>
+      <button class="type-btn" id="typeLong" onclick="setRunType('long')">Long</button>
+      <button class="type-btn" id="typeTempo" onclick="setRunType('tempo')">Tempo</button>
+    </div>
+    <div class="input-row">
+      <div class="input-group">
+        <div class="input-label">Distanz (km)</div>
+        <input class="input-field" id="inputDist" type="number" step="0.1" placeholder="10.5" oninput="calcPace()"/>
+      </div>
+      <div class="input-group">
+        <div class="input-label">Zeit (mm:ss)</div>
+        <input class="input-field" id="inputTime" type="text" placeholder="52:30" oninput="calcPace()"/>
+      </div>
+    </div>
+    <div class="pace-display" id="paceDisplay">Pace wird berechnet...</div>
+    <button class="log-btn" onclick="logRun()">+ Lauf speichern</button>
+  </div>
+  <div class="run-history">
+    <div class="history-title">Letzte Läufe</div>
+    <div id="weekKmInfo" class="week-km-badge"></div>
+    <div id="runList"></div>
   </div>
 </div>
 
-<div class="install-hint" id="installHint">
-  <strong>Als App speichern:</strong> Tippe auf <strong>Teilen ↑</strong> → <strong>„Zum Home-Bildschirm"</strong> — dann hast du das als App direkt am Homescreen.
+<!-- ── SCREEN: STORE ── -->
+
+<div id="screen-store" class="screen">
+  <div class="screen-header">
+    <div class="issue-line">Maratooneys Store</div>
+    <div class="screen-title">THE STORE</div>
+    <div class="store-balance">
+      <div class="coin-badge">
+        <span style="font-size:16px;">🪙</span>
+        <div><div class="coin-amount" id="storeCoins">0</div><div class="coin-label">MARATOONEYS</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="store-grid">
+    <!-- Marathon Booster -->
+    <div class="pack-card" onclick="openPack('gear')">
+      <div class="pack-thumb"><span style="font-size:28px;">🏃</span></div>
+      <div class="pack-info">
+        <div class="pack-card-title">Marathon Booster</div>
+        <div class="pack-card-desc">3 Gear Items mit Lore. Schuhe, Gadgets, Ausrüstung.</div>
+        <div class="pack-odds">
+          <div class="odd-pill odd-normal">Normal 92%</div>
+          <div class="odd-pill odd-golden">👑 2.5%</div>
+          <div class="odd-pill odd-shiny">✨ 5%</div>
+          <div class="odd-pill odd-ultra">🔥 0.5%</div>
+        </div>
+        <button class="pack-buy-btn" id="buyGear" onclick="event.stopPropagation();openPack('gear')">🪙 10 Maratooneys</button>
+      </div>
+    </div>
+    <!-- Nutrition Pack -->
+    <div class="pack-card" onclick="openPack('nutrition')">
+      <div class="pack-thumb nutrition-thumb"><span style="font-size:28px;">🍌</span></div>
+      <div class="pack-info">
+        <div class="pack-card-title">Nutrition Pack</div>
+        <div class="pack-card-desc">3 Fuel Items. Gels, Drinks, Race Day Snacks.</div>
+        <div class="pack-odds">
+          <div class="odd-pill odd-normal">Normal 92%</div>
+          <div class="odd-pill odd-golden">👑 2.5%</div>
+          <div class="odd-pill odd-shiny">✨ 5%</div>
+          <div class="odd-pill odd-ultra">🔥 0.5%</div>
+        </div>
+        <button class="pack-buy-btn nutrition-btn" id="buyNutrition" onclick="event.stopPropagation();openPack('nutrition')">🪙 10 Maratooneys</button>
+      </div>
+    </div>
+    <!-- Slick Runner Pack -->
+    <div class="pack-card premium" onclick="openPack('runner')">
+      <div class="pack-thumb runner-thumb"><span style="font-size:28px;">⚡</span></div>
+      <div class="pack-info">
+        <div class="pack-card-title" style="color:var(--xp);">Slick Runner Pack</div>
+        <div class="pack-card-desc">1 Athlete Card. Legenden, Freunde, GOATs. Mit Stats und Lore.</div>
+        <div class="pack-odds">
+          <div class="odd-pill odd-normal">Normal 92.5%</div>
+          <div class="odd-pill odd-golden">👑 2.5%</div>
+          <div class="odd-pill odd-shiny">✨ 5%</div>
+        </div>
+        <button class="pack-buy-btn runner-btn" id="buyRunner" onclick="event.stopPropagation();openPack('runner')">🪙 50 Maratooneys</button>
+      </div>
+    </div>
+    <div style="padding:14px;background:var(--bg2);border:1px solid var(--faint);border-radius:8px;">
+      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);margin-bottom:10px;">WIE VERDIENEN?</div>
+      <div style="font-size:13px;color:var(--muted);line-height:1.9;">🏃 <span style="color:var(--text);">+10</span> pro Session &nbsp;·&nbsp; 📅 <span style="color:var(--text);">+50</span> Woche komplett<br>🔥 <span style="color:var(--text);">+200</span> Hannah Classic (50km Woche)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SCREEN: ALBUM ── -->
+
+<div id="screen-album" class="screen">
+  <div class="screen-header">
+    <div class="issue-line">Sammelheft</div>
+    <div class="screen-title">MEINE COLLECTION</div>
+    <div class="screen-sub" id="albumSub">0 Karten total</div>
+  </div>
+  <div class="album-tabs">
+    <button class="album-tab active" id="atab-gear" onclick="switchAlbum('gear')">⚙️ Gear</button>
+    <button class="album-tab" id="atab-nutrition" onclick="switchAlbum('nutrition')">🍌 Nutrition</button>
+    <button class="album-tab" id="atab-runners" onclick="switchAlbum('runners')">⚡ Runners</button>
+  </div>
+  <div class="album-panel active" id="apanel-gear">
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);" id="gearAlbumSub"></div>
+    <div class="album-grid" id="gearGrid"></div>
+  </div>
+  <div class="album-panel" id="apanel-nutrition">
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);" id="nutritionAlbumSub"></div>
+    <div class="album-grid" id="nutritionGrid"></div>
+  </div>
+  <div class="album-panel" id="apanel-runners">
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);" id="runnerAlbumSub"></div>
+    <div class="runner-album-grid" id="runnerGrid"></div>
+  </div>
+</div>
+
+<!-- ── SCREEN: ACHIEVEMENTS ── -->
+
+<div id="screen-achievements" class="screen">
+  <div class="screen-header">
+    <div class="issue-line">Achievements</div>
+    <div class="screen-title">YOUR BADGES</div>
+    <div class="screen-sub" id="achieveCount">0 / 0 freigeschaltet</div>
+  </div>
+  <div class="achievements-grid" id="achievementsList"></div>
+</div>
+
+<!-- BOTTOM NAV -->
+
+<div class="bottom-nav">
+  <button class="nav-btn active" id="nav-plan" onclick="switchScreen('plan')"><span class="nav-icon">📋</span>Plan</button>
+  <button class="nav-btn" id="nav-log" onclick="switchScreen('log')"><span class="nav-icon">🏃</span>Log</button>
+  <button class="nav-btn" id="nav-store" onclick="switchScreen('store')"><span class="nav-icon">🛍️</span>Store</button>
+  <button class="nav-btn" id="nav-album" onclick="switchScreen('album')"><span class="nav-icon">📒</span>Album</button>
+  <button class="nav-btn" id="nav-achievements" onclick="switchScreen('achievements')"><span class="nav-icon">🏅</span>Badges</button>
 </div>
 
 <script>
-const PHASES = [
-  { month: "März",   longRun: "12–15 km", startDate: "2026-03-16" },
-  { month: "April",  longRun: "15–18 km", startDate: "2026-04-13" },
-  { month: "Mai",    longRun: "20–25 km", startDate: "2026-05-11" },
-  { month: "Juni",   longRun: "25–28 km", startDate: "2026-06-08" },
-  { month: "Juli",   longRun: "30–32 km", startDate: "2026-07-06" },
-  { month: "August", longRun: "Tapering", startDate: "2026-08-03", taper: true },
+// ── GEAR ITEMS ────────────────────────────────────────────────
+const GEAR_ITEMS = [
+  {id:'berlin_flyers',   emoji:'👟', name:'The Berlin Flyers',     flavor:'Born for the Ku\'damm finish line.'},
+  {id:'ghost_watch',     emoji:'⌚', name:'Ghost Watch',            flavor:'It knows your pace before you do.'},
+  {id:'iron_belt',       emoji:'🎽', name:'The Iron Belt',          flavor:'Has survived more long runs than you.'},
+  {id:'sweat_prophet',   emoji:'🩹', name:'Sweat Prophet',          flavor:'Sticks when everything else falls off.'},
+  {id:'the_fog_cap',     emoji:'🧢', name:'The Fog Cap',            flavor:'Worn through Berlin winters. Still standing.'},
+  {id:'shadow_socks',    emoji:'🧦', name:'Shadow Socks',           flavor:'No blisters. No excuses.'},
+  {id:'pulse_vest',      emoji:'🦺', name:'Pulse Vest',             flavor:'Holds your water and your nerve.'},
+  {id:'foam_oracle',     emoji:'🫧', name:'The Foam Oracle',        flavor:'It will tell you where you went wrong.'},
+  {id:'dark_shades',     emoji:'🕶️', name:'Dark Runner Shades',    flavor:'For when the sun disrespects your pace.'},
+  {id:'final_tape',      emoji:'🩹', name:'Final Tape',             flavor:'Applied at km 30. Holds until the end.'},
+  {id:'the_monument',    emoji:'🏅', name:'The Monument',           flavor:'Earned. Never given.'},
+  {id:'echo_phones',     emoji:'🎧', name:'Echo Phones',            flavor:'Your playlist is your pacer.'},
 ];
 
-function addDays(dateStr, days) {
-  const d = new Date(dateStr);
-  d.setDate(d.getDate() + days);
-  return d;
-}
+// ── NUTRITION ITEMS ───────────────────────────────────────────
+const NUTRITION_ITEMS = [
+  {id:'last_gel',      emoji:'⚡', name:'The Last Gel',        flavor:'Taken at km 35. Changed everything.'},
+  {id:'race_banana',   emoji:'🍌', name:'Race Banana',         flavor:'Potassium and pure belief.'},
+  {id:'salt_tabs',     emoji:'💊', name:'Salt Tabs',           flavor:'For when your legs start lying to you.'},
+  {id:'void_water',    emoji:'💧', name:'Void Water',          flavor:'Still water. Still going.'},
+  {id:'dark_cola',     emoji:'🥤', name:'Dark Cola',           flavor:'Caffeinated sin. Worth it.'},
+  {id:'iso_drink',     emoji:'🍹', name:'ISO Drink',           flavor:'Science in a bottle.'},
+  {id:'pretzel',       emoji:'🥨', name:'Race Pretzel',        flavor:'Salt. Carbs. Weird tradition. Works.'},
+  {id:'choco_gel',     emoji:'🍫', name:'Choco Power Gel',     flavor:'Tastes wrong. Performs right.'},
+  {id:'gummy_bears',   emoji:'🐻', name:'Haribo Boost',        flavor:'The unofficial fuel of German runners.'},
+  {id:'espresso_shot', emoji:'☕', name:'Pre-Race Espresso',   flavor:'One shot. Two souls.'},
+  {id:'orange_slice',  emoji:'🍊', name:'Volunteer Orange',    flavor:'Given by a stranger at km 28. Never forgotten.'},
+  {id:'protein_shake', emoji:'🥛', name:'Recovery Shake',      flavor:'The run is done. The work continues.'},
+];
 
-function fmtShort(date) {
-  return date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit' });
-}
+// ── ATHLETES ──────────────────────────────────────────────────
+const ATHLETES = [
+  // Friends & Legends (special — always pull-able)
+  {id:'hannah',    emoji:'🔥', name:'Hannah',           title:'The Running Legend',        pace:96, endurance:99, mental:98, flavor:'50km weeks are her warm-up.', rarity_weight:3},
+  {id:'papa',      emoji:'👴', name:'Papa Nickel',      title:'The OG Runner',             pace:75, endurance:88, mental:95, flavor:'Been running since before GPS existed.', rarity_weight:3},
+  {id:'lucas',     emoji:'🦵', name:'Lucas',            title:'The Man with the Torn ACL', pace:82, endurance:70, mental:99, flavor:'Doctors said stop. He didn\'t listen.', rarity_weight:3},
+  {id:'julius',    emoji:'⚡', name:'Julius',           title:'The Newcomer',              pace:80, endurance:75, mental:85, flavor:'First marathon incoming. Underestimate at your peril.', rarity_weight:3},
+  {id:'julian',    emoji:'🤷', name:'Julian',           title:'The One Who Tried',         pace:55, endurance:50, mental:60, flavor:'He showed up. That counts for something.', rarity_weight:3},
+  {id:'katharina', emoji:'💪', name:'Katharina',        title:'I\'m Back',                 pace:83, endurance:85, mental:94, flavor:'Came back stronger. Always does.', rarity_weight:3},
+  // Running GOATs
+  {id:'kipchoge',  emoji:'🐐', name:'Eliud Kipchoge',  title:'The GOAT',                  pace:100,endurance:100,mental:100,flavor:'No human is limited.', rarity_weight:1},
+  {id:'sifan',     emoji:'🌟', name:'Sifan Hassan',    title:'Triple Threat',             pace:99, endurance:98, mental:97, flavor:'Three medals. Zero excuses.', rarity_weight:1},
+  {id:'tigist',    emoji:'⏱️', name:'Tigist Assefa',   title:'World Record Holder',       pace:99, endurance:97, mental:96, flavor:'2:11:53. A number that haunts competitors.', rarity_weight:1},
+  {id:'bekele',    emoji:'🏃', name:'Kenenisa Bekele', title:'The Quiet Destroyer',       pace:98, endurance:99, mental:95, flavor:'Track speed. Road heart.', rarity_weight:1},
+  {id:'haile',     emoji:'🦅', name:'Haile G/selassie',title:'The Emperor',               pace:97, endurance:98, mental:99, flavor:'Retired. Still faster than you.', rarity_weight:1},
+  // F1 Drivers
+  {id:'verstappen',emoji:'🏎️', name:'Max Verstappen',  title:'F1 World Champion',        pace:90, endurance:88, mental:99, flavor:'Even on foot, he\'s overtaking you.', rarity_weight:2},
+  {id:'hamilton',  emoji:'🏆', name:'Lewis Hamilton',   title:'Seven Time Champion',       pace:88, endurance:90, mental:97, flavor:'Still in the race.', rarity_weight:2},
+  {id:'leclerc',   emoji:'🔴', name:'Charles Leclerc',  title:'The Monaco Prince',         pace:86, endurance:84, mental:88, flavor:'Quick. Beautiful. Sometimes unlucky.', rarity_weight:2},
+  {id:'norris',    emoji:'🎮', name:'Lando Norris',     title:'The Streamer',              pace:85, endurance:83, mental:82, flavor:'Streams his runs. Somehow still faster than you.', rarity_weight:2},
+  {id:'alonso',    emoji:'👴', name:'Fernando Alonso',  title:'Still Here',                pace:84, endurance:95, mental:99, flavor:'Longest career. Still not retired. Respect.', rarity_weight:2},
+  // Footballers
+  {id:'ronaldo',   emoji:'⚽', name:'Cristiano Ronaldo',title:'SIUUU',                    pace:94, endurance:93, mental:99, flavor:'Runs more than your weekly volume. In a match.', rarity_weight:2},
+  {id:'mbappe',    emoji:'💨', name:'Kylian Mbappé',    title:'The Fastest Man in Football',pace:98,endurance:88,mental:87, flavor:'35 km/h on turf. Imagine on asphalt.', rarity_weight:2},
+  {id:'kroos',     emoji:'🎯', name:'Toni Kroos',       title:'The Metronome',             pace:75, endurance:90, mental:99, flavor:'Doesn\'t run far. Every step counts.', rarity_weight:2},
+  {id:'bellingham',emoji:'🌹', name:'Jude Bellingham',  title:'Box to Box',                pace:88, endurance:92, mental:90, flavor:'Covers 12km per match. Every match.', rarity_weight:2},
+  {id:'neuer',     emoji:'🧤', name:'Manuel Neuer',     title:'The Sweeper Keeper',        pace:72, endurance:78, mental:95, flavor:'Plays in goal. Still runs more than most strikers.', rarity_weight:2},
+  // Random legends
+  {id:'bolt',      emoji:'⚡', name:'Usain Bolt',        title:'9.58',                      pace:100,endurance:40, mental:99, flavor:'Not built for 42km. Built for eternity.', rarity_weight:1},
+  {id:'phelps',    emoji:'🏊', name:'Michael Phelps',    title:'23 Golds',                  pace:65, endurance:98, mental:99, flavor:'Wrong sport. Correct mindset.', rarity_weight:1},
+  {id:'tyson',     emoji:'🥊', name:'Mike Tyson',        title:'Former Heavyweight Champ',  pace:70, endurance:80, mental:96, flavor:'Road work at 4am. Every day. No excuses.', rarity_weight:2},
+  {id:'jordan',    emoji:'🏀', name:'Michael Jordan',    title:'6 Rings',                   pace:82, endurance:91, mental:100,flavor:'The will to win is nothing without the will to prepare.', rarity_weight:1},
+  {id:'federer',   emoji:'🎾', name:'Roger Federer',     title:'The GOAT of GOATs',         pace:80, endurance:95, mental:100,flavor:'Even in defeat, the most elegant human alive.', rarity_weight:1},
+  {id:'serena',    emoji:'🎾', name:'Serena Williams',   title:'23 Slams',                  pace:82, endurance:94, mental:99, flavor:'Built different. Runs different.', rarity_weight:1},
+  {id:'lebron',    emoji:'👑', name:'LeBron James',      title:'The King',                  pace:85, endurance:97, mental:99, flavor:'Still logging miles at 40. No days off.', rarity_weight:1},
+  {id:'schumacher',emoji:'🏎️',name:'Michael Schumacher',title:'7 World Championships',     pace:87, endurance:90, mental:100,flavor:'The benchmark. The legend. Forever.', rarity_weight:1},
+  {id:'indurain',  emoji:'🚴', name:'Miguel Indurain',   title:'5x Tour de France',         pace:78, endurance:100,mental:97, flavor:'Heart rate of 29 bpm. Not a typo.', rarity_weight:1},
+  {id:'viren',     emoji:'🇫🇮', name:'Lasse Virén',      title:'The Flying Finn',           pace:95, endurance:96, mental:98, flavor:'Fell at 5000m. Got up. Won gold.', rarity_weight:1},
+  {id:'zatopek',   emoji:'🇨🇿', name:'Emil Zátopek',     title:'The Locomotive',            pace:93, endurance:99, mental:99, flavor:'Won 3 golds in one Olympics. On a whim.', rarity_weight:1},
+  {id:'prefontaine',emoji:'🔥',name:'Steve Prefontaine', title:'Pre',                       pace:96, endurance:94, mental:100,flavor:'To give anything less than your best is to sacrifice the gift.', rarity_weight:1},
+  {id:'deena',     emoji:'🇺🇸', name:'Deena Kastor',     title:'American Record Holder',    pace:94, endurance:96, mental:97, flavor:'Broke records and glass ceilings simultaneously.', rarity_weight:2},
+  {id:'yuki',      emoji:'🇯🇵', name:'Yuki Kawauchi',    title:'The Amateur GOAT',          pace:90, endurance:97, mental:99, flavor:'Full-time government employee. Part-time world beater.', rarity_weight:2},
+];
 
-const PLAN = [];
-let weekNum = 1;
-PHASES.forEach((phase, pi) => {
-  for (let wi = 0; wi < 4; wi++) {
-    const weekStart = addDays(phase.startDate, wi * 7);
-    const sessions = [
-      { id: `w${weekNum}_e1`, type: "easy",  label: "Zone 2 Easy" },
-      { id: `w${weekNum}_e2`, type: "easy",  label: "Zone 2 Easy" },
-      { id: `w${weekNum}_long`, type: "long", label: phase.taper ? `Long Run (${phase.longRun})` : `Long Run · ${phase.longRun}` },
-      ...(wi % 2 === 1 && !phase.taper
-        ? [{ id: `w${weekNum}_tempo`, type: "tempo", label: "Tempolauf · Marathonpace" }]
-        : []),
+// ── PLAN ─────────────────────────────────────────────────────
+const PHASES=[
+  {month:"März",   longRun:"12–15 km",startDate:"2026-03-16",weeks:3},
+  {month:"April",  longRun:"15–18 km",startDate:"2026-04-01",weeks:4},
+  {month:"Mai",    longRun:"20–25 km",startDate:"2026-05-01",weeks:4},
+  {month:"Juni",   longRun:"25–28 km",startDate:"2026-06-01",weeks:4},
+  {month:"Juli",   longRun:"30–32 km",startDate:"2026-07-01",weeks:4},
+  {month:"August", longRun:"Tapering",startDate:"2026-08-01",weeks:5,taper:true},
+];
+const LEVELS=[{xp:0,name:"Jogger"},{xp:100,name:"Runner"},{xp:300,name:"Racer"},{xp:600,name:"Marathonist"},{xp:1000,name:"Legend"}];
+
+const ACHIEVEMENTS=[
+  {id:"first_run",  icon:"👟",name:"First Step",       desc:"Erste Session abgehakt",           coins:0,  xp:20,  hannah:false,check:(s)=>Object.values(s).filter(Boolean).length>=1},
+  {id:"week1",      icon:"📰",name:"Opening Edition",  desc:"Erste Woche komplett",             coins:50, xp:50,  hannah:false,check:(s,r,w)=>w>=1},
+  {id:"streak3",    icon:"🔥",name:"On Fire",          desc:"3 Wochen Streak",                  coins:80, xp:75,  hannah:false,check:(s,r,w,st)=>st>=3},
+  {id:"streak6",    icon:"💥",name:"Unstoppable",      desc:"6 Wochen Streak",                  coins:150,xp:150, hannah:false,check:(s,r,w,st)=>st>=6},
+  {id:"longrun",    icon:"🗺️",name:"The Long Game",   desc:"Ersten Long Run abgehakt",         coins:20, xp:30,  hannah:false,check:(s)=>Object.keys(s).some(k=>k.includes('_long')&&s[k])},
+  {id:"tempo",      icon:"⚡",name:"Speed Demon",      desc:"Ersten Tempolauf abgehakt",        coins:20, xp:30,  hannah:false,check:(s)=>Object.keys(s).some(k=>k.includes('_tempo')&&s[k])},
+  {id:"halfway",    icon:"🏁",name:"Halfway There",    desc:"12 Wochen abgeschlossen",          coins:200,xp:100, hannah:false,check:(s,r,w)=>w>=12},
+  {id:"allweeks",   icon:"🥇",name:"Sub-3 Ready",      desc:"Alle 24 Wochen done",              coins:500,xp:500, hannah:false,check:(s,r,w)=>w>=24},
+  {id:"collector",  icon:"📒",name:"Collector",        desc:"20 Karten gesammelt",              coins:30, xp:40,  hannah:false,check:(s,r,w,st,col)=>col>=20},
+  {id:"golden1",    icon:"👑",name:"Golden Touch",     desc:"Erste Golden Karte gezogen",       coins:50, xp:60,  hannah:false,check:(s,r,w,st,col,sh,go)=>go>=1},
+  {id:"ultra1",     icon:"🔥",name:"Ultra Rare",       desc:"Erste Ultra Karte gezogen",        coins:200,xp:200, hannah:false,check:(s,r,w,st,col,sh,go,ul)=>ul>=1},
+  {id:"shiny1",     icon:"✨",name:"Shiny Hunter",     desc:"Erste Shiny Karte gezogen",        coins:50, xp:60,  hannah:false,check:(s,r,w,st,col,sh)=>sh>=1},
+  {id:"kipchoge",   icon:"🐐",name:"In Good Company",  desc:"Kipchoge gezogen",                 coins:100,xp:100, hannah:false,check:(s,r,w,st,col,sh,go,ul,runners)=>runners.includes('kipchoge')},
+  {id:"friend_six", icon:"👥",name:"The Squad",        desc:"Alle 6 Freunde gesammelt",         coins:150,xp:150, hannah:false,check:(s,r,w,st,col,sh,go,ul,runners)=>['hannah','papa','lucas','julius','julian','katharina'].every(id=>runners.includes(id))},
+  {id:"hannah_classic",icon:"🔥",name:"HANNAH CLASSIC",desc:"50km+ in einer Woche geloggt",   coins:200,xp:200, hannah:true, check:(s,r,w,st,col,sh,go,ul,runners,hannahWeeks)=>hannahWeeks>=1},
+];
+
+function addDays(ds,d){const x=new Date(ds);x.setDate(x.getDate()+d);return x;}
+function fmtShort(d){return d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'});}
+
+const PLAN=[];let wn=1;
+PHASES.forEach((p,pi)=>{
+  for(let wi=0;wi<p.weeks;wi++){
+    const ws=addDays(p.startDate,wi*7);
+    const sessions=[
+      {id:`w${wn}_e1`,type:"easy",label:"Zone 2 Easy"},
+      {id:`w${wn}_e2`,type:"easy",label:"Zone 2 Easy"},
+      {id:`w${wn}_long`,type:"long",label:p.taper?`Long Run (${p.longRun})`:`Long Run · ${p.longRun}`},
+      ...(wi%2===1&&!p.taper?[{id:`w${wn}_tempo`,type:"tempo",label:"Tempolauf · Marathonpace"}]:[]),
     ];
-    PLAN.push({ weekNum, phase: phase.month, phaseIndex: pi, weekStart, dateLabel: fmtShort(weekStart), sessions, taper: !!phase.taper });
-    weekNum++;
+    PLAN.push({weekNum:wn,phase:p.month,phaseIndex:pi,weekStart:ws,dateLabel:fmtShort(ws),sessions,taper:!!p.taper});
+    wn++;
   }
 });
+const totalSessions=PLAN.reduce((s,w)=>s+w.sessions.length,0);
 
-let checked = {};
-let activeWeek = 1;
-let activePhase = 0;
+// ── STATE ─────────────────────────────────────────────────────
+let state={checked:{},coins:0,gearCollection:[],nutritionCollection:[],runnerCollection:[],unlockedAchievements:[],claimedWeekCoins:{},runs:[],hannahClassicWeeks:0};
+let activeWeek=1,activePhase=0,runType='easy',activeAlbumTab='gear';
 
-function loadState() { try { checked = JSON.parse(localStorage.getItem('marathon_v2') || '{}'); } catch {} }
-function saveState() { try { localStorage.setItem('marathon_v2', JSON.stringify(checked)); } catch {} }
+function loadState(){try{const s=localStorage.getItem('runners_log_v5');if(s)state={...state,...JSON.parse(s)};}catch{}}
+function saveState(){try{localStorage.setItem('runners_log_v5',JSON.stringify(state));}catch{}}
 loadState();
 
-const totalSessions = PLAN.reduce((s, w) => s + w.sessions.length, 0);
+// ── HELPERS ───────────────────────────────────────────────────
+function totalXP(){
+  let xp=0;
+  PLAN.forEach(w=>w.sessions.forEach(s=>{if(state.checked[s.id])xp+=(s.type==='long'?25:s.type==='tempo'?20:10);}));
+  state.unlockedAchievements.forEach(id=>{const a=ACHIEVEMENTS.find(x=>x.id===id);if(a)xp+=a.xp;});
+  return xp;
+}
+function getLevel(xp){
+  let level=LEVELS[0],idx=0;
+  for(let i=LEVELS.length-1;i>=0;i--){if(xp>=LEVELS[i].xp){level=LEVELS[i];idx=i;break;}}
+  const next=LEVELS[idx+1]||null;
+  return{name:level.name,idx:idx+1,progress:next?(xp-level.xp)/(next.xp-level.xp):1};
+}
+function weekProgress(w){const done=w.sessions.filter(s=>state.checked[s.id]).length;return{done,total:w.sessions.length};}
+function completedWeeks(){return PLAN.filter(w=>{const{done,total}=weekProgress(w);return done===total;}).length;}
+function calcStreak(){let s=0;for(let i=0;i<PLAN.length;i++){const{done,total}=weekProgress(PLAN[i]);if(done===total)s++;else break;}return s;}
 
-function weekProgress(w) {
-  const done = w.sessions.filter(s => checked[s.id]).length;
-  return { done, total: w.sessions.length };
+function rollRarity(pool='gear'){
+  const r=Math.random();
+  if(pool==='runner'){
+    if(r<0.05)return'shiny';
+    if(r<0.075)return'golden';
+    return'normal';
+  }
+  if(r<0.005)return'ultra';
+  if(r<0.055)return'shiny';
+  if(r<0.080)return'golden';
+  return'normal';
 }
 
-function renderProgress() {
-  const done = Object.values(checked).filter(Boolean).length;
-  document.getElementById('progressBar').style.width = `${(done / totalSessions) * 100}%`;
-  document.getElementById('progressLabel').textContent = `${done} / ${totalSessions}`;
+function colStats(){
+  const all=[...state.gearCollection,...state.nutritionCollection,...state.runnerCollection];
+  return{
+    total:all.length,
+    shinys:all.filter(c=>c.rarity==='shiny').length,
+    goldens:all.filter(c=>c.rarity==='golden').length,
+    ultras:all.filter(c=>c.rarity==='ultra').length,
+    runnerIds:state.runnerCollection.map(c=>c.id),
+  };
 }
 
-function renderPhaseNav() {
-  document.getElementById('phaseNav').innerHTML = PHASES.map((p, i) =>
-    `<button class="phase-tab ${i === activePhase ? 'active' : ''}" onclick="selectPhase(${i})">${p.month}</button>`
-  ).join('');
+// Current week km from run logger
+function thisWeekKm(){
+  const now=new Date();
+  const startOfWeek=new Date(now);
+  startOfWeek.setDate(now.getDate()-now.getDay()+1);
+  startOfWeek.setHours(0,0,0,0);
+  return state.runs.filter(r=>{
+    const d=new Date(r.ts||0);return d>=startOfWeek;
+  }).reduce((s,r)=>s+(parseFloat(r.dist)||0),0);
 }
 
-function renderWeekGrid() {
-  const weeks = PLAN.filter(w => w.phaseIndex === activePhase);
-  document.getElementById('weekGrid').innerHTML = weeks.map(w => {
-    const { done, total } = weekProgress(w);
-    const cls = w.weekNum === activeWeek ? 'active' : done === total ? 'complete' : done > 0 ? 'partial' : '';
-    return `<button class="week-btn ${cls}" onclick="selectWeek(${w.weekNum})">
-      <span class="wnum">W${w.weekNum}</span>
-      <span class="wdate">${w.dateLabel}</span>
-    </button>`;
-  }).join('');
+function checkAchievements(){
+  const streak=calcStreak(),weeks=completedWeeks();
+  const{total,shinys,goldens,ultras,runnerIds}=colStats();
+  let newOnes=[];
+  ACHIEVEMENTS.forEach(a=>{
+    if(!state.unlockedAchievements.includes(a.id)){
+      if(a.check(state.checked,state.runs,weeks,streak,total,shinys,goldens,ultras,runnerIds,state.hannahClassicWeeks)){
+        state.unlockedAchievements.push(a.id);
+        state.coins+=a.coins;
+        newOnes.push(a);
+      }
+    }
+  });
+  return newOnes;
 }
 
-function renderWeekDetail() {
-  const week = PLAN[activeWeek - 1];
-  const { done, total } = weekProgress(week);
-  const allDone = done === total;
-  const sessionsHTML = week.sessions.map(s => {
-    const isDone = !!checked[s.id];
-    const typeLabel = s.type === 'easy' ? 'EASY' : s.type === 'long' ? 'LONG' : 'TEMPO';
-    return `<div class="session-card ${isDone ? `done-${s.type}` : ''}" onclick="toggleSession('${s.id}')">
-      <div class="checkbox">${isDone ? '✓' : ''}</div>
-      <div class="session-type">${typeLabel}</div>
-      <div class="session-label">${s.label}</div>
-    </div>`;
-  }).join('');
-  document.getElementById('weekDetail').innerHTML = `
-    <div class="week-header">
-      <div>
-        <div class="week-title">Woche ${week.weekNum}</div>
-        <div class="week-meta">${week.phase} · ab ${week.dateLabel}</div>
+function checkWeekBonus(weekNum){
+  if(state.claimedWeekCoins[weekNum])return false;
+  const w=PLAN[weekNum-1];if(!w)return false;
+  const{done,total}=weekProgress(w);
+  if(done===total){state.claimedWeekCoins[weekNum]=true;state.coins+=50;return true;}
+  return false;
+}
+
+function checkHannahClassic(){
+  const km=thisWeekKm();
+  const key='hannah_'+new Date().toISOString().slice(0,10).slice(0,7);
+  if(km>=50&&!state[key]){
+    state[key]=true;
+    state.hannahClassicWeeks=(state.hannahClassicWeeks||0)+1;
+    state.coins+=200;
+    return true;
+  }
+  return false;
+}
+
+// ── TOAST ─────────────────────────────────────────────────────
+let toastQ=[],toastBusy=false;
+function showToast(msg){toastQ.push(msg);if(!toastBusy)drainToast();}
+function drainToast(){
+  if(!toastQ.length){toastBusy=false;return;}
+  toastBusy=true;
+  const el=document.getElementById('toastEl');
+  el.textContent=toastQ.shift();el.classList.add('show');
+  setTimeout(()=>{el.classList.remove('show');setTimeout(drainToast,400);},2200);
+}
+
+// ── PARTICLES ─────────────────────────────────────────────────
+function burstParticles(count=24,colors=['#c9a84c','#ffd700','#a78bfa','#ff6b6b','#4ade80']){
+  const container=document.getElementById('particles');
+  container.innerHTML='';
+  for(let i=0;i<count;i++){
+    const p=document.createElement('div');p.className='particle';
+    const w=3+Math.random()*5;
+    p.style.cssText=`left:${40+Math.random()*20}%;top:${30+Math.random()*30}%;background:${colors[i%colors.length]};width:${w}px;height:${w}px;border-radius:${Math.random()>.5?'50%':'2px'};opacity:1;transition:transform ${0.6+Math.random()*0.8}s ease-out,opacity ${0.8+Math.random()*0.4}s ease-out;`;
+    container.appendChild(p);
+    const angle=Math.random()*Math.PI*2,dist=80+Math.random()*180;
+    setTimeout(()=>{p.style.transform=`translate(${Math.cos(angle)*dist}px,${Math.sin(angle)*dist-100}px) rotate(${Math.random()*720}deg)`;p.style.opacity='0';},10);
+    setTimeout(()=>p.remove(),1600);
+  }
+}
+
+function shakeScreen(){
+  document.body.classList.add('shaking');
+  if(navigator.vibrate)navigator.vibrate([50,30,50,30,80]);
+  setTimeout(()=>document.body.classList.remove('shaking'),500);
+}
+
+// ── PACK OPENING ──────────────────────────────────────────────
+let packPhase=0,pendingCards=[],flippedCount=0,currentPackType='gear',pendingRunner=null,runnerFlipped=false;
+
+function openPack(type){
+  const cost=type==='runner'?50:10;
+  if(state.coins<cost){showToast(`Nicht genug Maratooneys! (${cost}🪙)`);return;}
+  currentPackType=type;packPhase=0;flippedCount=0;pendingCards=[];pendingRunner=null;runnerFlipped=false;
+
+  const configs={
+    gear:{label:'MARATHON BOOSTER',emoji:'🏃',title:'Marathon\nBooster',contents:'3 GEAR CARDS',topClass:'gear',botClass:'gear'},
+    nutrition:{label:'NUTRITION PACK',emoji:'🍌',title:'Nutrition\nPack',contents:'3 FUEL CARDS',topClass:'nutrition',botClass:'nutrition'},
+    runner:{label:'SLICK RUNNER PACK',emoji:'⚡',title:'Slick Runner\nPack',contents:'1 ATHLETE CARD',topClass:'runner',botClass:'runner'},
+  };
+  const cfg=configs[type];
+  document.getElementById('packLabel').textContent=cfg.label;
+  document.getElementById('packEmoji').textContent=cfg.emoji;
+  document.getElementById('packTitle').innerHTML=cfg.title.replace('\n','<br>');
+  document.getElementById('packContents').textContent=cfg.contents;
+  const top=document.getElementById('pack3dTop');
+  const bot=document.getElementById('pack3dBottom');
+  top.className='pack-3d-top '+cfg.topClass;
+  bot.className='pack-3d-bottom '+cfg.botClass;
+
+  document.getElementById('packOverlay').classList.add('active');
+  document.getElementById('openingPhase').style.display='flex';
+  document.getElementById('cardsReveal').style.display='none';
+  document.getElementById('cardsReveal').classList.remove('active');
+  document.getElementById('runnerReveal').style.display='none';
+  document.getElementById('runnerReveal').classList.remove('active');
+  top.classList.remove('torn');
+  document.getElementById('particles').innerHTML='';
+}
+
+function tearPack(){
+  if(packPhase!==0)return;
+  packPhase=1;
+  document.getElementById('pack3dTop').classList.add('torn');
+  burstParticles(28);
+  if(currentPackType==='runner'){
+    setTimeout(()=>{
+      document.getElementById('openingPhase').style.display='none';
+      showRunnerReveal();
+    },750);
+  } else {
+    setTimeout(()=>{
+      document.getElementById('openingPhase').style.display='none';
+      showGearReveal();
+    },750);
+  }
+}
+
+// Gear / Nutrition reveal
+function showGearReveal(){
+  const pool=currentPackType==='nutrition'?NUTRITION_ITEMS:GEAR_ITEMS;
+  pendingCards=Array.from({length:3},()=>{
+    const item=pool[Math.floor(Math.random()*pool.length)];
+    return{...item,rarity:rollRarity(currentPackType)};
+  });
+
+  const cost=10;
+  state.coins-=cost;
+  pendingCards.forEach(c=>{
+    const col=currentPackType==='nutrition'?state.nutritionCollection:state.gearCollection;
+    col.push({id:c.id,emoji:c.emoji,name:c.name,flavor:c.flavor,rarity:c.rarity,ts:Date.now()});
+  });
+  const newA=checkAchievements();saveState();
+  renderStore();renderAlbum();renderPlan();
+  newA.forEach((a,i)=>setTimeout(()=>showToast(`🏅 ${a.name}! +${a.coins}🪙`),3500+i*800));
+
+  const reveal=document.getElementById('cardsReveal');
+  reveal.style.display='flex';reveal.classList.add('active');
+
+  const best=pendingCards.reduce((b,c)=>{const o={normal:0,golden:1,shiny:2,ultra:3};return o[c.rarity]>o[b.rarity]?c:b;},pendingCards[0]);
+  document.getElementById('revealTitle').textContent=best.rarity==='ultra'?'🔥 ULTRA RARE!':best.rarity==='shiny'?'✨ Shiny!':best.rarity==='golden'?'👑 Golden!':'Pack Geöffnet!';
+  document.getElementById('revealSub').textContent='Tippe auf die Karten zum Aufdecken';
+  document.getElementById('tapHint').style.display='block';
+  document.getElementById('closeRevealBtn').style.display='none';
+
+  const rarityBadge={normal:'',golden:'👑',shiny:'✨',ultra:'🔥'};
+  const rarityClass={normal:'rarity-normal',golden:'rarity-golden',shiny:'rarity-shiny',ultra:'rarity-ultra'};
+  const rarityText={normal:'NORMAL',golden:'GOLDEN',shiny:'SHINY',ultra:'ULTRA'};
+  const backClass=currentPackType==='nutrition'?'nutrition-back':'gear-back';
+
+  document.getElementById('revealedCards').innerHTML=pendingCards.map((c,i)=>`
+    <div class="card-flip-wrap" id="cfwrap${i}" onclick="flipGearCard(${i})">
+      <div class="card-flip-inner" id="cfinner${i}">
+        <div class="card-face card-back ${backClass}"></div>
+        <div class="card-face card-front ${rarityClass[c.rarity]}">
+          ${c.rarity!=='normal'?`<div class="card-badge">${rarityBadge[c.rarity]}</div>`:''}
+          <div class="card-emoji-el">${c.emoji}</div>
+          <div class="card-name-el">${c.name}</div>
+          <div class="card-flavor-el">${c.flavor}</div>
+          <div class="card-rarity-el ${c.rarity}">${rarityText[c.rarity]}</div>
+        </div>
       </div>
-      <div class="week-status ${allDone ? 'done' : ''}">${allDone ? '✓ DONE' : `${done} / ${total}`}</div>
     </div>
-    <div class="sessions">${sessionsHTML}</div>
-    ${week.taper ? `<div class="taper-note">Tapering — Volumen runter, Pace bleibt. Vertraue der Arbeit. Die Beine wissen was sie können.</div>` : ''}
+  `).join('');
+
+  pendingCards.forEach((_,i)=>setTimeout(()=>document.getElementById(`cfwrap${i}`)?.classList.add('appear'),200+i*200));
+  if(best.rarity==='ultra'){setTimeout(()=>{burstParticles(50,['#ff6b6b','#ffd700','#a78bfa']);shakeScreen();},400);}
+  else if(best.rarity==='shiny')setTimeout(()=>burstParticles(30,['#a78bfa','#c4b5fd','#ffffff']),400);
+  else if(best.rarity==='golden')setTimeout(()=>burstParticles(22,['#ffd700','#c9a84c','#f59e0b']),400);
+}
+
+function flipGearCard(idx){
+  const inner=document.getElementById(`cfinner${idx}`);
+  if(!inner||inner.classList.contains('flipped'))return;
+  inner.classList.add('flipped');flippedCount++;
+  const c=pendingCards[idx];
+  if(c.rarity==='ultra'){burstParticles(35,['#ff6b6b','#ffd700','#a78bfa']);shakeScreen();}
+  else if(c.rarity==='shiny')burstParticles(18,['#a78bfa','#c4b5fd']);
+  else if(c.rarity==='golden')burstParticles(12,['#ffd700','#c9a84c']);
+  if(flippedCount===pendingCards.length){
+    document.getElementById('tapHint').style.display='none';
+    document.getElementById('closeRevealBtn').style.display='block';
+  }
+}
+
+// Runner reveal — single epic card
+function showRunnerReveal(){
+  // Weighted random athlete
+  const totalWeight=ATHLETES.reduce((s,a)=>s+(a.rarity_weight||1),0);
+  let r=Math.random()*totalWeight,chosen=ATHLETES[0];
+  for(const a of ATHLETES){r-=(a.rarity_weight||1);if(r<=0){chosen=a;break;}}
+  const rarity=rollRarity('runner');
+  pendingRunner={...chosen,rarity};
+
+  state.coins-=50;
+  state.runnerCollection.push({id:chosen.id,emoji:chosen.emoji,name:chosen.name,title:chosen.title,rarity,ts:Date.now()});
+  const newA=checkAchievements();saveState();
+  renderStore();renderAlbum();renderPlan();
+  newA.forEach((a,i)=>setTimeout(()=>showToast(`🏅 ${a.name}! +${a.coins}🪙`),4000+i*800));
+
+  // Build front of card
+  const rarityColors={normal:'var(--gold)',golden:'var(--golden)',shiny:'var(--shiny)'};
+  const statColor={pace:'#4ade80',endurance:'#93c5fd',mental:'#fca5a5'};
+  document.getElementById('runnerFront').className=`runner-face runner-front rarity-${rarity}`;
+  document.getElementById('runnerFront').innerHTML=`
+    <div class="runner-card-header">
+      <div class="runner-card-rarity ${rarity}">${rarity.toUpperCase()}</div>
+      <div class="runner-card-num">#${String(ATHLETES.indexOf(chosen)+1).padStart(3,'0')}</div>
+    </div>
+    <div class="runner-emoji-big">${chosen.emoji}</div>
+    <div class="runner-card-name">${chosen.name}</div>
+    <div class="runner-card-title">${chosen.title}</div>
+    <div class="runner-stats">
+      ${['pace','endurance','mental'].map(stat=>`
+        <div class="runner-stat-row">
+          <div class="runner-stat-label">${stat.toUpperCase()}</div>
+          <div class="runner-stat-bar"><div class="runner-stat-fill" style="width:0%;background:${statColor[stat]};" data-val="${chosen[stat]}"></div></div>
+          <div class="runner-stat-val">${chosen[stat]}</div>
+        </div>
+      `).join('')}
+    </div>
+    <div class="runner-card-flavor">"${chosen.flavor}"</div>
+  `;
+
+  document.getElementById('runnerRevealTitle').textContent=rarity==='shiny'?'✨ SHINY RUNNER!':rarity==='golden'?'👑 GOLDEN RUNNER!':'Slick Runner';
+  document.getElementById('runnerRevealSub').textContent='TIPPE UM AUFZUDECKEN';
+  document.getElementById('closeRunnerBtn').style.display='none';
+  document.getElementById('runnerCard3d').classList.remove('flipped');
+  runnerFlipped=false;
+
+  const rv=document.getElementById('runnerReveal');
+  rv.style.display='flex';rv.classList.add('active');
+
+  if(rarity==='shiny')setTimeout(()=>burstParticles(30,['#a78bfa','#c4b5fd','#fff']),300);
+  else if(rarity==='golden')setTimeout(()=>burstParticles(25,['#ffd700','#f59e0b']),300);
+}
+
+function flipRunnerCard(){
+  if(runnerFlipped)return;
+  runnerFlipped=true;
+  document.getElementById('runnerCard3d').classList.add('flipped');
+
+  // Animate stat bars after flip
+  setTimeout(()=>{
+    document.querySelectorAll('.runner-stat-fill').forEach(el=>{
+      el.style.width=el.dataset.val+'%';
+    });
+  },800);
+
+  if(pendingRunner.rarity==='shiny'){burstParticles(40,['#a78bfa','#c4b5fd','#fff','#ffd700']);shakeScreen();}
+  else if(pendingRunner.rarity==='golden'){burstParticles(30,['#ffd700','#f59e0b','#c9a84c']);shakeScreen();}
+  else burstParticles(15);
+
+  document.getElementById('runnerRevealSub').textContent=pendingRunner.name+' · '+pendingRunner.title;
+  setTimeout(()=>{document.getElementById('closeRunnerBtn').style.display='block';},600);
+}
+
+function closePack(){
+  document.getElementById('packOverlay').classList.remove('active');
+  packPhase=0;
+  switchScreen('album');
+}
+
+// ── RENDER PLAN ───────────────────────────────────────────────
+function renderPlan(){
+  const xp=totalXP(),lvl=getLevel(xp),streak=calcStreak();
+  const done=Object.values(state.checked).filter(Boolean).length;
+  document.getElementById('levelLabel').textContent=`Lv.${lvl.idx} ${lvl.name}`;
+  document.getElementById('xpCount').textContent=`${xp} XP`;
+  document.getElementById('xpBar').style.width=`${lvl.progress*100}%`;
+  document.getElementById('progressBar').style.width=`${(done/totalSessions)*100}%`;
+  document.getElementById('progressLabel').textContent=`${done} / ${totalSessions}`;
+  document.getElementById('streakVal').textContent=streak;
+  document.getElementById('doneVal').textContent=done;
+  document.getElementById('xpVal').textContent=xp;
+  document.getElementById('coinVal').textContent=state.coins;
+
+  const uniquePhases=[...new Set(PLAN.map(w=>w.phase))];
+  document.getElementById('phaseNav').innerHTML=uniquePhases.map((p,i)=>
+    `<button class="phase-tab ${i===activePhase?'active':''}" onclick="selectPhase(${i})">${p}</button>`
+  ).join('');
+
+  const weeks=PLAN.filter(w=>w.phaseIndex===activePhase);
+  document.getElementById('weekGrid').innerHTML=weeks.map(w=>{
+    const{done,total}=weekProgress(w);
+    const cls=w.weekNum===activeWeek?'active':done===total?'complete':done>0?'partial':'';
+    return`<button class="week-btn ${cls}" onclick="selectWeek(${w.weekNum})"><span class="wnum">W${w.weekNum}</span><span class="wdate">${w.dateLabel}</span></button>`;
+  }).join('');
+
+  const week=PLAN[activeWeek-1];
+  const{done:wd,total:wt}=weekProgress(week);
+  document.getElementById('weekDetail').innerHTML=`
+    <div class="week-header">
+      <div><div class="week-title">Woche ${week.weekNum}</div><div class="week-meta">${week.phase} · ab ${week.dateLabel}</div></div>
+      <div class="week-status ${wd===wt?'done':''}">${wd===wt?'✓ DONE':`${wd} / ${wt}`}</div>
+    </div>
+    <div class="sessions">
+      ${week.sessions.map(s=>{
+        const isDone=!!state.checked[s.id];
+        const tl=s.type==='easy'?'EASY':s.type==='long'?'LONG':'TEMPO';
+        return`<div class="session-card ${isDone?`done-${s.type}`:''}" onclick="toggleSession('${s.id}',${week.weekNum})">
+          <div class="checkbox">${isDone?'✓':''}</div>
+          <div class="session-type">${tl}</div>
+          <div class="session-label">${s.label}</div>
+          <div class="session-reward">${isDone?'✓':'+'} 10🪙</div>
+        </div>`;
+      }).join('')}
+    </div>
+    ${week.taper?`<div class="taper-note">Tapering — Volumen runter, Pace bleibt. Vertraue der Arbeit.</div>`:''}
   `;
 }
 
-function render() { renderProgress(); renderPhaseNav(); renderWeekGrid(); renderWeekDetail(); }
+function selectPhase(pi){activePhase=pi;const fw=PLAN.find(w=>w.phaseIndex===pi);if(fw)activeWeek=fw.weekNum;renderPlan();}
+function selectWeek(num){activeWeek=num;const w=PLAN[num-1];if(w)activePhase=w.phaseIndex;renderPlan();document.getElementById('weekDetail').scrollIntoView({behavior:'smooth',block:'nearest'});}
 
-function selectPhase(pi) {
-  activePhase = pi;
-  const firstWeek = PLAN.find(w => w.phaseIndex === pi);
-  if (firstWeek) activeWeek = firstWeek.weekNum;
-  render();
+function toggleSession(id,weekNum){
+  const was=!!state.checked[id];
+  state.checked[id]=!was;
+  if(!was){state.coins+=10;showToast('+10 🪙');}
+  else state.coins=Math.max(0,state.coins-10);
+  const wb=!was&&checkWeekBonus(weekNum);
+  const newA=checkAchievements();
+  saveState();renderPlan();renderStore();
+  if(wb)setTimeout(()=>showToast('📅 Woche komplett! +50 🪙'),800);
+  newA.forEach((a,i)=>setTimeout(()=>showToast(`🏅 ${a.name}! +${a.coins}🪙`),1200+i*800));
 }
 
-function selectWeek(num) {
-  activeWeek = num;
-  const week = PLAN[num - 1];
-  if (week) activePhase = week.phaseIndex;
-  render();
-  document.getElementById('weekDetail').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+// ── RENDER LOG ────────────────────────────────────────────────
+function setRunType(t){
+  runType=t;
+  ['easy','long','tempo'].forEach(x=>{
+    document.getElementById(`type${x.charAt(0).toUpperCase()+x.slice(1)}`).className=`type-btn${x===t?` active-${t}`:''}`;
+  });
 }
 
-function toggleSession(id) {
-  checked[id] = !checked[id];
+function calcPace(){
+  const dist=parseFloat(document.getElementById('inputDist').value);
+  const ts=document.getElementById('inputTime').value.trim();
+  const disp=document.getElementById('paceDisplay');
+  if(!dist||!ts||!ts.includes(':')){disp.innerHTML='Pace wird berechnet...';return;}
+  const[m,s]=ts.split(':').map(Number);
+  if(isNaN(m)||isNaN(s))return;
+  const tot=m*60+s,pps=tot/dist;
+  const pm=Math.floor(pps/60),ps=Math.round(pps%60).toString().padStart(2,'0');
+  disp.innerHTML=`<span class="pace-val">${pm}:${ps} min/km</span>`;
+}
+
+function logRun(){
+  const dist=parseFloat(document.getElementById('inputDist').value);
+  const ts=document.getElementById('inputTime').value.trim();
+  if(!dist||!ts){showToast('Distanz und Zeit eingeben!');return;}
+  const[m,s]=ts.split(':').map(Number);
+  const tot=m*60+(s||0),pps=tot/dist;
+  const pm=Math.floor(pps/60),ps=Math.round(pps%60).toString().padStart(2,'0');
+  const run={id:Date.now(),type:runType,dist,time:ts,pace:`${pm}:${ps}`,date:new Date().toLocaleDateString('de-DE'),ts:Date.now()};
+  state.runs.unshift(run);
+
+  const wasHannah=state.hannahClassicWeeks||0;
+  const hannahTriggered=checkHannahClassic();
+  const newA=checkAchievements();
   saveState();
-  render();
+  document.getElementById('inputDist').value='';
+  document.getElementById('inputTime').value='';
+  document.getElementById('paceDisplay').innerHTML='Pace wird berechnet...';
+  showToast(`${dist}km @ ${pm}:${ps}/km gespeichert`);
+  if(hannahTriggered)setTimeout(()=>{showToast('🔥 HANNAH CLASSIC! +200🪙');shakeScreen();},600);
+  newA.forEach((a,i)=>setTimeout(()=>showToast(`🏅 ${a.name}! +${a.coins}🪙`),1400+i*800));
+  renderLog();renderPlan();renderAlbum();renderAchievements();
 }
 
-const today = new Date();
-const currentWeek = PLAN.find(w => {
-  const end = addDays(w.weekStart.toISOString().split('T')[0], 7);
-  return today >= w.weekStart && today < end;
-});
-if (currentWeek) { activeWeek = currentWeek.weekNum; activePhase = currentWeek.phaseIndex; }
+function deleteRun(id){state.runs=state.runs.filter(r=>r.id!==id);saveState();renderLog();}
 
-render();
+function renderLog(){
+  const km=thisWeekKm();
+  const banner=document.getElementById('hannahBanner');
+  const sub=document.getElementById('hannahSub');
+  sub.textContent=`Diese Woche: ${km.toFixed(1)}km / 50km`;
+  if(km>0)banner.classList.add('visible'); else banner.classList.remove('visible');
 
-const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-if (isIOS && !isStandalone) document.getElementById('installHint').classList.add('visible');
+  const weekKmInfo=document.getElementById('weekKmInfo');
+  weekKmInfo.textContent=km>0?`Diese Woche: ${km.toFixed(1)} km gelaufen`:'';
+
+  const colors={easy:'var(--easy)',long:'var(--long)',tempo:'var(--tempo)'};
+  const list=document.getElementById('runList');
+  if(!state.runs.length){list.innerHTML='<div class="no-runs">Noch keine Läufe geloggt.</div>';return;}
+  list.innerHTML=state.runs.slice(0,20).map(r=>`
+    <div class="run-entry">
+      <div class="run-dot" style="background:${colors[r.type]}"></div>
+      <div class="run-info">
+        <div class="run-main">${r.dist} km · ${r.time}</div>
+        <div class="run-sub">${r.date} · ${r.type.toUpperCase()}</div>
+      </div>
+      <div class="run-pace">${r.pace}<br><span style="font-size:8px;opacity:0.5">min/km</span></div>
+      <button class="run-delete" onclick="deleteRun(${r.id})">×</button>
+    </div>
+  `).join('');
+}
+
+// ── RENDER STORE ──────────────────────────────────────────────
+function renderStore(){
+  document.getElementById('storeCoins').textContent=state.coins;
+  document.getElementById('buyGear').disabled=state.coins<10;
+  document.getElementById('buyNutrition').disabled=state.coins<10;
+  document.getElementById('buyRunner').disabled=state.coins<50;
+}
+
+// ── RENDER ALBUM ──────────────────────────────────────────────
+function switchAlbum(tab){
+  activeAlbumTab=tab;
+  document.querySelectorAll('.album-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.album-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById(`atab-${tab}`).classList.add('active');
+  document.getElementById(`apanel-${tab}`).classList.add('active');
+}
+
+function renderAlbum(){
+  const allTotal=state.gearCollection.length+state.nutritionCollection.length+state.runnerCollection.length;
+  document.getElementById('albumSub').textContent=`${allTotal} Karten total`;
+
+  const rarityOrder={none:0,normal:1,golden:2,shiny:3,ultra:4};
+  const slotClass={none:'',normal:'has-normal',golden:'has-golden',shiny:'has-shiny',ultra:'has-ultra'};
+  const slotBadge={none:'',normal:'',golden:'👑',shiny:'✨',ultra:'🔥'};
+
+  function buildItemGrid(items,collection,gridId,subId){
+    const grouped={};
+    items.forEach(item=>{grouped[item.id]={...item,count:0,bestRarity:'none'};});
+    collection.forEach(c=>{
+      if(!grouped[c.id])grouped[c.id]={id:c.id,emoji:c.emoji,name:c.name,count:0,bestRarity:'none'};
+      grouped[c.id].count++;
+      if(rarityOrder[c.rarity]>rarityOrder[grouped[c.id].bestRarity])grouped[c.id].bestRarity=c.rarity;
+    });
+    const tot=collection.length,sh=collection.filter(c=>c.rarity==='shiny').length,go=collection.filter(c=>c.rarity==='golden').length,ul=collection.filter(c=>c.rarity==='ultra').length;
+    document.getElementById(subId).textContent=`${tot} Karten · ${go}👑 · ${sh}✨ · ${ul}🔥`;
+    document.getElementById(gridId).innerHTML=items.map(item=>{
+      const g=grouped[item.id];const has=g.count>0;
+      return`<div class="album-slot ${slotClass[g.bestRarity]}">
+        ${g.bestRarity&&g.bestRarity!=='normal'?`<div class="slot-badge">${slotBadge[g.bestRarity]}</div>`:''}
+        ${has?`<div class="slot-emoji">${item.emoji}</div><div class="slot-name">${item.name}</div><div class="slot-count">×${g.count}</div>`:`<div class="slot-empty">?</div>`}
+      </div>`;
+    }).join('');
+  }
+
+  buildItemGrid(GEAR_ITEMS,state.gearCollection,'gearGrid','gearAlbumSub');
+  buildItemGrid(NUTRITION_ITEMS,state.nutritionCollection,'nutritionGrid','nutritionAlbumSub');
+
+  // Runner grid
+  const runnerGrouped={};
+  ATHLETES.forEach(a=>{runnerGrouped[a.id]={...a,count:0,bestRarity:'none'};});
+  state.runnerCollection.forEach(c=>{
+    if(!runnerGrouped[c.id])runnerGrouped[c.id]={...c,count:0,bestRarity:'none'};
+    runnerGrouped[c.id].count++;
+    if(rarityOrder[c.rarity]>rarityOrder[runnerGrouped[c.id].bestRarity])runnerGrouped[c.id].bestRarity=c.rarity;
+  });
+  const runnerTotal=state.runnerCollection.length;
+  const runnerSh=state.runnerCollection.filter(c=>c.rarity==='shiny').length;
+  const runnerGo=state.runnerCollection.filter(c=>c.rarity==='golden').length;
+  document.getElementById('runnerAlbumSub').textContent=`${runnerTotal} Runner · ${runnerGo}👑 · ${runnerSh}✨`;
+  const runnerSlotClass={none:'',normal:'has-normal',golden:'has-golden',shiny:'has-shiny'};
+  const runnerBadge={none:'',normal:'',golden:'👑',shiny:'✨'};
+  document.getElementById('runnerGrid').innerHTML=ATHLETES.map(a=>{
+    const g=runnerGrouped[a.id];const has=g.count>0;
+    return`<div class="runner-slot ${runnerSlotClass[g.bestRarity]}">
+      ${g.bestRarity&&g.bestRarity!=='normal'?`<div class="runner-slot-badge">${runnerBadge[g.bestRarity]}</div>`:''}
+      ${has?`<div class="runner-slot-emoji">${a.emoji}</div><div class="runner-slot-name">${a.name}</div><div class="runner-slot-title">${a.title}</div>
+      ${g.count>1?`<div style="font-family:'DM Mono',monospace;font-size:7px;color:var(--gold-dim)">×${g.count}</div>`:''}`:`<div class="runner-slot-empty">?</div>`}
+    </div>`;
+  }).join('');
+}
+
+// ── RENDER ACHIEVEMENTS ───────────────────────────────────────
+function renderAchievements(){
+  document.getElementById('achieveCount').textContent=`${state.unlockedAchievements.length} / ${ACHIEVEMENTS.length} freigeschaltet`;
+  document.getElementById('achievementsList').innerHTML=[...ACHIEVEMENTS].sort((a,b)=>state.unlockedAchievements.includes(b.id)-state.unlockedAchievements.includes(a.id)).map(a=>{
+    const u=state.unlockedAchievements.includes(a.id);
+    return`<div class="achievement-card ${u?(a.hannah?'hannah':'unlocked'):''}">
+      <div class="achievement-icon">${a.icon}</div>
+      <div style="flex:1"><div class="achievement-name">${a.name}</div><div class="achievement-desc">${a.desc}</div></div>
+      <div class="achievement-reward">+${a.coins}🪙</div>
+    </div>`;
+  }).join('');
+}
+
+// ── NAV ───────────────────────────────────────────────────────
+function switchScreen(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(`screen-${name}`).classList.add('active');
+  document.getElementById(`nav-${name}`).classList.add('active');
+  if(name==='store')renderStore();
+  if(name==='album')renderAlbum();
+  if(name==='achievements')renderAchievements();
+  if(name==='log')renderLog();
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+const today=new Date();
+const cw=PLAN.find(w=>{const end=addDays(w.weekStart.toISOString().split('T')[0],7);return today>=w.weekStart&&today<end;});
+if(cw){activeWeek=cw.weekNum;activePhase=cw.phaseIndex;}
+renderPlan();
+const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+const isStandalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone;
+if(isIOS&&!isStandalone)document.getElementById('installHint').classList.add('visible');
 </script>
 
 <script>
-const manifest = {
-  name: "The Runner's Log — SUB-3:00",
-  short_name: "SUB-3",
-  display: "standalone",
-  background_color: "#0f0e0c",
-  theme_color: "#0f0e0c",
-  icons: [{ src: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230f0e0c'/><text y='.9em' font-size='80' x='10'>🏃</text></svg>", sizes: "any", type: "image/svg+xml" }]
-};
-const blob = new Blob([JSON.stringify(manifest)], { type: 'application/manifest+json' });
-const link = document.createElement('link');
-link.rel = 'manifest';
-link.href = URL.createObjectURL(blob);
-document.head.appendChild(link);
+const manifest={name:"The Runner's Log — SUB-3:00",short_name:"SUB-3",display:"standalone",background_color:"#0f0e0c",theme_color:"#0f0e0c",icons:[{src:"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%230f0e0c'/><text y='.9em' font-size='80' x='10'>🏃</text></svg>",sizes:"any",type:"image/svg+xml"}]};
+const b2=new Blob([JSON.stringify(manifest)],{type:'application/manifest+json'});
+const l2=document.createElement('link');l2.rel='manifest';l2.href=URL.createObjectURL(b2);document.head.appendChild(l2);
 </script>
 
 </body>
