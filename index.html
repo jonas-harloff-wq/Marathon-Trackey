@@ -1285,8 +1285,8 @@ const l2=document.createElement('link');l2.rel='manifest';l2.href=URL.createObje
 <script>
 // ── SUPABASE ──────────────────────────────────────────────────
 const SUPABASE_URL = 'https://ymqmiesvrxcumcncudsx.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_RBFd0sFIcNOv4OD_L1wSdw_RBQ4PLDm';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltcW1pZXN2cnhjdW1jbmN1ZHN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4NzI5MDYsImV4cCI6MjA4OTQ0ODkwNn0.lCHv_e44uVnxccE_B4KdWSqdV_WYFxnPpSWzeQZlyJw';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: true } });
 
 let currentUser = null;
 
@@ -1296,10 +1296,12 @@ const email = document.getElementById(‘loginEmail’).value.trim();
 const password = document.getElementById(‘loginPassword’).value;
 if (!email || !password) { setLoginError(‘Email und Passwort eingeben!’); return; }
 setLoginLoading(true);
+try {
 const { data, error } = await sb.auth.signInWithPassword({ email, password });
 setLoginLoading(false);
-if (error) { setLoginError(‘Falsche Daten — versuch nochmal.’); return; }
+if (error) { setLoginError(error.message); return; }
 onLogin(data.user);
+} catch(e) { setLoginLoading(false); setLoginError(’Verbindungsfehler: ’ + e.message); }
 }
 
 async function handleSignup() {
@@ -1308,11 +1310,13 @@ const password = document.getElementById(‘loginPassword’).value;
 if (!email || !password) { setLoginError(‘Email und Passwort eingeben!’); return; }
 if (password.length < 6) { setLoginError(‘Passwort min. 6 Zeichen!’); return; }
 setLoginLoading(true);
+try {
 const { data, error } = await sb.auth.signUp({ email, password });
 setLoginLoading(false);
 if (error) { setLoginError(error.message); return; }
 if (data.user && !data.session) { setLoginError(‘Check deine Email — Bestätigungslink!’); return; }
 onLogin(data.user);
+} catch(e) { setLoginLoading(false); setLoginError(’Verbindungsfehler: ’ + e.message); }
 }
 
 function setLoginError(msg) { document.getElementById(‘loginError’).textContent = msg; }
