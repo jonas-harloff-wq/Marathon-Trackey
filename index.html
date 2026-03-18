@@ -11,6 +11,7 @@
   <title>SUB-3:00 — Berlin Marathon</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -307,6 +308,22 @@
 /* TOAST */
 .toast{position:fixed;top:24px;left:50%;transform:translateX(-50%) translateY(-100px);background:var(--bg3);border:1px solid var(--gold-dim);border-radius:8px;padding:10px 18px;font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:1px;white-space:nowrap;transition:transform 0.4s cubic-bezier(.4,0,.2,1);z-index:600;pointer-events:none;max-width:90vw;text-align:center;}
 .toast.show{transform:translateX(-50%) translateY(0);}
+
+/* LOGIN SCREEN */
+.login-overlay{position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;}
+.login-overlay.hidden{display:none;}
+.login-title{font-family:"Playfair Display",serif;font-size:42px;font-weight:900;line-height:0.95;letter-spacing:-1px;margin-bottom:6px;text-align:center;}
+.login-sub{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;color:var(--muted);margin-bottom:40px;text-align:center;}
+.login-form{width:100%;display:flex;flex-direction:column;gap:12px;}
+.login-input{background:var(--bg2);border:1px solid var(--faint);border-radius:8px;color:var(--text);font-family:"DM Mono",monospace;font-size:14px;padding:14px 16px;width:100%;outline:none;transition:border-color 0.2s;-webkit-appearance:none;}
+.login-input:focus{border-color:var(--gold-dim);}
+.login-input::placeholder{color:var(--muted);opacity:0.4;}
+.login-btn{padding:15px;background:var(--gold);border:none;border-radius:8px;font-family:"DM Mono",monospace;font-size:11px;letter-spacing:2px;color:#0a0a0a;font-weight:700;cursor:pointer;text-transform:uppercase;transition:opacity 0.2s;}
+.login-btn:active{opacity:0.8;}
+.login-switch{font-family:"DM Mono",monospace;font-size:9px;color:var(--muted);text-align:center;cursor:pointer;letter-spacing:1px;padding:8px;}
+.login-switch span{color:var(--gold);text-decoration:underline;}
+.login-error{font-family:"DM Mono",monospace;font-size:10px;color:var(--tempo);text-align:center;min-height:16px;}
+.login-loading{font-family:"DM Mono",monospace;font-size:10px;color:var(--muted);text-align:center;letter-spacing:2px;animation:pulse 1.4s infinite;}
 
 /* Screen shake */
 @keyframes shake{0%,100%{transform:translateX(0)}10%,30%,50%,70%,90%{transform:translateX(-6px)}20%,40%,60%,80%{transform:translateX(6px)}}
@@ -1238,14 +1255,7 @@ function switchScreen(name){
   window.scrollTo(0,0);
 }
 
-// ── INIT ──────────────────────────────────────────────────────
-const today=new Date();
-const cw=PLAN.find(w=>{const end=addDays(w.weekStart.toISOString().split('T')[0],7);return today>=w.weekStart&&today<end;});
-if(cw){activeWeek=cw.weekNum;activePhase=cw.phaseIndex;}
-renderPlan();
-const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
-const isStandalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone;
-if(isIOS&&!isStandalone)document.getElementById('installHint').classList.add('visible');
+// INIT handled by Supabase auth flow
 </script>
 
 <script>
@@ -1256,3 +1266,107 @@ const l2=document.createElement('link');l2.rel='manifest';l2.href=URL.createObje
 
 </body>
 </html>
+<script>
+// ── SUPABASE ──────────────────────────────────────────────────
+const SUPABASE_URL = 'https://ymqmiesvrxcumcncudsx.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_RBFd0sFIcNOv4OD_L1wSdw_RBQ4PLDm';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let currentUser = null;
+
+// ── AUTH ──────────────────────────────────────────────────────
+async function handleLogin() {
+const email = document.getElementById(‘loginEmail’).value.trim();
+const password = document.getElementById(‘loginPassword’).value;
+if (!email || !password) { setLoginError(‘Email und Passwort eingeben!’); return; }
+setLoginLoading(true);
+const { data, error } = await sb.auth.signInWithPassword({ email, password });
+setLoginLoading(false);
+if (error) { setLoginError(‘Falsche Daten — versuch nochmal.’); return; }
+onLogin(data.user);
+}
+
+async function handleSignup() {
+const email = document.getElementById(‘loginEmail’).value.trim();
+const password = document.getElementById(‘loginPassword’).value;
+if (!email || !password) { setLoginError(‘Email und Passwort eingeben!’); return; }
+if (password.length < 6) { setLoginError(‘Passwort min. 6 Zeichen!’); return; }
+setLoginLoading(true);
+const { data, error } = await sb.auth.signUp({ email, password });
+setLoginLoading(false);
+if (error) { setLoginError(error.message); return; }
+if (data.user && !data.session) { setLoginError(‘Check deine Email — Bestätigungslink!’); return; }
+onLogin(data.user);
+}
+
+function setLoginError(msg) { document.getElementById(‘loginError’).textContent = msg; }
+function setLoginLoading(on) {
+document.getElementById(‘loginLoading’).style.display = on ? ‘block’ : ‘none’;
+document.getElementById(‘loginBtn’).style.display = on ? ‘none’ : ‘block’;
+document.getElementById(‘signupBtn’).style.display = on ? ‘none’ : ‘block’;
+}
+
+async function onLogin(user) {
+currentUser = user;
+document.getElementById(‘loginOverlay’).classList.add(‘hidden’);
+await loadCloudState();
+initApp();
+}
+
+// ── CLOUD STATE ───────────────────────────────────────────────
+async function loadCloudState() {
+const { data, error } = await sb.from(‘game_state’).select(’*’).eq(‘id’, currentUser.id).single();
+if (data) {
+state = {
+checked: data.checked || {},
+coins: data.coins || 0,
+gearCollection: data.gear_collection || [],
+nutritionCollection: data.nutrition_collection || [],
+runnerCollection: data.runner_collection || [],
+unlockedAchievements: data.unlocked_achievements || [],
+claimedWeekCoins: data.claimed_week_coins || {},
+runs: data.runs || [],
+hannahClassicWeeks: data.hannah_classic_weeks || 0,
+};
+}
+}
+
+async function saveState() {
+// Always save locally as backup
+try { localStorage.setItem(‘runners_log_v5’, JSON.stringify(state)); } catch {}
+// Save to cloud
+if (!currentUser) return;
+await sb.from(‘game_state’).upsert({
+id: currentUser.id,
+coins: state.coins,
+checked: state.checked,
+gear_collection: state.gearCollection,
+nutrition_collection: state.nutritionCollection,
+runner_collection: state.runnerCollection,
+unlocked_achievements: state.unlockedAchievements,
+claimed_week_coins: state.claimedWeekCoins,
+runs: state.runs,
+hannah_classic_weeks: state.hannahClassicWeeks,
+updated_at: new Date().toISOString(),
+});
+}
+
+function initApp() {
+const today = new Date();
+const cw = PLAN.find(w => { const end = addDays(w.weekStart.toISOString().split(‘T’)[0], 7); return today >= w.weekStart && today < end; });
+if (cw) { activeWeek = cw.weekNum; activePhase = cw.phaseIndex; }
+renderPlan();
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+const isStandalone = window.matchMedia(’(display-mode: standalone)’).matches || window.navigator.standalone;
+if (isIOS && !isStandalone) document.getElementById(‘installHint’).classList.add(‘visible’);
+}
+
+// ── CHECK SESSION ON LOAD ─────────────────────────────────────
+(async () => {
+const { data: { session } } = await sb.auth.getSession();
+if (session) {
+onLogin(session.user);
+}
+// else login screen stays visible
+})();
+</script>
