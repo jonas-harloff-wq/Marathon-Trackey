@@ -333,6 +333,22 @@
   </style>
 </head>
 <body>
+<!-- ── LOGIN OVERLAY ── -->
+<div class="login-overlay" id="loginOverlay">
+  <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);"></div>
+  <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--gold);margin-bottom:16px;">BERLIN MARATHON 2026</div>
+  <div class="login-title">THE<br>RUNNER'S<br>LOG</div>
+  <div class="login-sub">SUB-3:00 · DEIN TRAINING</div>
+  <div class="login-form">
+    <input class="login-input" id="loginEmail" type="email" placeholder="Email" autocomplete="email"/>
+    <input class="login-input" id="loginPassword" type="password" placeholder="Passwort" autocomplete="current-password"/>
+    <div class="login-error" id="loginError"></div>
+    <button class="login-btn" id="loginBtn" onclick="handleLogin()">Einloggen</button>
+    <button class="login-btn" id="signupBtn" onclick="handleSignup()" style="background:var(--bg2);color:var(--text);border:1px solid var(--faint);">Registrieren</button>
+    <div class="login-loading" id="loginLoading" style="display:none;">LADEN...</div>
+  </div>
+</div>
+
 <div id="toastEl" class="toast"></div>
 
 <!-- ── PACK OVERLAY ── -->
