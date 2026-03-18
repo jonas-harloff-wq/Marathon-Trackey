@@ -29,7 +29,8 @@
 
 ```
 /* NAV */
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:#0d0c0a;border-top:1px solid var(--line);display:flex;z-index:100;padding-bottom:env(safe-area-inset-bottom,0px);}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:#0d0c0a;border-top:1px solid var(--line);display:flex;justify-content:center;z-index:100;padding-bottom:env(safe-area-inset-bottom,0px);}
+.bottom-nav-inner{display:flex;width:100%;max-width:480px;}
 .nav-btn{flex:1;padding:10px 4px 8px;border:none;background:none;color:var(--muted);font-family:'DM Mono',monospace;font-size:6.5px;letter-spacing:0.8px;text-transform:uppercase;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:4px;transition:color 0.2s;}
 .nav-btn.active{color:var(--gold);}
 .nav-icon{font-size:16px;}
@@ -547,11 +548,13 @@
 <!-- BOTTOM NAV -->
 
 <div class="bottom-nav">
-  <button class="nav-btn active" id="nav-plan" onclick="switchScreen('plan')"><span class="nav-icon">📋</span>Plan</button>
-  <button class="nav-btn" id="nav-log" onclick="switchScreen('log')"><span class="nav-icon">🏃</span>Log</button>
-  <button class="nav-btn" id="nav-store" onclick="switchScreen('store')"><span class="nav-icon">🛍️</span>Store</button>
-  <button class="nav-btn" id="nav-album" onclick="switchScreen('album')"><span class="nav-icon">📒</span>Album</button>
-  <button class="nav-btn" id="nav-achievements" onclick="switchScreen('achievements')"><span class="nav-icon">🏅</span>Badges</button>
+  <div class="bottom-nav-inner">
+    <button class="nav-btn active" id="nav-plan" onclick="switchScreen('plan')"><span class="nav-icon">📋</span>Plan</button>
+    <button class="nav-btn" id="nav-log" onclick="switchScreen('log')"><span class="nav-icon">🏃</span>Log</button>
+    <button class="nav-btn" id="nav-store" onclick="switchScreen('store')"><span class="nav-icon">🛍️</span>Store</button>
+    <button class="nav-btn" id="nav-album" onclick="switchScreen('album')"><span class="nav-icon">📒</span>Album</button>
+    <button class="nav-btn" id="nav-achievements" onclick="switchScreen('achievements')"><span class="nav-icon">🏅</span>Badges</button>
+  </div>
 </div>
 
 <script>
@@ -1232,6 +1235,7 @@ function switchScreen(name){
   if(name==='album')renderAlbum();
   if(name==='achievements')renderAchievements();
   if(name==='log')renderLog();
+  window.scrollTo(0,0);
 }
 
 // ── INIT ──────────────────────────────────────────────────────
