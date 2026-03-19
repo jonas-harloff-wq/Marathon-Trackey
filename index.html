@@ -87,7 +87,6 @@
 .session-card.done-easy{background:var(--easy-bg);border-color:var(--easy-border);}
 .session-card.done-long{background:var(--long-bg);border-color:var(--long-border);}
 .session-card.done-tempo{background:var(--tempo-bg);border-color:var(--tempo-border);}
-.session-card.done-strength{background:#0f1a1a;border-color:#1a3535;}
 .checkbox{width:20px;height:20px;border-radius:4px;border:1.5px solid var(--faint);display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all 0.2s;font-size:11px;}
 .session-card.done-easy .checkbox{background:var(--easy);border-color:var(--easy);color:#0a0a0a;}
 .session-card.done-long .checkbox{background:var(--long);border-color:var(--long);color:#0a0a0a;}
@@ -310,35 +309,16 @@
 .toast.show{transform:translateX(-50%) translateY(0);}
 
 
-/* SYNC SCREEN */
 .sync-overlay{position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;}
 .sync-overlay.hidden{display:none;}
 .sync-title{font-family:'Playfair Display',serif;font-size:42px;font-weight:900;line-height:0.95;letter-spacing:-1px;margin-bottom:6px;text-align:center;}
 .sync-sub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--muted);margin-bottom:12px;text-align:center;}
-.sync-desc{font-size:13px;color:var(--muted);text-align:center;line-height:1.6;margin-bottom:32px;max-width:280px;}
+.sync-desc{font-size:13px;color:var(--muted);text-align:center;line-height:1.6;margin-bottom:28px;max-width:280px;}
 .sync-desc span{color:var(--text);}
 .sync-input{background:var(--bg2);border:1px solid var(--gold-dim);border-radius:8px;color:var(--text);font-family:'DM Mono',monospace;font-size:18px;padding:16px;width:100%;outline:none;text-align:center;letter-spacing:4px;margin-bottom:12px;-webkit-appearance:none;}
 .sync-btn{width:100%;padding:16px;background:var(--gold);border:none;border-radius:8px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;color:#0a0a0a;font-weight:700;cursor:pointer;text-transform:uppercase;}
 .sync-error{font-family:'DM Mono',monospace;font-size:10px;color:var(--tempo);text-align:center;margin-bottom:8px;min-height:16px;}
 .sync-loading{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-align:center;letter-spacing:2px;animation:pulse 1.4s infinite;display:none;margin-bottom:8px;}
-
-/* STRENGTH MODAL */
-.strength-modal{position:fixed;inset:0;background:rgba(5,4,3,0.95);z-index:400;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding:24px;overflow-y:auto;}
-.strength-modal.active{display:flex;}
-.strength-header{width:100%;margin-bottom:20px;padding-top:20px;}
-.strength-title{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;margin-bottom:4px;}
-.strength-sub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);}
-.exercise-card{width:100%;background:var(--bg2);border:1px solid var(--faint);border-radius:10px;padding:18px;margin-bottom:12px;}
-.exercise-name{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;margin-bottom:6px;}
-.exercise-sets{font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:1px;margin-bottom:8px;}
-.exercise-desc{font-size:13px;color:var(--muted);line-height:1.6;}
-.exercise-check{width:100%;padding:12px;margin-top:12px;background:var(--faint);border:none;border-radius:6px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--muted);cursor:pointer;text-transform:uppercase;transition:all 0.2s;}
-.exercise-check.done{background:#0f1a1a;border:1px solid #1a3535;color:#2dd4bf;}
-.strength-complete-btn{width:100%;padding:16px;background:#2dd4bf;border:none;border-radius:8px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;color:#0a0a0a;font-weight:700;cursor:pointer;text-transform:uppercase;margin-top:8px;display:none;}
-.strength-complete-btn.visible{display:block;}
-.close-strength{background:none;border:none;font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);cursor:pointer;letter-spacing:2px;padding:10px;text-transform:uppercase;margin-top:8px;}
-
-/* USABLES */
 .usable-card{background:var(--bg2);border:1px solid var(--faint);border-radius:10px;padding:16px;display:flex;align-items:center;gap:14px;}
 .usable-icon{font-size:28px;flex-shrink:0;}
 .usable-info{flex:1;}
@@ -346,9 +326,23 @@
 .usable-desc{font-size:12px;color:var(--muted);line-height:1.4;margin-bottom:8px;}
 .usable-buy{padding:8px 16px;border:none;border-radius:6px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;font-weight:700;cursor:pointer;text-transform:uppercase;background:var(--gold);color:#0a0a0a;}
 .usable-buy:disabled{background:var(--faint);color:var(--muted);cursor:not-allowed;}
-.active-buff{display:flex;align-items:center;gap:8px;padding:10px 14px;background:var(--bg3);border:1px solid var(--gold-dim);border-radius:8px;font-family:'DM Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:1px;}
-.active-buff-dot{width:6px;height:6px;border-radius:50%;background:var(--easy);animation:pulse 1.2s infinite;}
-.buffs-section{padding:0 24px 16px;display:flex;flex-direction:column;gap:8px;}
+.active-buff{display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--bg3);border:1px solid var(--gold-dim);border-radius:6px;font-family:'DM Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:1px;margin:0 24px 6px;}
+.active-buff-dot{width:6px;height:6px;border-radius:50%;background:var(--easy);animation:pulse 1.2s infinite;flex-shrink:0;}
+.session-card.done-strength{background:#0f1a1a;border-color:#1a3535;}
+.session-card.done-strength .session-type{color:#2dd4bf;}
+.session-card.done-strength .session-label{color:var(--text);}
+.session-card.done-strength .checkbox{background:#2dd4bf;border-color:#2dd4bf;color:#0a0a0a;}
+.session-card.done-strength .session-reward{opacity:1;}
+.strength-modal{position:fixed;inset:0;background:rgba(5,4,3,0.96);z-index:400;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding:24px;overflow-y:auto;}
+.strength-modal.active{display:flex;}
+.exercise-card{width:100%;background:var(--bg2);border:1px solid var(--faint);border-radius:10px;padding:18px;margin-bottom:12px;}
+.exercise-name{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;margin-bottom:4px;}
+.exercise-sets{font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:1px;margin-bottom:8px;}
+.exercise-desc{font-size:13px;color:var(--muted);line-height:1.6;}
+.exercise-check{width:100%;padding:12px;margin-top:12px;background:var(--faint);border:none;border-radius:6px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--muted);cursor:pointer;text-transform:uppercase;}
+.exercise-check.done{background:#0f1a1a;border:1px solid #1a3535;color:#2dd4bf;}
+.strength-complete-btn{width:100%;padding:16px;background:#2dd4bf;border:none;border-radius:8px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;color:#0a0a0a;font-weight:700;cursor:pointer;text-transform:uppercase;margin-top:8px;display:none;}
+.strength-complete-btn.visible{display:block;}
 /* Screen shake */
 @keyframes shake{0%,100%{transform:translateX(0)}10%,30%,50%,70%,90%{transform:translateX(-6px)}20%,40%,60%,80%{transform:translateX(6px)}}
 .shaking{animation:shake 0.5s ease;}
@@ -363,7 +357,7 @@
   <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--gold);margin-bottom:16px;">BERLIN MARATHON 2026</div>
   <div class="sync-title">THE<br>RUNNER'S<br>LOG</div>
   <div class="sync-sub">SUB-3:00 · DEIN TRAINING</div>
-  <div class="sync-desc">Gib einen <span>persönlichen Sync-Code</span> ein. Damit werden deine Daten gespeichert — auf jedem Gerät abrufbar.</div>
+  <div class="sync-desc">Gib einen <span>persönlichen Sync-Code</span> ein. Damit werden deine Daten gespeichert.</div>
   <input class="sync-input" id="syncCode" type="text" placeholder="DEIN CODE" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"/>
   <div class="sync-error" id="syncError"></div>
   <div class="sync-loading" id="syncLoading">LADEN...</div>
@@ -454,7 +448,7 @@
     <div class="legend-item"><div class="legend-dot" style="background:var(--long)"></div><div class="legend-text">Long</div></div>
     <div class="legend-item"><div class="legend-dot" style="background:var(--tempo)"></div><div class="legend-text">Tempo</div></div>
   </div>
-  <div class="buffs-section" id="buffsSection" style="display:none;"></div>
+  <div id="buffsSection" style="display:none;padding:0;"></div>
   <div class="install-hint" id="installHint"><strong>Als App:</strong> Teilen ↑ → „Zum Home-Bildschirm"</div>
 </div>
 
@@ -559,48 +553,6 @@
       <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);margin-bottom:10px;">WIE VERDIENEN?</div>
       <div style="font-size:13px;color:var(--muted);line-height:1.9;">🏃 <span style="color:var(--text);">+10</span> pro Session &nbsp;·&nbsp; 📅 <span style="color:var(--text);">+50</span> Woche komplett<br>🔥 <span style="color:var(--text);">+200</span> Hannah Classic (50km Woche)</div>
     </div>
-
-```
-<!-- USABLES -->
-<div style="margin-top:4px;">
-  <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--muted);margin-bottom:12px;">USABLES</div>
-  <div style="display:flex;flex-direction:column;gap:10px;">
-    <div class="usable-card">
-      <div class="usable-icon">⚡</div>
-      <div class="usable-info">
-        <div class="usable-name">Energy Gel</div>
-        <div class="usable-desc">2× Maratooneys für die nächste Stunde</div>
-        <button class="usable-buy" id="buyGel" onclick="buyUsable('gel')">🪙 15</button>
-      </div>
-    </div>
-    <div class="usable-card">
-      <div class="usable-icon">💧</div>
-      <div class="usable-info">
-        <div class="usable-name">Water Bottle</div>
-        <div class="usable-desc">2× XP für die nächste Stunde</div>
-        <button class="usable-buy" id="buyWater" onclick="buyUsable('water')">🪙 15</button>
-      </div>
-    </div>
-    <div class="usable-card">
-      <div class="usable-icon">🍌</div>
-      <div class="usable-info">
-        <div class="usable-name">Race Banana</div>
-        <div class="usable-desc">Nächste Session +20 Bonus Maratooneys</div>
-        <button class="usable-buy" id="buyBanana" onclick="buyUsable('banana')">🪙 10</button>
-      </div>
-    </div>
-    <div class="usable-card">
-      <div class="usable-icon">🫧</div>
-      <div class="usable-info">
-        <div class="usable-name">Recovery Foam</div>
-        <div class="usable-desc">Streak bleibt bei einer verpassten Woche erhalten</div>
-        <button class="usable-buy" id="buyFoam" onclick="buyUsable('foam')">🪙 30</button>
-      </div>
-    </div>
-  </div>
-</div>
-```
-
   </div>
 </div>
 
@@ -645,34 +597,27 @@
 <!-- STRENGTH MODAL -->
 
 <div class="strength-modal" id="strengthModal">
-  <div class="strength-header">
-    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:#2dd4bf;margin-bottom:4px;">STRENGTH WORK · +5 🪙</div>
-  </div>
-
-  <div class="exercise-card" id="ex1card">
+  <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:#2dd4bf;margin:24px 0 16px;">STRENGTH WORK · +5 🪙</div>
+  <div class="exercise-card">
     <div class="exercise-name">Single Leg Squats</div>
     <div class="exercise-sets">3 × 8 pro Seite</div>
-    <div class="exercise-desc">Einbeinig auf einem Bein stehen, dann langsam in die Knie gehen wie ein normaler Squat — aber nur auf einem Bein. Anderes Bein in der Luft halten.</div>
+    <div class="exercise-desc">Einbeinig auf einem Bein stehen, dann langsam in die Knie gehen. Anderes Bein in der Luft halten.</div>
     <button class="exercise-check" id="ex1btn" onclick="toggleExercise(1)">✓ Erledigt</button>
   </div>
-
-  <div class="exercise-card" id="ex2card">
+  <div class="exercise-card">
     <div class="exercise-name">Calf Raises</div>
     <div class="exercise-sets">3 × 20</div>
-    <div class="exercise-desc">Steh auf einer Treppenstufe, Ferse hängt rüber. Dann auf Zehenspitzen hochdrücken, langsam wieder runter. Geht auch flach auf dem Boden.</div>
+    <div class="exercise-desc">Auf Treppenstufe, Ferse hängt rüber. Auf Zehenspitzen hochdrücken, langsam runter.</div>
     <button class="exercise-check" id="ex2btn" onclick="toggleExercise(2)">✓ Erledigt</button>
   </div>
-
-  <div class="exercise-card" id="ex3card">
+  <div class="exercise-card">
     <div class="exercise-name">Glute Bridges</div>
     <div class="exercise-sets">3 × 15</div>
-    <div class="exercise-desc">Auf dem Rücken liegen, Knie angewinkelt, Füße auf dem Boden. Hüfte hochdrücken bis Schultern-Hüfte-Knie eine gerade Linie bilden. Kurz halten, runter.</div>
+    <div class="exercise-desc">Auf dem Rücken liegen, Knie angewinkelt. Hüfte hochdrücken bis gerade Linie. Kurz halten.</div>
     <button class="exercise-check" id="ex3btn" onclick="toggleExercise(3)">✓ Erledigt</button>
   </div>
-
-<button class="strength-complete-btn" id="strengthCompleteBtn" onclick="completeStrength()">💪 Abschließen · +5 🪙</button>
-<button class="close-strength" onclick="closeStrength()">Abbrechen</button>
-
+  <button class="strength-complete-btn" id="strengthCompleteBtn" onclick="completeStrength()">💪 Abschließen · +5 🪙</button>
+  <button style="background:none;border:none;font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);cursor:pointer;letter-spacing:2px;padding:12px;text-transform:uppercase;" onclick="closeStrength()">Abbrechen</button>
 </div>
 
 <!-- BOTTOM NAV -->
@@ -790,14 +735,14 @@ const ACHIEVEMENTS=[
   {id:"shiny1",     icon:"✨",name:"Shiny Hunter",     desc:"Erste Shiny Karte gezogen",        coins:50, xp:60,  hannah:false,check:(s,r,w,st,col,sh)=>sh>=1},
   {id:"kipchoge",   icon:"🐐",name:"In Good Company",  desc:"Kipchoge gezogen",                 coins:100,xp:100, hannah:false,check:(s,r,w,st,col,sh,go,ul,runners)=>runners.includes('kipchoge')},
   {id:"friend_six", icon:"👥",name:"The Squad",        desc:"Alle 6 Freunde gesammelt",         coins:150,xp:150, hannah:false,check:(s,r,w,st,col,sh,go,ul,runners)=>['hannah','papa','lucas','julius','julian','katharina'].every(id=>runners.includes(id))},
-  {id:"hannah_classic",icon:"🔥",name:"HANNAH CLASSIC",desc:"50km+ in einer Woche geloggt",   coins:200,xp:200, hannah:true, check:(s,r,w,st,col,sh,go,ul,runners,hannahWeeks)=>hannahWeeks>=1},
-  {id:"first_pwr",   icon:"💪",name:"First Rep",       desc:"Erste PWR Session abgeschlossen",  coins:15, xp:20,  hannah:false,check:(s)=>Object.keys(s).some(k=>k.includes('_strength')&&s[k])},
-  {id:"pwr5",        icon:"🏋️",name:"Getting Stronger", desc:"5 PWR Sessions abgeschlossen",    coins:30, xp:40,  hannah:false,check:(s)=>Object.keys(s).filter(k=>k.includes('_strength')&&s[k]).length>=5},
-  {id:"pwr10",       icon:"⚡",name:"Iron Legs",        desc:"10 PWR Sessions abgeschlossen",   coins:60, xp:80,  hannah:false,check:(s)=>Object.keys(s).filter(k=>k.includes('_strength')&&s[k]).length>=10},
-  {id:"pwr_all",     icon:"🦾",name:"Full Body Runner", desc:"20 PWR Sessions abgeschlossen",   coins:100,xp:150, hannah:false,check:(s)=>Object.keys(s).filter(k=>k.includes('_strength')&&s[k]).length>=20},
+  {id:"hannah_classic",icon:"🔥",name:"HANNAH CLASSIC",desc:"50km+ in einer Woche geloggt",coins:200,xp:200,hannah:true,check:(s,r,w,st,col,sh,go,ul,runners,hannahWeeks)=>hannahWeeks>=1},
+  {id:"first_pwr",icon:"💪",name:"First Rep",desc:"Erste PWR Session abgeschlossen",coins:15,xp:20,hannah:false,check:(s)=>Object.keys(s).some(k=>k.includes('_strength')&&s[k])},
+  {id:"pwr5",icon:"🏋️",name:"Getting Stronger",desc:"5 PWR Sessions abgeschlossen",coins:30,xp:40,hannah:false,check:(s)=>Object.keys(s).filter(k=>k.includes('_strength')&&s[k]).length>=5},
+  {id:"pwr10",icon:"⚡",name:"Iron Legs",desc:"10 PWR Sessions abgeschlossen",coins:60,xp:80,hannah:false,check:(s)=>Object.keys(s).filter(k=>k.includes('_strength')&&s[k]).length>=10},
+  {id:"pwr_all",icon:"🦾",name:"Full Body Runner",desc:"20 PWR Sessions abgeschlossen",coins:100,xp:150,hannah:false,check:(s)=>Object.keys(s).filter(k=>k.includes('_strength')&&s[k]).length>=20},
 ];
 
-function addDays(ds,d){const x=new Date(typeof ds==='string'?ds:ds.toISOString().split('T')[0]);x.setDate(x.getDate()+d);return x;}
+function addDays(ds,d){const x=new Date(ds);x.setDate(x.getDate()+d);return x;}
 function fmtShort(d){return d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'});}
 
 const PLAN=[];let wn=1;
@@ -822,7 +767,7 @@ let state={checked:{},coins:0,gearCollection:[],nutritionCollection:[],runnerCol
 let activeWeek=1,activePhase=0,runType='easy',activeAlbumTab='gear';
 
 function loadState(){try{const s=localStorage.getItem('runners_log_v6');if(s)state={...state,...JSON.parse(s)};}catch{}}
-function saveState(){try{localStorage.setItem('runners_log_v6',JSON.stringify(state));}catch{} saveToCloud();}
+function saveState(){try{localStorage.setItem('runners_log_v6',JSON.stringify(state));}catch{}saveToCloud();}
 loadState();
 
 // ── HELPERS ───────────────────────────────────────────────────
@@ -1179,14 +1124,13 @@ function renderPlan(){
       ${week.sessions.map(s=>{
         const isDone=!!state.checked[s.id];
         const tl=s.type==='easy'?'EASY':s.type==='long'?'LONG':s.type==='tempo'?'TEMPO':'PWR';
-        const isStrength=s.type==='strength';
-        const onclick=isStrength&&!isDone?`openStrength('${s.id}')`:`toggleSession('${s.id}',${week.weekNum})`;
-        const reward=isStrength?'5🪙':'10🪙';
-        return`<div class="session-card ${isDone?`done-${s.type}`:''}" onclick="${onclick}" style="${isStrength?'border-color:#1a3535;':''}" >
-          <div class="checkbox" style="${isStrength&&!isDone?'border-color:#2dd4bf;':''}">${isDone?'✓':''}</div>
-          <div class="session-type" style="${isStrength?'color:#2dd4bf;':''}">${tl}</div>
+        const isStr=s.type==='strength';
+        const oc=isStr&&!isDone?`openStrength('${s.id}')`:`toggleSession('${s.id}',${week.weekNum})`;
+        return`<div class="session-card ${isDone?`done-${s.type}`:''}" onclick="${oc}" style="${isStr&&!isDone?'border-color:#1a3535;':''}">
+          <div class="checkbox" style="${isStr&&!isDone?'border-color:#2dd4bf;':''}">${isDone?'✓':''}</div>
+          <div class="session-type" style="${isStr&&!isDone?'color:#2dd4bf;':''}">${tl}</div>
           <div class="session-label">${s.label}</div>
-          <div class="session-reward">${isDone?'✓':'+'} ${reward}</div>
+          <div class="session-reward">${isDone?'✓':'+'} ${isStr?'5':'10'}🪙</div>
         </div>`;
       }).join('')}
     </div>
@@ -1205,9 +1149,8 @@ function toggleSession(id,weekNum){
     if(isBuffActive('gel')){coins*=2;}
     if(isBuffActive('banana')){coins+=20;state.bananaActive=false;}
     state.coins+=coins;
-    showToast(`+${coins} 🪙${coins>10?' 🔥':''}`);
-  }
-  else state.coins=Math.max(0,state.coins-10);
+    showToast('+'+coins+' 🪙'+(coins>10?' 🔥':''));
+  }else state.coins=Math.max(0,state.coins-10);
   const wb=!was&&checkWeekBonus(weekNum);
   const newA=checkAchievements();
   saveState();renderPlan();renderStore();
@@ -1289,14 +1232,12 @@ function renderLog(){
 // ── RENDER STORE ──────────────────────────────────────────────
 function renderStore(){
   document.getElementById('storeCoins').textContent=state.coins;
-  const buyGel=document.getElementById('buyGel');
-  const buyWater=document.getElementById('buyWater');
-  const buyBanana=document.getElementById('buyBanana');
-  const buyFoam=document.getElementById('buyFoam');
-  if(buyGel){buyGel.disabled=state.coins<15||isBuffActive('gel');buyGel.textContent=isBuffActive('gel')?'Aktiv ✓':'🪙 15';}
-  if(buyWater){buyWater.disabled=state.coins<15||isBuffActive('water');buyWater.textContent=isBuffActive('water')?'Aktiv ✓':'🪙 15';}
-  if(buyBanana){buyBanana.disabled=state.coins<10||isBuffActive('banana');buyBanana.textContent=isBuffActive('banana')?'Bereit ✓':'🪙 10';}
-  if(buyFoam){buyFoam.disabled=state.coins<30||isBuffActive('foam');buyFoam.textContent=isBuffActive('foam')?'Bereit ✓':'🪙 30';}
+  const bg=document.getElementById('buyGel');const bw=document.getElementById('buyWater');
+  const bb=document.getElementById('buyBanana');const bf=document.getElementById('buyFoam');
+  if(bg){bg.disabled=state.coins<15||isBuffActive('gel');bg.textContent=isBuffActive('gel')?'Aktiv ✓':'🪙 15';}
+  if(bw){bw.disabled=state.coins<15||isBuffActive('water');bw.textContent=isBuffActive('water')?'Aktiv ✓':'🪙 15';}
+  if(bb){bb.disabled=state.coins<10||isBuffActive('banana');bb.textContent=isBuffActive('banana')?'Bereit ✓':'🪙 10';}
+  if(bf){bf.disabled=state.coins<30||isBuffActive('foam');bf.textContent=isBuffActive('foam')?'Bereit ✓':'🪙 30';}
   document.getElementById('buyGear').disabled=state.coins<10;
   document.getElementById('buyNutrition').disabled=state.coins<10;
   document.getElementById('buyRunner').disabled=state.coins<50;
@@ -1378,97 +1319,6 @@ function renderAchievements(){
   }).join('');
 }
 
-
-// ── STRENGTH ──────────────────────────────────────────────────
-let strengthSessionId = null;
-let exDone = {1:false, 2:false, 3:false};
-
-function openStrength(sessionId){
-  strengthSessionId = sessionId;
-  exDone = {1:false, 2:false, 3:false};
-  [1,2,3].forEach(i=>{
-    document.getElementById(`ex${i}btn`).classList.remove('done');
-    document.getElementById(`ex${i}btn`).textContent='✓ Erledigt';
-  });
-  document.getElementById('strengthCompleteBtn').classList.remove('visible');
-  document.getElementById('strengthModal').classList.add('active');
-}
-
-function toggleExercise(n){
-  exDone[n] = !exDone[n];
-  const btn = document.getElementById(`ex${n}btn`);
-  btn.classList.toggle('done', exDone[n]);
-  btn.textContent = exDone[n] ? '✓ Done!' : '✓ Erledigt';
-  const allDone = exDone[1] && exDone[2] && exDone[3];
-  document.getElementById('strengthCompleteBtn').classList.toggle('visible', allDone);
-}
-
-function completeStrength(){
-  if(strengthSessionId){
-    state.checked[strengthSessionId] = true;
-    state.coins += 5;
-    const newA = checkAchievements();
-    saveState();
-    renderPlan();
-    renderStore();
-    showToast('+5 🪙 Strength Work done!');
-    newA.forEach((a,i)=>setTimeout(()=>showToast(`🏅 ${a.name}! +${a.coins}🪙`),1200+i*800));
-  }
-  closeStrength();
-}
-
-function closeStrength(){
-  document.getElementById('strengthModal').classList.remove('active');
-  strengthSessionId = null;
-}
-
-
-// ── USABLES ───────────────────────────────────────────────────
-const USABLE_COSTS = {gel:15, water:15, banana:10, foam:30};
-
-function buyUsable(type){
-  const cost = USABLE_COSTS[type];
-  if(state.coins < cost){ showToast('Nicht genug Maratooneys!'); return; }
-  state.coins -= cost;
-  const expiry = Date.now() + 60*60*1000; // 1 hour
-
-  if(type==='gel') state.buffs.gel = expiry;
-  else if(type==='water') state.buffs.water = expiry;
-  else if(type==='banana') state.bananaActive = true;
-  else if(type==='foam') state.buffs.foam = true;
-
-  saveState();
-  renderStore();
-  renderPlan();
-  const names={gel:'⚡ Energy Gel aktiv! 2× Coins für 1h',water:'💧 Water Bottle aktiv! 2× XP für 1h',banana:'🍌 Race Banana bereit! +20 bei nächster Session',foam:'🫧 Recovery Foam bereit!'};
-  showToast(names[type]);
-}
-
-function isBuffActive(type){
-  if(type==='gel'||type==='water') return state.buffs[type] && Date.now() < state.buffs[type];
-  if(type==='banana') return state.bananaActive;
-  if(type==='foam') return state.buffs.foam;
-  return false;
-}
-
-function getBuffTimeLeft(type){
-  if(!state.buffs[type]) return '';
-  const mins = Math.ceil((state.buffs[type] - Date.now()) / 60000);
-  return mins > 0 ? `${mins}min` : '';
-}
-
-function renderBuffs(){
-  const section = document.getElementById('buffsSection');
-  if(!section) return;
-  const active = [];
-  if(isBuffActive('gel')) active.push(`<div class="active-buff"><div class="active-buff-dot"></div>⚡ Energy Gel · 2× Coins · ${getBuffTimeLeft('gel')}</div>`);
-  if(isBuffActive('water')) active.push(`<div class="active-buff"><div class="active-buff-dot"></div>💧 Water Bottle · 2× XP · ${getBuffTimeLeft('water')}</div>`);
-  if(isBuffActive('banana')) active.push(`<div class="active-buff"><div class="active-buff-dot"></div>🍌 Race Banana · +20 nächste Session</div>`);
-  if(isBuffActive('foam')) active.push(`<div class="active-buff"><div class="active-buff-dot"></div>🫧 Recovery Foam · Streak geschützt</div>`);
-  section.style.display = active.length ? 'flex' : 'none';
-  section.innerHTML = active.join('');
-}
-
 // ── NAV ───────────────────────────────────────────────────────
 function switchScreen(name){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -1482,72 +1332,147 @@ function switchScreen(name){
   window.scrollTo(0,0);
 }
 
-// ── SYNC CODE HANDLER ─────────────────────────────────────────
-const FIREBASE_URL = 'https://firestore.googleapis.com/v1/projects/marathon-tracker-49d16/databases/(default)/documents/users/';
-const API_KEY = 'AIzaSyBvhvy5HdZHly7oRAIZ2xXq8d3z5S6u__Q';
-let syncCode = null;
+// ── FIREBASE SYNC ─────────────────────────────────────────────
+const FB_URL='https://firestore.googleapis.com/v1/projects/marathon-tracker-49d16/databases/(default)/documents/users/';
+const FB_KEY='AIzaSyBvhvy5HdZHly7oRAIZ2xXq8d3z5S6u__Q';
+let syncCode=null;
 
 async function handleSync(){
-  const code = document.getElementById('syncCode').value.trim().toUpperCase();
-  if(code.length < 3){ document.getElementById('syncError').textContent = 'Min. 3 Zeichen!'; return; }
-  document.getElementById('syncLoading').style.display = 'block';
-  document.getElementById('syncError').textContent = '';
-  syncCode = code;
-  localStorage.setItem('sync_code', code);
+  const code=document.getElementById('syncCode').value.trim().toUpperCase();
+  if(code.length<3){document.getElementById('syncError').textContent='Min. 3 Zeichen!';return;}
+  document.getElementById('syncLoading').style.display='block';
+  document.getElementById('syncError').textContent='';
+  syncCode=code;
+  try{localStorage.setItem('sync_code',code);}catch(e){}
   await loadCloudState();
-  document.getElementById('syncLoading').style.display = 'none';
+  document.getElementById('syncLoading').style.display='none';
   document.getElementById('syncOverlay').classList.add('hidden');
-  setTimeout(initApp, 100);
+  initApp();
 }
 
 async function loadCloudState(){
+  if(!syncCode)return;
   try{
-    const r = await fetch(FIREBASE_URL + encodeURIComponent(syncCode) + '?key=' + API_KEY);
+    const r=await fetch(FB_URL+encodeURIComponent(syncCode)+'?key='+FB_KEY);
     if(r.ok){
-      const d = await r.json();
+      const d=await r.json();
       if(d.fields){
-        const f = d.fields;
-        state = {
-          checked: f.checked ? JSON.parse(f.checked.stringValue) : {},
-          coins: f.coins ? parseInt(f.coins.integerValue) : 0,
-          gearCollection: f.gearCollection ? JSON.parse(f.gearCollection.stringValue) : [],
-          nutritionCollection: f.nutritionCollection ? JSON.parse(f.nutritionCollection.stringValue) : [],
-          runnerCollection: f.runnerCollection ? JSON.parse(f.runnerCollection.stringValue) : [],
-          unlockedAchievements: f.unlockedAchievements ? JSON.parse(f.unlockedAchievements.stringValue) : [],
-          claimedWeekCoins: f.claimedWeekCoins ? JSON.parse(f.claimedWeekCoins.stringValue) : {},
-          runs: f.runs ? JSON.parse(f.runs.stringValue) : [],
-          hannahClassicWeeks: f.hannahClassicWeeks ? parseInt(f.hannahClassicWeeks.integerValue) : 0,
+        const f=d.fields;
+        const parse=(k)=>f[k]?JSON.parse(f[k].stringValue):undefined;
+        const int=(k)=>f[k]?parseInt(f[k].integerValue):undefined;
+        const bool=(k)=>f[k]?f[k].booleanValue:undefined;
+        state={
+          checked:parse('checked')||{},
+          coins:int('coins')||0,
+          gearCollection:parse('gearCollection')||[],
+          nutritionCollection:parse('nutritionCollection')||[],
+          runnerCollection:parse('runnerCollection')||[],
+          unlockedAchievements:parse('unlockedAchievements')||[],
+          claimedWeekCoins:parse('claimedWeekCoins')||{},
+          runs:parse('runs')||[],
+          hannahClassicWeeks:int('hannahClassicWeeks')||0,
+          buffs:parse('buffs')||{},
+          bananaActive:bool('bananaActive')||false,
         };
       }
     }
-  }catch(e){ console.log('Cloud load failed', e); }
+  }catch(e){console.log('load fail',e);}
 }
 
 async function saveToCloud(){
-  if(!syncCode) return;
+  if(!syncCode)return;
   try{
-    await fetch(FIREBASE_URL + encodeURIComponent(syncCode) + '?key=' + API_KEY, {
-      method: 'PATCH',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ fields: {
-        checked: {stringValue: JSON.stringify(state.checked)},
-        coins: {integerValue: state.coins},
-        gearCollection: {stringValue: JSON.stringify(state.gearCollection)},
-        nutritionCollection: {stringValue: JSON.stringify(state.nutritionCollection)},
-        runnerCollection: {stringValue: JSON.stringify(state.runnerCollection)},
-        unlockedAchievements: {stringValue: JSON.stringify(state.unlockedAchievements)},
-        claimedWeekCoins: {stringValue: JSON.stringify(state.claimedWeekCoins)},
-        runs: {stringValue: JSON.stringify(state.runs)},
-        hannahClassicWeeks: {integerValue: state.hannahClassicWeeks},
+    await fetch(FB_URL+encodeURIComponent(syncCode)+'?key='+FB_KEY,{
+      method:'PATCH',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({fields:{
+        checked:{stringValue:JSON.stringify(state.checked)},
+        coins:{integerValue:String(state.coins)},
+        gearCollection:{stringValue:JSON.stringify(state.gearCollection)},
+        nutritionCollection:{stringValue:JSON.stringify(state.nutritionCollection)},
+        runnerCollection:{stringValue:JSON.stringify(state.runnerCollection)},
+        unlockedAchievements:{stringValue:JSON.stringify(state.unlockedAchievements)},
+        claimedWeekCoins:{stringValue:JSON.stringify(state.claimedWeekCoins)},
+        runs:{stringValue:JSON.stringify(state.runs)},
+        hannahClassicWeeks:{integerValue:String(state.hannahClassicWeeks)},
+        buffs:{stringValue:JSON.stringify(state.buffs)},
+        bananaActive:{booleanValue:state.bananaActive},
       }})
     });
-  }catch(e){ console.log('Cloud save failed', e); }
+  }catch(e){console.log('save fail',e);}
 }
+
+// ── USABLES ───────────────────────────────────────────────────
+const USABLE_COSTS={gel:15,water:15,banana:10,foam:30};
+function buyUsable(type){
+  const cost=USABLE_COSTS[type];
+  if(state.coins<cost){showToast('Nicht genug Maratooneys!');return;}
+  state.coins-=cost;
+  const expiry=Date.now()+60*60*1000;
+  if(type==='gel')state.buffs.gel=expiry;
+  else if(type==='water')state.buffs.water=expiry;
+  else if(type==='banana')state.bananaActive=true;
+  else if(type==='foam')state.buffs.foam=true;
+  saveState();renderStore();renderPlan();
+  const names={gel:'⚡ Energy Gel aktiv! 2× Coins für 1h',water:'💧 Water Bottle aktiv! 2× XP für 1h',banana:'🍌 Race Banana ready!',foam:'🫧 Recovery Foam ready!'};
+  showToast(names[type]);
+}
+function isBuffActive(type){
+  if(type==='gel'||type==='water')return state.buffs&&state.buffs[type]&&Date.now()<state.buffs[type];
+  if(type==='banana')return state.bananaActive;
+  if(type==='foam')return state.buffs&&state.buffs.foam;
+  return false;
+}
+function getBuffTimeLeft(type){
+  if(!state.buffs||!state.buffs[type])return'';
+  const mins=Math.ceil((state.buffs[type]-Date.now())/60000);
+  return mins>0?mins+'min':'';
+}
+function renderBuffs(){
+  const active=[];
+  if(isBuffActive('gel'))active.push('<div class="active-buff"><div class="active-buff-dot"></div>⚡ Energy Gel · 2× Coins · '+getBuffTimeLeft('gel')+'</div>');
+  if(isBuffActive('water'))active.push('<div class="active-buff"><div class="active-buff-dot"></div>💧 Water Bottle · 2× XP · '+getBuffTimeLeft('water')+'</div>');
+  if(isBuffActive('banana'))active.push('<div class="active-buff"><div class="active-buff-dot"></div>🍌 Race Banana · +20 nächste Session</div>');
+  if(isBuffActive('foam'))active.push('<div class="active-buff"><div class="active-buff-dot"></div>🫧 Recovery Foam · Streak geschützt</div>');
+  const el=document.getElementById('buffsSection');
+  if(el){el.innerHTML=active.join('');el.style.display=active.length?'block':'none';}
+}
+
+// ── STRENGTH ──────────────────────────────────────────────────
+let strengthSessionId=null;
+let exDone={1:false,2:false,3:false};
+function openStrength(id){
+  strengthSessionId=id;exDone={1:false,2:false,3:false};
+  [1,2,3].forEach(i=>{const b=document.getElementById('ex'+i+'btn');if(b){b.classList.remove('done');b.textContent='✓ Erledigt';}});
+  const cb=document.getElementById('strengthCompleteBtn');if(cb)cb.classList.remove('visible');
+  const m=document.getElementById('strengthModal');if(m)m.classList.add('active');
+}
+function toggleExercise(n){
+  exDone[n]=!exDone[n];
+  const btn=document.getElementById('ex'+n+'btn');
+  if(btn){btn.classList.toggle('done',exDone[n]);btn.textContent=exDone[n]?'✓ Done!':'✓ Erledigt';}
+  const cb=document.getElementById('strengthCompleteBtn');
+  if(cb)cb.classList.toggle('visible',exDone[1]&&exDone[2]&&exDone[3]);
+}
+function completeStrength(){
+  if(strengthSessionId){
+    state.checked[strengthSessionId]=true;state.coins+=5;
+    const newA=checkAchievements();saveState();renderPlan();renderStore();
+    showToast('+5 🪙 Strength done!');
+    newA.forEach((a,i)=>setTimeout(()=>showToast('🏅 '+a.name+'! +'+a.coins+'🪙'),1200+i*800));
+  }
+  closeStrength();
+}
+function closeStrength(){const m=document.getElementById('strengthModal');if(m)m.classList.remove('active');strengthSessionId=null;}
 
 // ── INIT ──────────────────────────────────────────────────────
 function initApp(){
   const today=new Date();
-  const cw=PLAN.find(w=>{try{const ws=new Date(w.weekStart);const end=addDays(w.weekStart instanceof Date?w.weekStart.toISOString().split('T')[0]:w.weekStart,7);return today>=ws&&today<end;}catch(e){return false;}});
+  const cw=PLAN.find(w=>{
+    const ws=new Date(w.weekStart);
+    const end=new Date(ws);end.setDate(end.getDate()+7);
+    return today>=ws&&today<end;
+  });
   if(cw){activeWeek=cw.weekNum;activePhase=cw.phaseIndex;}
   renderPlan();
   const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
@@ -1555,15 +1480,18 @@ function initApp(){
   if(isIOS&&!isStandalone)document.getElementById('installHint').classList.add('visible');
 }
 
-// Check for saved sync code
-const savedCode = localStorage.getItem('sync_code');
-if(savedCode){
-  syncCode = savedCode;
-  loadCloudState().then(() => {
-    document.getElementById('syncOverlay').classList.add('hidden');
-    setTimeout(initApp, 100);
-  });
-}
+// Check saved sync code
+(async()=>{
+  try{
+    const saved=localStorage.getItem('sync_code');
+    if(saved){
+      syncCode=saved;
+      await loadCloudState();
+      document.getElementById('syncOverlay').classList.add('hidden');
+      initApp();
+    }
+  }catch(e){initApp();}
+})();
 </script>
 
 <script>
