@@ -821,8 +821,8 @@ const totalSessions=PLAN.reduce((s,w)=>s+w.sessions.length,0);
 let state={checked:{},coins:0,gearCollection:[],nutritionCollection:[],runnerCollection:[],unlockedAchievements:[],claimedWeekCoins:{},runs:[],hannahClassicWeeks:0,buffs:{},bananaActive:false};
 let activeWeek=1,activePhase=0,runType='easy',activeAlbumTab='gear';
 
-function loadState(){try{const s=localStorage.getItem('runners_log_v5');if(s)state={...state,...JSON.parse(s)};}catch{}}
-function saveState(){try{localStorage.setItem('runners_log_v5',JSON.stringify(state));}catch{} saveToCloud();}
+function loadState(){try{const s=localStorage.getItem('runners_log_v6');if(s)state={...state,...JSON.parse(s)};}catch{}}
+function saveState(){try{localStorage.setItem('runners_log_v6',JSON.stringify(state));}catch{} saveToCloud();}
 loadState();
 
 // ── HELPERS ───────────────────────────────────────────────────
