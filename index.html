@@ -11,7 +11,6 @@
   <title>SUB-3:00 — Berlin Marathon</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -309,22 +308,18 @@
 .toast{position:fixed;top:24px;left:50%;transform:translateX(-50%) translateY(-100px);background:var(--bg3);border:1px solid var(--gold-dim);border-radius:8px;padding:10px 18px;font-family:'DM Mono',monospace;font-size:11px;color:var(--gold);letter-spacing:1px;white-space:nowrap;transition:transform 0.4s cubic-bezier(.4,0,.2,1);z-index:600;pointer-events:none;max-width:90vw;text-align:center;}
 .toast.show{transform:translateX(-50%) translateY(0);}
 
-/* LOGIN SCREEN */
-.login-overlay{position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;}
-.login-overlay.hidden{display:none;}
-.login-title{font-family:"Playfair Display",serif;font-size:42px;font-weight:900;line-height:0.95;letter-spacing:-1px;margin-bottom:6px;text-align:center;}
-.login-sub{font-family:"DM Mono",monospace;font-size:9px;letter-spacing:3px;color:var(--muted);margin-bottom:40px;text-align:center;}
-.login-form{width:100%;display:flex;flex-direction:column;gap:12px;}
-.login-input{background:var(--bg2);border:1px solid var(--faint);border-radius:8px;color:var(--text);font-family:"DM Mono",monospace;font-size:14px;padding:14px 16px;width:100%;outline:none;transition:border-color 0.2s;-webkit-appearance:none;}
-.login-input:focus{border-color:var(--gold-dim);}
-.login-input::placeholder{color:var(--muted);opacity:0.4;}
-.login-btn{padding:15px;background:var(--gold);border:none;border-radius:8px;font-family:"DM Mono",monospace;font-size:11px;letter-spacing:2px;color:#0a0a0a;font-weight:700;cursor:pointer;text-transform:uppercase;transition:opacity 0.2s;}
-.login-btn:active{opacity:0.8;}
-.login-switch{font-family:"DM Mono",monospace;font-size:9px;color:var(--muted);text-align:center;cursor:pointer;letter-spacing:1px;padding:8px;}
-.login-switch span{color:var(--gold);text-decoration:underline;}
-.login-error{font-family:"DM Mono",monospace;font-size:10px;color:var(--tempo);text-align:center;min-height:16px;}
-.login-loading{font-family:"DM Mono",monospace;font-size:10px;color:var(--muted);text-align:center;letter-spacing:2px;animation:pulse 1.4s infinite;}
 
+/* SYNC SCREEN */
+.sync-overlay{position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;}
+.sync-overlay.hidden{display:none;}
+.sync-title{font-family:'Playfair Display',serif;font-size:42px;font-weight:900;line-height:0.95;letter-spacing:-1px;margin-bottom:6px;text-align:center;}
+.sync-sub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--muted);margin-bottom:12px;text-align:center;}
+.sync-desc{font-size:13px;color:var(--muted);text-align:center;line-height:1.6;margin-bottom:32px;max-width:280px;}
+.sync-desc span{color:var(--text);}
+.sync-input{background:var(--bg2);border:1px solid var(--gold-dim);border-radius:8px;color:var(--text);font-family:'DM Mono',monospace;font-size:18px;padding:16px;width:100%;outline:none;text-align:center;letter-spacing:4px;margin-bottom:12px;-webkit-appearance:none;}
+.sync-btn{width:100%;padding:16px;background:var(--gold);border:none;border-radius:8px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;color:#0a0a0a;font-weight:700;cursor:pointer;text-transform:uppercase;}
+.sync-error{font-family:'DM Mono',monospace;font-size:10px;color:var(--tempo);text-align:center;margin-bottom:8px;min-height:16px;}
+.sync-loading{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-align:center;letter-spacing:2px;animation:pulse 1.4s infinite;display:none;margin-bottom:8px;}
 /* Screen shake */
 @keyframes shake{0%,100%{transform:translateX(0)}10%,30%,50%,70%,90%{transform:translateX(-6px)}20%,40%,60%,80%{transform:translateX(6px)}}
 .shaking{animation:shake 0.5s ease;}
@@ -333,20 +328,17 @@
   </style>
 </head>
 <body>
-<!-- ── LOGIN OVERLAY ── -->
-<div class="login-overlay" id="loginOverlay">
+<!-- SYNC OVERLAY -->
+<div class="sync-overlay" id="syncOverlay">
   <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);"></div>
   <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--gold);margin-bottom:16px;">BERLIN MARATHON 2026</div>
-  <div class="login-title">THE<br>RUNNER'S<br>LOG</div>
-  <div class="login-sub">SUB-3:00 · DEIN TRAINING</div>
-  <div class="login-form">
-    <input class="login-input" id="loginEmail" type="email" placeholder="Email" autocomplete="email"/>
-    <input class="login-input" id="loginPassword" type="password" placeholder="Passwort" autocomplete="current-password"/>
-    <div class="login-error" id="loginError"></div>
-    <button class="login-btn" id="loginBtn" onclick="handleLogin()">Einloggen</button>
-    <button class="login-btn" id="signupBtn" onclick="handleSignup()" style="background:var(--bg2);color:var(--text);border:1px solid var(--faint);">Registrieren</button>
-    <div class="login-loading" id="loginLoading" style="display:none;">LADEN...</div>
-  </div>
+  <div class="sync-title">THE<br>RUNNER'S<br>LOG</div>
+  <div class="sync-sub">SUB-3:00 · DEIN TRAINING</div>
+  <div class="sync-desc">Gib einen <span>persönlichen Sync-Code</span> ein. Damit werden deine Daten gespeichert — auf jedem Gerät abrufbar.</div>
+  <input class="sync-input" id="syncCode" type="text" placeholder="DEIN CODE" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"/>
+  <div class="sync-error" id="syncError"></div>
+  <div class="sync-loading" id="syncLoading">LADEN...</div>
+  <button class="sync-btn" onclick="handleSync()">Los gehts →</button>
 </div>
 
 <div id="toastEl" class="toast"></div>
@@ -720,7 +712,7 @@ let state={checked:{},coins:0,gearCollection:[],nutritionCollection:[],runnerCol
 let activeWeek=1,activePhase=0,runType='easy',activeAlbumTab='gear';
 
 function loadState(){try{const s=localStorage.getItem('runners_log_v5');if(s)state={...state,...JSON.parse(s)};}catch{}}
-function saveState(){try{localStorage.setItem('runners_log_v5',JSON.stringify(state));}catch{}}
+function saveState(){try{localStorage.setItem('runners_log_v5',JSON.stringify(state));}catch{} saveToCloud();}
 loadState();
 
 // ── HELPERS ───────────────────────────────────────────────────
@@ -1271,7 +1263,88 @@ function switchScreen(name){
   window.scrollTo(0,0);
 }
 
-// INIT handled by Supabase auth flow
+// ── SYNC CODE HANDLER ─────────────────────────────────────────
+const FIREBASE_URL = 'https://firestore.googleapis.com/v1/projects/marathon-tracker-49d16/databases/(default)/documents/users/';
+const API_KEY = 'AIzaSyBvhvy5HdZHly7oRAIZ2xXq8d3z5S6u__Q';
+let syncCode = null;
+
+async function handleSync(){
+  const code = document.getElementById('syncCode').value.trim().toUpperCase();
+  if(code.length < 3){ document.getElementById('syncError').textContent = 'Min. 3 Zeichen!'; return; }
+  document.getElementById('syncLoading').style.display = 'block';
+  document.getElementById('syncError').textContent = '';
+  syncCode = code;
+  localStorage.setItem('sync_code', code);
+  await loadCloudState();
+  document.getElementById('syncLoading').style.display = 'none';
+  document.getElementById('syncOverlay').classList.add('hidden');
+  initApp();
+}
+
+async function loadCloudState(){
+  try{
+    const r = await fetch(FIREBASE_URL + encodeURIComponent(syncCode) + '?key=' + API_KEY);
+    if(r.ok){
+      const d = await r.json();
+      if(d.fields){
+        const f = d.fields;
+        state = {
+          checked: f.checked ? JSON.parse(f.checked.stringValue) : {},
+          coins: f.coins ? parseInt(f.coins.integerValue) : 0,
+          gearCollection: f.gearCollection ? JSON.parse(f.gearCollection.stringValue) : [],
+          nutritionCollection: f.nutritionCollection ? JSON.parse(f.nutritionCollection.stringValue) : [],
+          runnerCollection: f.runnerCollection ? JSON.parse(f.runnerCollection.stringValue) : [],
+          unlockedAchievements: f.unlockedAchievements ? JSON.parse(f.unlockedAchievements.stringValue) : [],
+          claimedWeekCoins: f.claimedWeekCoins ? JSON.parse(f.claimedWeekCoins.stringValue) : {},
+          runs: f.runs ? JSON.parse(f.runs.stringValue) : [],
+          hannahClassicWeeks: f.hannahClassicWeeks ? parseInt(f.hannahClassicWeeks.integerValue) : 0,
+        };
+      }
+    }
+  }catch(e){ console.log('Cloud load failed', e); }
+}
+
+async function saveToCloud(){
+  if(!syncCode) return;
+  try{
+    await fetch(FIREBASE_URL + encodeURIComponent(syncCode) + '?key=' + API_KEY, {
+      method: 'PATCH',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({ fields: {
+        checked: {stringValue: JSON.stringify(state.checked)},
+        coins: {integerValue: state.coins},
+        gearCollection: {stringValue: JSON.stringify(state.gearCollection)},
+        nutritionCollection: {stringValue: JSON.stringify(state.nutritionCollection)},
+        runnerCollection: {stringValue: JSON.stringify(state.runnerCollection)},
+        unlockedAchievements: {stringValue: JSON.stringify(state.unlockedAchievements)},
+        claimedWeekCoins: {stringValue: JSON.stringify(state.claimedWeekCoins)},
+        runs: {stringValue: JSON.stringify(state.runs)},
+        hannahClassicWeeks: {integerValue: state.hannahClassicWeeks},
+      }})
+    });
+  }catch(e){ console.log('Cloud save failed', e); }
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+function initApp(){
+  const today=new Date();
+  const cw=PLAN.find(w=>{const end=addDays(w.weekStart.toISOString().split('T')[0],7);return today>=w.weekStart&&today<end;});
+  if(cw){activeWeek=cw.weekNum;activePhase=cw.phaseIndex;}
+  renderPlan();
+  const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  const isStandalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone;
+  if(isIOS&&!isStandalone)document.getElementById('installHint').classList.add('visible');
+}
+
+// Check for saved sync code
+const savedCode = localStorage.getItem('sync_code');
+if(savedCode){
+  syncCode = savedCode;
+  loadCloudState().then(() => {
+    document.getElementById('syncOverlay').classList.add('hidden');
+    initApp();
+  });
+}
 </script>
 
 <script>
@@ -1282,172 +1355,3 @@ const l2=document.createElement('link');l2.rel='manifest';l2.href=URL.createObje
 
 </body>
 </html>
-<script>
-// ── SUPABASE NATIVE FETCH ────────────────────────────────────
-const SUPABASE_URL = 'https://ymqmiesvrxcumcncudsx.supabase.co';
-const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltcW1pZXN2cnhjdW1jbmN1ZHN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4NzI5MDYsImV4cCI6MjA4OTQ0ODkwNn0.lCHv_e44uVnxccE_B4KdWSqdV_WYFxnPpSWzeQZlyJw';
-
-let authToken = null;
-let currentUserId = null;
-
-function getHeaders(token) {
-const h = { ‘Content-Type’: ‘application/json’, ‘apikey’: SUPABASE_KEY };
-if (token) h[‘Authorization’] = ’Bearer ’ + token;
-else h[‘Authorization’] = ’Bearer ’ + SUPABASE_KEY;
-return h;
-}
-
-async function sbSignUp(email, password) {
-const r = await fetch(SUPABASE_URL + ‘/auth/v1/signup’, {
-method: ‘POST’, headers: getHeaders(),
-body: JSON.stringify({ email, password })
-});
-const json = await r.json();
-console.log(‘signup response:’, JSON.stringify(json));
-return json;
-}
-
-async function sbSignIn(email, password) {
-const r = await fetch(SUPABASE_URL + ‘/auth/v1/token?grant_type=password’, {
-method: ‘POST’, headers: getHeaders(),
-body: JSON.stringify({ email, password })
-});
-const json = await r.json();
-console.log(‘signin response:’, JSON.stringify(json));
-return json;
-}
-
-async function sbGetRow(table, userId, token) {
-const r = await fetch(SUPABASE_URL + ‘/rest/v1/’ + table + ‘?id=eq.’ + userId, {
-headers: { …getHeaders(token), ‘Accept’: ‘application/json’ }
-});
-const data = await r.json();
-return Array.isArray(data) ? data[0] : null;
-}
-
-async function sbUpsertRow(table, row, token) {
-await fetch(SUPABASE_URL + ‘/rest/v1/’ + table, {
-method: ‘POST’,
-headers: { …getHeaders(token), ‘Prefer’: ‘resolution=merge-duplicates’ },
-body: JSON.stringify(row)
-});
-}
-
-// Session persistence
-function saveSession(token, userId) {
-try { localStorage.setItem(‘sb_session’, JSON.stringify({ token, userId })); } catch {}
-authToken = token; currentUserId = userId;
-}
-
-function loadSession() {
-try { return JSON.parse(localStorage.getItem(‘sb_session’) || ‘null’); } catch { return null; }
-}
-
-let currentUser = null;
-
-// ── AUTH ──────────────────────────────────────────────────────
-async function handleLogin() {
-const email = document.getElementById(‘loginEmail’).value.trim();
-const password = document.getElementById(‘loginPassword’).value;
-if (!email || !password) { setLoginError(‘Email und Passwort eingeben!’); return; }
-setLoginLoading(true);
-try {
-const data = await sbSignIn(email, password);
-setLoginLoading(false);
-if (data.error || !data.access_token) { setLoginError(data.error_description || ‘Falsche Daten!’); return; }
-saveSession(data.access_token, data.user.id);
-onLogin(data.user.id);
-} catch(e) { setLoginLoading(false); setLoginError(’Fehler: ’ + e.message); }
-}
-
-async function handleSignup() {
-const email = document.getElementById(‘loginEmail’).value.trim();
-const password = document.getElementById(‘loginPassword’).value;
-if (!email || !password) { setLoginError(‘Email und Passwort eingeben!’); return; }
-if (password.length < 6) { setLoginError(‘Passwort min. 6 Zeichen!’); return; }
-setLoginLoading(true);
-try {
-const data = await sbSignUp(email, password);
-setLoginLoading(false);
-if (data.error) { setLoginError(data.error_description || data.error); return; }
-if (!data.access_token) { setLoginError(‘Check deine Email!’); return; }
-saveSession(data.access_token, data.id);
-onLogin(data.id);
-} catch(e) { setLoginLoading(false); setLoginError(’Fehler: ’ + e.message); }
-}
-
-function setLoginError(msg) { document.getElementById(‘loginError’).textContent = msg; }
-function setLoginLoading(on) {
-document.getElementById(‘loginLoading’).style.display = on ? ‘block’ : ‘none’;
-document.getElementById(‘loginBtn’).style.display = on ? ‘none’ : ‘block’;
-document.getElementById(‘signupBtn’).style.display = on ? ‘none’ : ‘block’;
-}
-
-async function onLogin(userId) {
-currentUserId = userId;
-document.getElementById(‘loginOverlay’).classList.add(‘hidden’);
-await loadCloudState();
-initApp();
-}
-
-// ── CLOUD STATE ───────────────────────────────────────────────
-async function loadCloudState() {
-try {
-const data = await sbGetRow(‘game_state’, currentUserId, authToken);
-if (data) {
-state = {
-checked: data.checked || {},
-coins: data.coins || 0,
-gearCollection: data.gear_collection || [],
-nutritionCollection: data.nutrition_collection || [],
-runnerCollection: data.runner_collection || [],
-unlockedAchievements: data.unlocked_achievements || [],
-claimedWeekCoins: data.claimed_week_coins || {},
-runs: data.runs || [],
-hannahClassicWeeks: data.hannah_classic_weeks || 0,
-};
-}
-} catch(e) { console.log(‘Cloud load failed, using local’, e); }
-}
-
-async function saveState() {
-try { localStorage.setItem(‘runners_log_v5’, JSON.stringify(state)); } catch {}
-if (!currentUserId || !authToken) return;
-try {
-await sbUpsertRow(‘game_state’, {
-id: currentUserId,
-coins: state.coins,
-checked: state.checked,
-gear_collection: state.gearCollection,
-nutrition_collection: state.nutritionCollection,
-runner_collection: state.runnerCollection,
-unlocked_achievements: state.unlockedAchievements,
-claimed_week_coins: state.claimedWeekCoins,
-runs: state.runs,
-hannah_classic_weeks: state.hannahClassicWeeks,
-updated_at: new Date().toISOString(),
-}, authToken);
-} catch(e) { console.log(‘Cloud save failed’, e); }
-}
-
-function initApp() {
-const today = new Date();
-const cw = PLAN.find(w => { const end = addDays(w.weekStart.toISOString().split(‘T’)[0], 7); return today >= w.weekStart && today < end; });
-if (cw) { activeWeek = cw.weekNum; activePhase = cw.phaseIndex; }
-renderPlan();
-const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-const isStandalone = window.matchMedia(’(display-mode: standalone)’).matches || window.navigator.standalone;
-if (isIOS && !isStandalone) document.getElementById(‘installHint’).classList.add(‘visible’);
-}
-
-// ── CHECK SESSION ON LOAD ─────────────────────────────────────
-(async () => {
-const session = loadSession();
-if (session) {
-authToken = session.token;
-currentUserId = session.userId;
-onLogin(session.userId);
-}
-// else login screen stays visible
-})();
-</script>
