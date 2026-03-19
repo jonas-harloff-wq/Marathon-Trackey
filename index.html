@@ -11,7 +11,7 @@
   <title>SUB-3:00 — Berlin Marathon</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
@@ -1283,10 +1283,65 @@ const l2=document.createElement('link');l2.rel='manifest';l2.href=URL.createObje
 </body>
 </html>
 <script>
-// ── SUPABASE ──────────────────────────────────────────────────
+// ── SUPABASE NATIVE FETCH ────────────────────────────────────
 const SUPABASE_URL = 'https://ymqmiesvrxcumcncudsx.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InltcW1pZXN2cnhjdW1jbmN1ZHN4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM4NzI5MDYsImV4cCI6MjA4OTQ0ODkwNn0.lCHv_e44uVnxccE_B4KdWSqdV_WYFxnPpSWzeQZlyJw';
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY, { auth: { persistSession: true } });
+
+let authToken = null;
+let currentUserId = null;
+
+function getHeaders(token) {
+const h = { ‘Content-Type’: ‘application/json’, ‘apikey’: SUPABASE_KEY };
+if (token) h[‘Authorization’] = ’Bearer ’ + token;
+else h[‘Authorization’] = ’Bearer ’ + SUPABASE_KEY;
+return h;
+}
+
+async function sbSignUp(email, password) {
+const r = await fetch(SUPABASE_URL + ‘/auth/v1/signup’, {
+method: ‘POST’, headers: getHeaders(),
+body: JSON.stringify({ email, password })
+});
+const json = await r.json();
+console.log(‘signup response:’, JSON.stringify(json));
+return json;
+}
+
+async function sbSignIn(email, password) {
+const r = await fetch(SUPABASE_URL + ‘/auth/v1/token?grant_type=password’, {
+method: ‘POST’, headers: getHeaders(),
+body: JSON.stringify({ email, password })
+});
+const json = await r.json();
+console.log(‘signin response:’, JSON.stringify(json));
+return json;
+}
+
+async function sbGetRow(table, userId, token) {
+const r = await fetch(SUPABASE_URL + ‘/rest/v1/’ + table + ‘?id=eq.’ + userId, {
+headers: { …getHeaders(token), ‘Accept’: ‘application/json’ }
+});
+const data = await r.json();
+return Array.isArray(data) ? data[0] : null;
+}
+
+async function sbUpsertRow(table, row, token) {
+await fetch(SUPABASE_URL + ‘/rest/v1/’ + table, {
+method: ‘POST’,
+headers: { …getHeaders(token), ‘Prefer’: ‘resolution=merge-duplicates’ },
+body: JSON.stringify(row)
+});
+}
+
+// Session persistence
+function saveSession(token, userId) {
+try { localStorage.setItem(‘sb_session’, JSON.stringify({ token, userId })); } catch {}
+authToken = token; currentUserId = userId;
+}
+
+function loadSession() {
+try { return JSON.parse(localStorage.getItem(‘sb_session’) || ‘null’); } catch { return null; }
+}
 
 let currentUser = null;
 
@@ -1297,11 +1352,12 @@ const password = document.getElementById(‘loginPassword’).value;
 if (!email || !password) { setLoginError(‘Email und Passwort eingeben!’); return; }
 setLoginLoading(true);
 try {
-const { data, error } = await sb.auth.signInWithPassword({ email, password });
+const data = await sbSignIn(email, password);
 setLoginLoading(false);
-if (error) { setLoginError(error.message); return; }
-onLogin(data.user);
-} catch(e) { setLoginLoading(false); setLoginError(’Verbindungsfehler: ’ + e.message); }
+if (data.error || !data.access_token) { setLoginError(data.error_description || ‘Falsche Daten!’); return; }
+saveSession(data.access_token, data.user.id);
+onLogin(data.user.id);
+} catch(e) { setLoginLoading(false); setLoginError(’Fehler: ’ + e.message); }
 }
 
 async function handleSignup() {
@@ -1311,12 +1367,13 @@ if (!email || !password) { setLoginError(‘Email und Passwort eingeben!’); re
 if (password.length < 6) { setLoginError(‘Passwort min. 6 Zeichen!’); return; }
 setLoginLoading(true);
 try {
-const { data, error } = await sb.auth.signUp({ email, password });
+const data = await sbSignUp(email, password);
 setLoginLoading(false);
-if (error) { setLoginError(error.message); return; }
-if (data.user && !data.session) { setLoginError(‘Check deine Email — Bestätigungslink!’); return; }
-onLogin(data.user);
-} catch(e) { setLoginLoading(false); setLoginError(’Verbindungsfehler: ’ + e.message); }
+if (data.error) { setLoginError(data.error_description || data.error); return; }
+if (!data.access_token) { setLoginError(‘Check deine Email!’); return; }
+saveSession(data.access_token, data.id);
+onLogin(data.id);
+} catch(e) { setLoginLoading(false); setLoginError(’Fehler: ’ + e.message); }
 }
 
 function setLoginError(msg) { document.getElementById(‘loginError’).textContent = msg; }
@@ -1326,8 +1383,8 @@ document.getElementById(‘loginBtn’).style.display = on ? ‘none’ : ‘blo
 document.getElementById(‘signupBtn’).style.display = on ? ‘none’ : ‘block’;
 }
 
-async function onLogin(user) {
-currentUser = user;
+async function onLogin(userId) {
+currentUserId = userId;
 document.getElementById(‘loginOverlay’).classList.add(‘hidden’);
 await loadCloudState();
 initApp();
@@ -1335,7 +1392,8 @@ initApp();
 
 // ── CLOUD STATE ───────────────────────────────────────────────
 async function loadCloudState() {
-const { data, error } = await sb.from(‘game_state’).select(’*’).eq(‘id’, currentUser.id).single();
+try {
+const data = await sbGetRow(‘game_state’, currentUserId, authToken);
 if (data) {
 state = {
 checked: data.checked || {},
@@ -1349,15 +1407,15 @@ runs: data.runs || [],
 hannahClassicWeeks: data.hannah_classic_weeks || 0,
 };
 }
+} catch(e) { console.log(‘Cloud load failed, using local’, e); }
 }
 
 async function saveState() {
-// Always save locally as backup
 try { localStorage.setItem(‘runners_log_v5’, JSON.stringify(state)); } catch {}
-// Save to cloud
-if (!currentUser) return;
-await sb.from(‘game_state’).upsert({
-id: currentUser.id,
+if (!currentUserId || !authToken) return;
+try {
+await sbUpsertRow(‘game_state’, {
+id: currentUserId,
 coins: state.coins,
 checked: state.checked,
 gear_collection: state.gearCollection,
@@ -1368,7 +1426,8 @@ claimed_week_coins: state.claimedWeekCoins,
 runs: state.runs,
 hannah_classic_weeks: state.hannahClassicWeeks,
 updated_at: new Date().toISOString(),
-});
+}, authToken);
+} catch(e) { console.log(‘Cloud save failed’, e); }
 }
 
 function initApp() {
@@ -1383,9 +1442,11 @@ if (isIOS && !isStandalone) document.getElementById(‘installHint’).classList
 
 // ── CHECK SESSION ON LOAD ─────────────────────────────────────
 (async () => {
-const { data: { session } } = await sb.auth.getSession();
+const session = loadSession();
 if (session) {
-onLogin(session.user);
+authToken = session.token;
+currentUserId = session.userId;
+onLogin(session.userId);
 }
 // else login screen stays visible
 })();
