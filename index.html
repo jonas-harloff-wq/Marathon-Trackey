@@ -797,7 +797,7 @@ const ACHIEVEMENTS=[
   {id:"pwr_all",     icon:"🦾",name:"Full Body Runner", desc:"20 PWR Sessions abgeschlossen",   coins:100,xp:150, hannah:false,check:(s)=>Object.keys(s).filter(k=>k.includes('_strength')&&s[k]).length>=20},
 ];
 
-function addDays(ds,d){const x=new Date(ds);x.setDate(x.getDate()+d);return x;}
+function addDays(ds,d){const x=new Date(typeof ds==='string'?ds:ds.toISOString().split('T')[0]);x.setDate(x.getDate()+d);return x;}
 function fmtShort(d){return d.toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit'});}
 
 const PLAN=[];let wn=1;
@@ -1459,6 +1459,7 @@ function getBuffTimeLeft(type){
 
 function renderBuffs(){
   const section = document.getElementById('buffsSection');
+  if(!section) return;
   const active = [];
   if(isBuffActive('gel')) active.push(`<div class="active-buff"><div class="active-buff-dot"></div>⚡ Energy Gel · 2× Coins · ${getBuffTimeLeft('gel')}</div>`);
   if(isBuffActive('water')) active.push(`<div class="active-buff"><div class="active-buff-dot"></div>💧 Water Bottle · 2× XP · ${getBuffTimeLeft('water')}</div>`);
@@ -1496,7 +1497,7 @@ async function handleSync(){
   await loadCloudState();
   document.getElementById('syncLoading').style.display = 'none';
   document.getElementById('syncOverlay').classList.add('hidden');
-  initApp();
+  setTimeout(initApp, 100);
 }
 
 async function loadCloudState(){
@@ -1546,7 +1547,7 @@ async function saveToCloud(){
 // ── INIT ──────────────────────────────────────────────────────
 function initApp(){
   const today=new Date();
-  const cw=PLAN.find(w=>{const end=addDays(w.weekStart.toISOString().split('T')[0],7);return today>=w.weekStart&&today<end;});
+  const cw=PLAN.find(w=>{try{const ws=new Date(w.weekStart);const end=addDays(w.weekStart instanceof Date?w.weekStart.toISOString().split('T')[0]:w.weekStart,7);return today>=ws&&today<end;}catch(e){return false;}});
   if(cw){activeWeek=cw.weekNum;activePhase=cw.phaseIndex;}
   renderPlan();
   const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
@@ -1560,7 +1561,7 @@ if(savedCode){
   syncCode = savedCode;
   loadCloudState().then(() => {
     document.getElementById('syncOverlay').classList.add('hidden');
-    initApp();
+    setTimeout(initApp, 100);
   });
 }
 </script>
