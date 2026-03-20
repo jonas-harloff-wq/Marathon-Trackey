@@ -309,40 +309,93 @@
 .toast.show{transform:translateX(-50%) translateY(0);}
 
 
+/* SYNC */
 .sync-overlay{position:fixed;inset:0;background:var(--bg);z-index:1000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:32px;}
 .sync-overlay.hidden{display:none;}
-.sync-title{font-family:'Playfair Display',serif;font-size:42px;font-weight:900;line-height:0.95;letter-spacing:-1px;margin-bottom:6px;text-align:center;}
-.sync-sub{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--muted);margin-bottom:12px;text-align:center;}
-.sync-desc{font-size:13px;color:var(--muted);text-align:center;line-height:1.6;margin-bottom:28px;max-width:280px;}
-.sync-desc span{color:var(--text);}
 .sync-input{background:var(--bg2);border:1px solid var(--gold-dim);border-radius:8px;color:var(--text);font-family:'DM Mono',monospace;font-size:18px;padding:16px;width:100%;outline:none;text-align:center;letter-spacing:4px;margin-bottom:12px;-webkit-appearance:none;}
 .sync-btn{width:100%;padding:16px;background:var(--gold);border:none;border-radius:8px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;color:#0a0a0a;font-weight:700;cursor:pointer;text-transform:uppercase;}
-.sync-error{font-family:'DM Mono',monospace;font-size:10px;color:var(--tempo);text-align:center;margin-bottom:8px;min-height:16px;}
-.sync-loading{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-align:center;letter-spacing:2px;animation:pulse 1.4s infinite;display:none;margin-bottom:8px;}
-.usable-card{background:var(--bg2);border:1px solid var(--faint);border-radius:10px;padding:16px;display:flex;align-items:center;gap:14px;}
-.usable-icon{font-size:28px;flex-shrink:0;}
-.usable-info{flex:1;}
-.usable-name{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;margin-bottom:3px;}
-.usable-desc{font-size:12px;color:var(--muted);line-height:1.4;margin-bottom:8px;}
-.usable-buy{padding:8px 16px;border:none;border-radius:6px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1.5px;font-weight:700;cursor:pointer;text-transform:uppercase;background:var(--gold);color:#0a0a0a;}
-.usable-buy:disabled{background:var(--faint);color:var(--muted);cursor:not-allowed;}
-.active-buff{display:flex;align-items:center;gap:8px;padding:8px 14px;background:var(--bg3);border:1px solid var(--gold-dim);border-radius:6px;font-family:'DM Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:1px;margin:0 24px 6px;}
-.active-buff-dot{width:6px;height:6px;border-radius:50%;background:var(--easy);animation:pulse 1.2s infinite;flex-shrink:0;}
+.sync-error{font-family:'DM Mono',monospace;font-size:10px;color:var(--tempo);text-align:center;min-height:16px;margin-bottom:6px;}
+/* STRENGTH */
 .session-card.done-strength{background:#0f1a1a;border-color:#1a3535;}
-.session-card.done-strength .session-type{color:#2dd4bf;}
+.session-card.done-strength .session-type,.session-card.done-strength .session-reward{color:#2dd4bf;}
 .session-card.done-strength .session-label{color:var(--text);}
 .session-card.done-strength .checkbox{background:#2dd4bf;border-color:#2dd4bf;color:#0a0a0a;}
-.session-card.done-strength .session-reward{opacity:1;}
 .strength-modal{position:fixed;inset:0;background:rgba(5,4,3,0.96);z-index:400;display:none;flex-direction:column;align-items:center;justify-content:flex-start;padding:24px;overflow-y:auto;}
 .strength-modal.active{display:flex;}
-.exercise-card{width:100%;background:var(--bg2);border:1px solid var(--faint);border-radius:10px;padding:18px;margin-bottom:12px;}
-.exercise-name{font-family:'Playfair Display',serif;font-size:16px;font-weight:700;margin-bottom:4px;}
-.exercise-sets{font-family:'DM Mono',monospace;font-size:10px;color:var(--gold);letter-spacing:1px;margin-bottom:8px;}
-.exercise-desc{font-size:13px;color:var(--muted);line-height:1.6;}
-.exercise-check{width:100%;padding:12px;margin-top:12px;background:var(--faint);border:none;border-radius:6px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--muted);cursor:pointer;text-transform:uppercase;}
-.exercise-check.done{background:#0f1a1a;border:1px solid #1a3535;color:#2dd4bf;}
-.strength-complete-btn{width:100%;padding:16px;background:#2dd4bf;border:none;border-radius:8px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;color:#0a0a0a;font-weight:700;cursor:pointer;text-transform:uppercase;margin-top:8px;display:none;}
-.strength-complete-btn.visible{display:block;}
+.exercise-card{width:100%;background:var(--bg2);border:1px solid var(--faint);border-radius:10px;padding:16px;margin-bottom:12px;}
+.ex-check{width:100%;padding:10px;margin-top:10px;background:var(--faint);border:none;border-radius:6px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);cursor:pointer;text-transform:uppercase;}
+.ex-check.done{background:#0f1a1a;border:1px solid #1a3535;color:#2dd4bf;}
+.strength-done-btn{width:100%;padding:14px;background:#2dd4bf;border:none;border-radius:8px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;color:#0a0a0a;font-weight:700;cursor:pointer;text-transform:uppercase;display:none;}
+.strength-done-btn.visible{display:block;}
+/* USABLES */
+.usable-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--faint);}
+.usable-buy-btn{padding:7px 14px;border:none;border-radius:6px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:1px;font-weight:700;cursor:pointer;background:var(--gold);color:#0a0a0a;white-space:nowrap;}
+.usable-buy-btn:disabled{background:var(--faint);color:var(--muted);cursor:not-allowed;}
+.active-buff{display:flex;align-items:center;gap:8px;padding:7px 14px;background:var(--bg3);border:1px solid var(--gold-dim);border-radius:6px;font-family:'DM Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:1px;margin:0 24px 6px;}
+.buff-dot{width:6px;height:6px;border-radius:50%;background:var(--easy);animation:pulse 1.2s infinite;flex-shrink:0;}
+/* EGGS */
+.egg-slot{aspect-ratio:0.8;border:1px solid var(--faint);border-radius:12px;background:var(--bg2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:default;position:relative;overflow:hidden;}
+.egg-slot.has-egg{border-color:var(--gold-dim);}
+.egg-slot.ready{border-color:var(--easy);background:var(--easy-bg);cursor:pointer;animation:eggPulse 1.5s infinite;}
+@keyframes eggPulse{0%,100%{box-shadow:0 0 0 rgba(74,222,128,0)}50%{box-shadow:0 0 14px rgba(74,222,128,0.4)}}
+.egg-slot .e-icon{font-size:28px;}
+.egg-slot .e-type{font-family:'DM Mono',monospace;font-size:7px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;}
+.egg-slot .e-bar-wrap{width:75%;height:3px;background:var(--faint);border-radius:2px;overflow:hidden;}
+.egg-slot .e-bar-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--easy));}
+.egg-slot .e-km{font-family:'DM Mono',monospace;font-size:6px;color:var(--muted);}
+.egg-slot .e-empty{font-size:20px;opacity:0.12;}
+/* HATCH OVERLAY */
+.hatch-overlay{position:fixed;inset:0;background:#030202;z-index:500;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px;}
+.hatch-overlay.active{display:flex;}
+.hatch-egg-big{font-size:96px;cursor:pointer;line-height:1;-webkit-tap-highlight-color:transparent;}
+.hatch-egg-big:active{transform:scale(0.9);}
+.hatch-cracking{animation:hCrack 0.35s infinite;}
+@keyframes hCrack{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+.hatch-hint{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:3px;color:var(--gold);animation:pulse 1.4s infinite;margin-top:16px;}
+.animal-reveal{display:none;flex-direction:column;align-items:center;gap:12px;width:100%;}
+.animal-reveal.active{display:flex;}
+.animal-card{width:200px;border-radius:14px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:7px;border:2px solid var(--gold-dim);background:var(--bg2);position:relative;overflow:hidden;}
+.animal-card.shiny{border-color:var(--shiny);background:linear-gradient(135deg,#0f0820,#1a0f35);animation:shinyPulse 2s infinite;}
+.animal-card.shiny::before{content:'';position:absolute;inset:0;background:linear-gradient(45deg,transparent 30%,rgba(167,139,250,0.12) 50%,transparent 70%);animation:goldenSheen 2s infinite;}
+.a-emoji{font-size:58px;z-index:1;}
+.a-name{font-family:'Playfair Display',serif;font-size:16px;font-weight:900;text-align:center;z-index:1;}
+.a-title{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;color:var(--gold);z-index:1;}
+.a-pill{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1px;padding:3px 10px;border-radius:20px;z-index:1;}
+.a-pill.normal{background:var(--faint);color:var(--muted);}
+.a-pill.shiny{background:#1a0a2e;color:var(--shiny);border:1px solid var(--shiny);}
+.a-stat{display:flex;align-items:center;gap:5px;width:100%;}
+.a-stat-lbl{font-family:'DM Mono',monospace;font-size:7px;color:var(--muted);width:48px;}
+.a-stat-bar{flex:1;height:4px;background:var(--faint);border-radius:2px;overflow:hidden;}
+.a-stat-fill{height:100%;border-radius:2px;}
+.a-stat-num{font-family:'DM Mono',monospace;font-size:7px;color:var(--text);width:18px;text-align:right;}
+.hatch-close{padding:12px 28px;background:var(--bg2);border:1px solid var(--gold-dim);border-radius:8px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--gold);cursor:pointer;text-transform:uppercase;}
+/* MENAGERIE */
+.m-slot{border-radius:10px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;border:1px solid var(--gold-dim);background:var(--bg2);}
+.m-slot.shiny{border-color:var(--shiny);background:linear-gradient(135deg,#0f0820,#1a0f35);animation:shinyPulse 2.5s infinite;}
+
+.egg-slot.mythic-egg{border-color:#a78bfa;background:linear-gradient(135deg,#0f0820,#1a0f35);animation:shinyPulse 2s infinite;}
+.m-slot.mythic{border-color:#a78bfa;background:linear-gradient(135deg,#0f0820,#1a0f35);animation:shinyPulse 2s infinite;}
+.animal-card.mythic{border-color:#a78bfa;background:linear-gradient(135deg,#0f0820,#1a0f35,#0f0820);animation:shinyPulse 1.5s infinite;}
+.animal-card.mythic::before{content:'';position:absolute;inset:0;background:linear-gradient(45deg,transparent 30%,rgba(167,139,250,0.15) 50%,transparent 70%);animation:goldenSheen 1.5s infinite;}
+/* MENAGERIE CARD DETAIL */
+.menagerie-detail{position:fixed;inset:0;background:rgba(5,4,3,0.97);z-index:450;display:none;flex-direction:column;align-items:center;justify-content:center;padding:24px;}
+.menagerie-detail.active{display:flex;}
+.m-card-full{width:220px;border-radius:16px;padding:22px;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;overflow:hidden;}
+.m-card-full.common{border:2px solid var(--gold-dim);background:var(--bg2);}
+.m-card-full.rare{border:2px solid var(--long);background:linear-gradient(135deg,#0a1220,#162035);box-shadow:0 0 20px rgba(147,197,253,0.2);}
+.m-card-full.legendary{border:2px solid var(--ultra);background:linear-gradient(135deg,#1a0808,#200f20,#0f0820);animation:ultraGlow 2s infinite;}
+.m-card-full.mythic{border:2px solid var(--shiny);background:linear-gradient(135deg,#0f0820,#1a0f35,#0f0820);animation:shinyPulse 1.5s infinite;}
+.m-card-full::before{content:'';position:absolute;inset:0;background:linear-gradient(45deg,transparent 30%,rgba(255,255,255,0.05) 50%,transparent 70%);animation:goldenSheen 3s infinite;}
+.m-card-emoji{font-size:68px;z-index:1;}
+.m-card-name{font-family:'Playfair Display',serif;font-size:18px;font-weight:900;text-align:center;z-index:1;}
+.m-card-title{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;text-align:center;z-index:1;padding:0 8px;line-height:1.5;}
+.m-card-rarity{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;padding:3px 12px;border-radius:20px;z-index:1;}
+.m-card-rarity.common{background:var(--faint);color:var(--muted);}
+.m-card-rarity.rare{background:var(--long-bg);color:var(--long);border:1px solid var(--long-border);}
+.m-card-rarity.legendary{background:var(--tempo-bg);color:var(--ultra);border:1px solid var(--tempo-border);}
+.m-card-rarity.mythic{background:#1a0a2e;color:var(--shiny);border:1px solid var(--shiny);}
+.m-card-rarity.shiny::after{content:' ✨';}
+.m-card-stats{width:100%;display:flex;flex-direction:column;gap:4px;z-index:1;}
 /* Screen shake */
 @keyframes shake{0%,100%{transform:translateX(0)}10%,30%,50%,70%,90%{transform:translateX(-6px)}20%,40%,60%,80%{transform:translateX(6px)}}
 .shaking{animation:shake 0.5s ease;}
@@ -354,14 +407,77 @@
 <!-- SYNC OVERLAY -->
 <div class="sync-overlay" id="syncOverlay">
   <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);"></div>
-  <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--gold);margin-bottom:16px;">BERLIN MARATHON 2026</div>
-  <div class="sync-title">THE<br>RUNNER'S<br>LOG</div>
-  <div class="sync-sub">SUB-3:00 · DEIN TRAINING</div>
-  <div class="sync-desc">Gib einen <span>persönlichen Sync-Code</span> ein. Damit werden deine Daten gespeichert.</div>
+  <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--gold);margin-bottom:14px;">BERLIN MARATHON 2026</div>
+  <div style="font-family:'Playfair Display',serif;font-size:40px;font-weight:900;line-height:0.95;text-align:center;margin-bottom:6px;">THE<br>RUNNER'S<br>LOG</div>
+  <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--muted);margin-bottom:28px;">SUB-3:00</div>
+  <div style="font-size:13px;color:var(--muted);text-align:center;line-height:1.6;margin-bottom:20px;max-width:280px;">Gib einen <span style="color:var(--text);">Sync-Code</span> ein um deine Daten zu speichern.</div>
   <input class="sync-input" id="syncCode" type="text" placeholder="DEIN CODE" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"/>
   <div class="sync-error" id="syncError"></div>
-  <div class="sync-loading" id="syncLoading">LADEN...</div>
   <button class="sync-btn" onclick="handleSync()">Los gehts →</button>
+</div>
+
+<!-- HATCH OVERLAY -->
+
+<div class="hatch-overlay" id="hatchOverlay">
+  <div id="hatchParticles" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;"></div>
+  <div id="hatchPhase" style="display:flex;flex-direction:column;align-items:center;">
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--muted);margin-bottom:18px;">EI SCHLÜPFT</div>
+    <div class="hatch-egg-big" id="hatchEggEl" onclick="crackEgg()">🥚</div>
+    <div class="hatch-hint" id="hatchHint">▲ TIPPE ZUM ÖFFNEN ▲</div>
+    <button style="background:none;border:none;font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);cursor:pointer;letter-spacing:2px;margin-top:18px;" onclick="closeHatch()">Abbrechen</button>
+  </div>
+  <div class="animal-reveal" id="animalReveal">
+    <div style="font-family:'Playfair Display',serif;font-size:24px;font-weight:900;text-align:center;" id="revealTitle">Geschlüpft!</div>
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);text-align:center;" id="revealSub"></div>
+    <div class="animal-card" id="animalCard">
+      <div class="a-emoji" id="aEmoji">🐢</div>
+      <div class="a-name" id="aName">-</div>
+      <div class="a-title" id="aTitle">-</div>
+      <div class="a-pill normal" id="aPill">NORMAL</div>
+      <div id="aStats" style="width:100%;display:flex;flex-direction:column;gap:4px;z-index:1;"></div>
+    </div>
+    <button class="hatch-close" onclick="closeHatch()">Ins Menagerie →</button>
+  </div>
+</div>
+
+<!-- MENAGERIE DETAIL -->
+
+<div class="menagerie-detail" id="menagerieDetail">
+  <div id="menDetailParticles" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;"></div>
+  <div class="m-card-full common" id="mCardFull">
+    <div class="m-card-emoji" id="mCardEmoji">🐢</div>
+    <div class="m-card-name" id="mCardName">-</div>
+    <div class="m-card-title" id="mCardTitle">-</div>
+    <div class="m-card-rarity common" id="mCardRarity">COMMON</div>
+    <div class="m-card-stats" id="mCardStats"></div>
+  </div>
+  <button style="margin-top:20px;padding:12px 28px;background:var(--bg2);border:1px solid var(--gold-dim);border-radius:8px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--gold);cursor:pointer;text-transform:uppercase;" onclick="closeMenDetail()">← Zurück</button>
+</div>
+
+<!-- STRENGTH MODAL -->
+
+<div class="strength-modal" id="strengthModal">
+  <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:#2dd4bf;margin:20px 0 14px;">STRENGTH WORK · +5 🪙</div>
+  <div class="exercise-card">
+    <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;margin-bottom:3px;">Single Leg Squats</div>
+    <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:1px;margin-bottom:6px;">3 × 8 pro Seite</div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.5;">Einbeinig stehen, langsam in die Knie gehen. Anderes Bein in der Luft.</div>
+    <button class="ex-check" id="ex1" onclick="toggleEx(1)">✓ Erledigt</button>
+  </div>
+  <div class="exercise-card">
+    <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;margin-bottom:3px;">Calf Raises</div>
+    <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:1px;margin-bottom:6px;">3 × 20</div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.5;">Auf Treppenstufe, Ferse rüber. Zehenspitzen hoch, langsam runter.</div>
+    <button class="ex-check" id="ex2" onclick="toggleEx(2)">✓ Erledigt</button>
+  </div>
+  <div class="exercise-card">
+    <div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;margin-bottom:3px;">Glute Bridges</div>
+    <div style="font-family:'DM Mono',monospace;font-size:9px;color:var(--gold);letter-spacing:1px;margin-bottom:6px;">3 × 15</div>
+    <div style="font-size:13px;color:var(--muted);line-height:1.5;">Rücken, Knie angewinkelt. Hüfte hoch bis gerade Linie. Kurz halten.</div>
+    <button class="ex-check" id="ex3" onclick="toggleEx(3)">✓ Erledigt</button>
+  </div>
+  <button class="strength-done-btn" id="strDoneBtn" onclick="completeStrength()">💪 Abschließen · +5 🪙</button>
+  <button style="background:none;border:none;font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);cursor:pointer;letter-spacing:2px;padding:12px;text-transform:uppercase;" onclick="closeStrength()">Abbrechen</button>
 </div>
 
 <div id="toastEl" class="toast"></div>
@@ -448,7 +564,7 @@
     <div class="legend-item"><div class="legend-dot" style="background:var(--long)"></div><div class="legend-text">Long</div></div>
     <div class="legend-item"><div class="legend-dot" style="background:var(--tempo)"></div><div class="legend-text">Tempo</div></div>
   </div>
-  <div id="buffsSection" style="display:none;padding:0;"></div>
+  <div id="buffsSection" style="display:none;"></div>
   <div class="install-hint" id="installHint"><strong>Als App:</strong> Teilen ↑ → „Zum Home-Bildschirm"</div>
 </div>
 
@@ -549,6 +665,23 @@
         <button class="pack-buy-btn runner-btn" id="buyRunner" onclick="event.stopPropagation();openPack('runner')">🪙 50 Maratooneys</button>
       </div>
     </div>
+    <div style="background:linear-gradient(135deg,#0a1a0d,#0f0e0c);border:1px solid #2d5a2d;border-radius:12px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:12px;">
+      <div style="font-size:48px;cursor:pointer;" onclick="buyEggPack()">🥚</div>
+      <div style="text-align:center;width:100%;">
+        <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--easy);margin-bottom:4px;">Egg Pack</div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">3 Eier · Lauf sie aus · Tiere hatchen</div>
+        <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;">
+          <span style="font-family:'DM Mono',monospace;font-size:7px;padding:3px 8px;background:var(--faint);border-radius:20px;color:var(--muted);">🥚 5km 70%</span>
+          <span style="font-family:'DM Mono',monospace;font-size:7px;padding:3px 8px;background:var(--long-bg);border:1px solid var(--long-border);border-radius:20px;color:var(--long);">🔵 10km 20%</span>
+          <span style="font-family:'DM Mono',monospace;font-size:7px;padding:3px 8px;background:var(--tempo-bg);border:1px solid var(--tempo-border);border-radius:20px;color:var(--tempo);">🔴 20km 10%</span>
+        </div>
+        <button id="buyEggBtn" onclick="buyEggPack()" style="width:100%;padding:12px;background:var(--easy);border:none;border-radius:8px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;color:#0a1a0a;font-weight:700;cursor:pointer;text-transform:uppercase;">🪙 20 Maratooneys</button>
+      </div>
+    </div>
+    <div style="padding:14px;background:var(--bg2);border:1px solid var(--faint);border-radius:8px;">
+      <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);margin-bottom:10px;">USABLES</div>
+      <div id="usablesSection"></div>
+    </div>
     <div style="padding:14px;background:var(--bg2);border:1px solid var(--faint);border-radius:8px;">
       <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);margin-bottom:10px;">WIE VERDIENEN?</div>
       <div style="font-size:13px;color:var(--muted);line-height:1.9;">🏃 <span style="color:var(--text);">+10</span> pro Session &nbsp;·&nbsp; 📅 <span style="color:var(--text);">+50</span> Woche komplett<br>🔥 <span style="color:var(--text);">+200</span> Hannah Classic (50km Woche)</div>
@@ -583,6 +716,21 @@
   </div>
 </div>
 
+<!-- SCREEN: EGGS -->
+
+<div id="screen-eggs" class="screen">
+  <div class="screen-header">
+    <div class="issue-line">Eier &amp; Tiere</div>
+    <div class="screen-title">DEINE<br>EIER</div>
+    <div class="screen-sub" id="eggSub">0 Eier · 0 Tiere</div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px 24px;" id="eggGrid"></div>
+  <div style="padding:0 24px 20px;">
+    <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--muted);margin-bottom:12px;">MENAGERIE</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;" id="menGrid"></div>
+  </div>
+</div>
+
 <!-- ── SCREEN: ACHIEVEMENTS ── -->
 
 <div id="screen-achievements" class="screen">
@@ -594,32 +742,6 @@
   <div class="achievements-grid" id="achievementsList"></div>
 </div>
 
-<!-- STRENGTH MODAL -->
-
-<div class="strength-modal" id="strengthModal">
-  <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:#2dd4bf;margin:24px 0 16px;">STRENGTH WORK · +5 🪙</div>
-  <div class="exercise-card">
-    <div class="exercise-name">Single Leg Squats</div>
-    <div class="exercise-sets">3 × 8 pro Seite</div>
-    <div class="exercise-desc">Einbeinig auf einem Bein stehen, dann langsam in die Knie gehen. Anderes Bein in der Luft halten.</div>
-    <button class="exercise-check" id="ex1btn" onclick="toggleExercise(1)">✓ Erledigt</button>
-  </div>
-  <div class="exercise-card">
-    <div class="exercise-name">Calf Raises</div>
-    <div class="exercise-sets">3 × 20</div>
-    <div class="exercise-desc">Auf Treppenstufe, Ferse hängt rüber. Auf Zehenspitzen hochdrücken, langsam runter.</div>
-    <button class="exercise-check" id="ex2btn" onclick="toggleExercise(2)">✓ Erledigt</button>
-  </div>
-  <div class="exercise-card">
-    <div class="exercise-name">Glute Bridges</div>
-    <div class="exercise-sets">3 × 15</div>
-    <div class="exercise-desc">Auf dem Rücken liegen, Knie angewinkelt. Hüfte hochdrücken bis gerade Linie. Kurz halten.</div>
-    <button class="exercise-check" id="ex3btn" onclick="toggleExercise(3)">✓ Erledigt</button>
-  </div>
-  <button class="strength-complete-btn" id="strengthCompleteBtn" onclick="completeStrength()">💪 Abschließen · +5 🪙</button>
-  <button style="background:none;border:none;font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);cursor:pointer;letter-spacing:2px;padding:12px;text-transform:uppercase;" onclick="closeStrength()">Abbrechen</button>
-</div>
-
 <!-- BOTTOM NAV -->
 
 <div class="bottom-nav">
@@ -627,6 +749,7 @@
     <button class="nav-btn active" id="nav-plan" onclick="switchScreen('plan')"><span class="nav-icon">📋</span>Plan</button>
     <button class="nav-btn" id="nav-log" onclick="switchScreen('log')"><span class="nav-icon">🏃</span>Log</button>
     <button class="nav-btn" id="nav-store" onclick="switchScreen('store')"><span class="nav-icon">🛍️</span>Store</button>
+    <button class="nav-btn" id="nav-eggs" onclick="switchScreen('eggs')"><span class="nav-icon">🥚</span>Eier</button>
     <button class="nav-btn" id="nav-album" onclick="switchScreen('album')"><span class="nav-icon">📒</span>Album</button>
     <button class="nav-btn" id="nav-achievements" onclick="switchScreen('achievements')"><span class="nav-icon">🏅</span>Badges</button>
   </div>
@@ -736,10 +859,9 @@ const ACHIEVEMENTS=[
   {id:"kipchoge",   icon:"🐐",name:"In Good Company",  desc:"Kipchoge gezogen",                 coins:100,xp:100, hannah:false,check:(s,r,w,st,col,sh,go,ul,runners)=>runners.includes('kipchoge')},
   {id:"friend_six", icon:"👥",name:"The Squad",        desc:"Alle 6 Freunde gesammelt",         coins:150,xp:150, hannah:false,check:(s,r,w,st,col,sh,go,ul,runners)=>['hannah','papa','lucas','julius','julian','katharina'].every(id=>runners.includes(id))},
   {id:"hannah_classic",icon:"🔥",name:"HANNAH CLASSIC",desc:"50km+ in einer Woche geloggt",coins:200,xp:200,hannah:true,check:(s,r,w,st,col,sh,go,ul,runners,hannahWeeks)=>hannahWeeks>=1},
-  {id:"first_pwr",icon:"💪",name:"First Rep",desc:"Erste PWR Session abgeschlossen",coins:15,xp:20,hannah:false,check:(s)=>Object.keys(s).some(k=>k.includes('_strength')&&s[k])},
-  {id:"pwr5",icon:"🏋️",name:"Getting Stronger",desc:"5 PWR Sessions abgeschlossen",coins:30,xp:40,hannah:false,check:(s)=>Object.keys(s).filter(k=>k.includes('_strength')&&s[k]).length>=5},
-  {id:"pwr10",icon:"⚡",name:"Iron Legs",desc:"10 PWR Sessions abgeschlossen",coins:60,xp:80,hannah:false,check:(s)=>Object.keys(s).filter(k=>k.includes('_strength')&&s[k]).length>=10},
-  {id:"pwr_all",icon:"🦾",name:"Full Body Runner",desc:"20 PWR Sessions abgeschlossen",coins:100,xp:150,hannah:false,check:(s)=>Object.keys(s).filter(k=>k.includes('_strength')&&s[k]).length>=20},
+  {id:"first_pwr", icon:"💪",name:"First Rep",       desc:"Erste PWR Session",         coins:15, xp:20, hannah:false,check:(s)=>Object.keys(s).some(k=>k.includes('_strength')&&s[k])},
+  {id:"pwr5",      icon:"🏋️",name:"Getting Stronger",desc:"5 PWR Sessions",            coins:30, xp:40, hannah:false,check:(s)=>Object.keys(s).filter(k=>k.includes('_strength')&&s[k]).length>=5},
+  {id:"pwr10",     icon:"⚡",name:"Iron Legs",       desc:"10 PWR Sessions",           coins:60, xp:80, hannah:false,check:(s)=>Object.keys(s).filter(k=>k.includes('_strength')&&s[k]).length>=10},
 ];
 
 function addDays(ds,d){const x=new Date(ds);x.setDate(x.getDate()+d);return x;}
@@ -763,7 +885,7 @@ PHASES.forEach((p,pi)=>{
 const totalSessions=PLAN.reduce((s,w)=>s+w.sessions.length,0);
 
 // ── STATE ─────────────────────────────────────────────────────
-let state={checked:{},coins:0,gearCollection:[],nutritionCollection:[],runnerCollection:[],unlockedAchievements:[],claimedWeekCoins:{},runs:[],hannahClassicWeeks:0,buffs:{},bananaActive:false};
+let state={checked:{},coins:0,gearCollection:[],nutritionCollection:[],runnerCollection:[],unlockedAchievements:[],claimedWeekCoins:{},runs:[],hannahClassicWeeks:0,buffs:{},bananaActive:false,eggs:[],menagerie:[]};
 let activeWeek=1,activePhase=0,runType='easy',activeAlbumTab='gear';
 
 function loadState(){try{const s=localStorage.getItem('runners_log_v6');if(s)state={...state,...JSON.parse(s)};}catch{}}
@@ -1123,15 +1245,18 @@ function renderPlan(){
     <div class="sessions">
       ${week.sessions.map(s=>{
         const isDone=!!state.checked[s.id];
-        const tl=s.type==='easy'?'EASY':s.type==='long'?'LONG':s.type==='tempo'?'TEMPO':'PWR';
-        const isStr=s.type==='strength';
-        const oc=isStr&&!isDone?`openStrength('${s.id}')`:`toggleSession('${s.id}',${week.weekNum})`;
-        return`<div class="session-card ${isDone?`done-${s.type}`:''}" onclick="${oc}" style="${isStr&&!isDone?'border-color:#1a3535;':''}">
-          <div class="checkbox" style="${isStr&&!isDone?'border-color:#2dd4bf;':''}">${isDone?'✓':''}</div>
-          <div class="session-type" style="${isStr&&!isDone?'color:#2dd4bf;':''}">${tl}</div>
-          <div class="session-label">${s.label}</div>
-          <div class="session-reward">${isDone?'✓':'+'} ${isStr?'5':'10'}🪙</div>
-        </div>`;
+        var tl=s.type==='easy'?'EASY':s.type==='long'?'LONG':s.type==='tempo'?'TEMPO':'PWR';
+        var isStr=s.type==='strength';
+        var oc=isStr&&!isDone?"openStrength('"+s.id+"')":`toggleSession('${s.id}',${week.weekNum})`;
+        var strStyle=isStr&&!isDone?'border-color:#1a3535;':'';
+        var typeStyle=isStr&&!isDone?'color:#2dd4bf;':'';
+        var reward=isStr?'5':'10';
+        return'<div class="session-card '+(isDone?'done-'+s.type:'')+'" onclick="'+oc+'" style="'+strStyle+'">'
+          +'<div class="checkbox">'+(isDone?'✓':'')+'</div>'
+          +'<div class="session-type" style="'+typeStyle+'">'+tl+'</div>'
+          +'<div class="session-label">'+s.label+'</div>'
+          +'<div class="session-reward">'+(isDone?'✓':'+')+' '+reward+'🪙</div>'
+          +'</div>';
       }).join('')}
     </div>
     ${week.taper?`<div class="taper-note">Tapering — Volumen runter, Pace bleibt. Vertraue der Arbeit.</div>`:''}
@@ -1145,12 +1270,13 @@ function toggleSession(id,weekNum){
   const was=!!state.checked[id];
   state.checked[id]=!was;
   if(!was){
-    let coins=10;
-    if(isBuffActive('gel')){coins*=2;}
+    var coins=10;
+    if(isBuffActive('gel'))coins*=2;
     if(isBuffActive('banana')){coins+=20;state.bananaActive=false;}
     state.coins+=coins;
     showToast('+'+coins+' 🪙'+(coins>10?' 🔥':''));
-  }else state.coins=Math.max(0,state.coins-10);
+  }
+  else state.coins=Math.max(0,state.coins-10);
   const wb=!was&&checkWeekBonus(weekNum);
   const newA=checkAchievements();
   saveState();renderPlan();renderStore();
@@ -1187,6 +1313,7 @@ function logRun(){
   const pm=Math.floor(pps/60),ps=Math.round(pps%60).toString().padStart(2,'0');
   const run={id:Date.now(),type:runType,dist,time:ts,pace:`${pm}:${ps}`,date:new Date().toLocaleDateString('de-DE'),ts:Date.now()};
   state.runs.unshift(run);
+  addKmToEggs(dist);
 
   const wasHannah=state.hannahClassicWeeks||0;
   const hannahTriggered=checkHannahClassic();
@@ -1232,12 +1359,6 @@ function renderLog(){
 // ── RENDER STORE ──────────────────────────────────────────────
 function renderStore(){
   document.getElementById('storeCoins').textContent=state.coins;
-  const bg=document.getElementById('buyGel');const bw=document.getElementById('buyWater');
-  const bb=document.getElementById('buyBanana');const bf=document.getElementById('buyFoam');
-  if(bg){bg.disabled=state.coins<15||isBuffActive('gel');bg.textContent=isBuffActive('gel')?'Aktiv ✓':'🪙 15';}
-  if(bw){bw.disabled=state.coins<15||isBuffActive('water');bw.textContent=isBuffActive('water')?'Aktiv ✓':'🪙 15';}
-  if(bb){bb.disabled=state.coins<10||isBuffActive('banana');bb.textContent=isBuffActive('banana')?'Bereit ✓':'🪙 10';}
-  if(bf){bf.disabled=state.coins<30||isBuffActive('foam');bf.textContent=isBuffActive('foam')?'Bereit ✓':'🪙 30';}
   document.getElementById('buyGear').disabled=state.coins<10;
   document.getElementById('buyNutrition').disabled=state.coins<10;
   document.getElementById('buyRunner').disabled=state.coins<50;
@@ -1325,66 +1446,106 @@ function switchScreen(name){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById(`screen-${name}`).classList.add('active');
   document.getElementById(`nav-${name}`).classList.add('active');
-  if(name==='store')renderStore();
+  if(name==='store'){renderStore();renderUsables();}
+  if(name==='eggs')renderEggs();
   if(name==='album')renderAlbum();
   if(name==='achievements')renderAchievements();
   if(name==='log')renderLog();
   window.scrollTo(0,0);
 }
 
+// ── ANIMALS ───────────────────────────────────────────────────
+const ANIMALS={
+  common:[
+    {id:"s_turtle",  emoji:"🐢",name:"Speedy Turtle",      title:"The Slow Grinder",         speed:20,stamina:95,vibe:70,  rarity:"common"},
+    {id:"j_rabbit",  emoji:"🐰",name:"Jogger Rabbit",      title:"Always Late to Start",     speed:75,stamina:65,vibe:80,  rarity:"common"},
+    {id:"t_hamster", emoji:"🐹",name:"Track Hamster",      title:"Wheel Never Stops",        speed:55,stamina:70,vibe:90,  rarity:"common"},
+    {id:"p_pigeon",  emoji:"🕊️",name:"Pace Pigeon",       title:"The City Flyer",           speed:65,stamina:60,vibe:75,  rarity:"common"},
+    {id:"m_mouse",   emoji:"🐭",name:"Marathon Mouse",     title:"Tiny But Mighty",          speed:50,stamina:80,vibe:85,  rarity:"common"},
+  ],
+  rare:[
+    {id:"keta_kang", emoji:"🦘",name:"Keta Kangaroo",      title:"Bouncing Since 3AM",       speed:85,stamina:75,vibe:99,  rarity:"rare"},
+    {id:"sp_giraffe",emoji:"🦒",name:"Speedy Giraffe",     title:"Long Stride Energy",       speed:80,stamina:70,vibe:78,  rarity:"rare"},
+    {id:"n_cheetah", emoji:"🐆",name:"Nitro Cheetah",      title:"0 to 100 Real Quick",      speed:99,stamina:45,vibe:88,  rarity:"rare"},
+    {id:"e_elephant",emoji:"🐘",name:"Enduro Elephant",    title:"Never Stops Moving",       speed:40,stamina:99,vibe:72,  rarity:"rare"},
+    {id:"z2_zebra",  emoji:"🦓",name:"Zone2 Zebra",        title:"Heart Rate Police",        speed:60,stamina:88,vibe:65,  rarity:"rare"},
+  ],
+  legendary:[
+    {id:"coke_gorilla",  emoji:"🦍",name:"Coke Gorilla",        title:"Wall Street Sprinter",   speed:99,stamina:80,vibe:100, rarity:"legendary"},
+    {id:"weed_wombat",   emoji:"🦡",name:"Weed Wombat",         title:"Chill but Deadly Pace",  speed:70,stamina:99,vibe:100, rarity:"legendary"},
+    {id:"crystal_uni",   emoji:"🦄",name:"Crystal Unicorn",     title:"Mythical PR Machine",    speed:95,stamina:95,vibe:99,  rarity:"legendary"},
+    {id:"turbo_tiger",   emoji:"🐯",name:"Turbo Tiger",         title:"Fuel: Pure Aggression",  speed:98,stamina:82,vibe:90,  rarity:"legendary"},
+    {id:"molly_dolphin", emoji:"🐬",name:"Molly Dolphin",       title:"Euphoric Endurance",     speed:88,stamina:97,vibe:100, rarity:"legendary"},
+    {id:"speed_ostrich", emoji:"🦤",name:"Speed Demon Ostrich", title:"No Brakes No Fear",      speed:97,stamina:75,vibe:88,  rarity:"legendary"},
+    {id:"mdma_marmot",   emoji:"🦫",name:"MDMA Marmot",         title:"Everyone loves this one",speed:72,stamina:90,vibe:100, rarity:"legendary"},
+  ],
+  mythic:[
+    {id:"arya",  emoji:"🐱",name:"Arya",  title:"British Shorthair · The Silent Predator",  speed:88,stamina:92,vibe:99,  rarity:"mythic"},
+    {id:"neela", emoji:"🐱",name:"Neela", title:"British Shorthair · Blue Steel Energy",    speed:91,stamina:89,vibe:99,  rarity:"mythic"},
+    {id:"merle", emoji:"🐈",name:"Merle", title:"OG · RIP Legend · GOAT",                   speed:99,stamina:99,vibe:99,  rarity:"mythic"},
+    {id:"tinka", emoji:"🐈",name:"Tinka", title:"OG · RIP Legend · GOAT",                   speed:99,stamina:99,vibe:99,  rarity:"mythic"},
+  ],
+};
+const EGG_KM={common:5,rare:10,legendary:20,mythic:30};
+const EGG_ICON={common:"🥚",rare:"🔵",legendary:"🔴",mythic:"⚡"};
+function eggVisual(type){
+  var c={rare:"#93c5fd",legendary:"#ff6b6b",mythic:"#a78bfa"};
+  var l={rare:"RARE",legendary:"LEGENDARY",mythic:"MYTHIC"};
+  if(c[type])return "<div style='font-size:28px;filter:drop-shadow(0 0 8px "+c[type]+");'>🥚</div><div style='font-family:monospace;font-size:6px;color:"+c[type]+";'>"+l[type]+"</div>";
+  return "<div style='font-size:28px;'>🥚</div>";
+}
+function hatchEggVisual(type){
+  var s={rare:"drop-shadow(0 0 14px #93c5fd)",legendary:"drop-shadow(0 0 18px #ff6b6b)",mythic:"drop-shadow(0 0 22px #a78bfa)"};
+  return "<span style='font-size:96px;filter:"+(s[type]||"none")+";line-height:1;'>🥚</span>";
+}
+function rollEggType(){var r=Math.random();return r<0.02?"mythic":r<0.12?"legendary":r<0.32?"rare":"common";}
+
 // ── FIREBASE SYNC ─────────────────────────────────────────────
-const FB_URL='https://firestore.googleapis.com/v1/projects/marathon-tracker-49d16/databases/(default)/documents/users/';
-const FB_KEY='AIzaSyBvhvy5HdZHly7oRAIZ2xXq8d3z5S6u__Q';
-let syncCode=null;
+var FB_URL="https://firestore.googleapis.com/v1/projects/marathon-tracker-49d16/databases/(default)/documents/users/";
+var FB_KEY="AIzaSyBvhvy5HdZHly7oRAIZ2xXq8d3z5S6u__Q";
+var syncCode=null;
 
 async function handleSync(){
-  const code=document.getElementById('syncCode').value.trim().toUpperCase();
-  if(code.length<3){document.getElementById('syncError').textContent='Min. 3 Zeichen!';return;}
-  document.getElementById('syncLoading').style.display='block';
-  document.getElementById('syncError').textContent='';
+  var code=document.getElementById("syncCode").value.trim().toUpperCase();
+  if(code.length<3){document.getElementById("syncError").textContent="Min. 3 Zeichen!";return;}
+  document.getElementById("syncError").textContent="Laden...";
   syncCode=code;
-  try{localStorage.setItem('sync_code',code);}catch(e){}
+  try{localStorage.setItem("sync_code",code);}catch(e){}
   await loadCloudState();
-  document.getElementById('syncLoading').style.display='none';
-  document.getElementById('syncOverlay').classList.add('hidden');
+  document.getElementById("syncOverlay").classList.add("hidden");
+  document.getElementById("syncError").textContent="";
   initApp();
 }
 
 async function loadCloudState(){
   if(!syncCode)return;
   try{
-    const r=await fetch(FB_URL+encodeURIComponent(syncCode)+'?key='+FB_KEY);
+    var r=await fetch(FB_URL+encodeURIComponent(syncCode)+"?key="+FB_KEY);
     if(r.ok){
-      const d=await r.json();
+      var d=await r.json();
       if(d.fields){
-        const f=d.fields;
-        const parse=(k)=>f[k]?JSON.parse(f[k].stringValue):undefined;
-        const int=(k)=>f[k]?parseInt(f[k].integerValue):undefined;
-        const bool=(k)=>f[k]?f[k].booleanValue:undefined;
+        var f=d.fields;
+        function p(k){return f[k]?JSON.parse(f[k].stringValue):null;}
+        function n(k){return f[k]?parseInt(f[k].integerValue):0;}
+        function b(k){return f[k]?f[k].booleanValue:false;}
         state={
-          checked:parse('checked')||{},
-          coins:int('coins')||0,
-          gearCollection:parse('gearCollection')||[],
-          nutritionCollection:parse('nutritionCollection')||[],
-          runnerCollection:parse('runnerCollection')||[],
-          unlockedAchievements:parse('unlockedAchievements')||[],
-          claimedWeekCoins:parse('claimedWeekCoins')||{},
-          runs:parse('runs')||[],
-          hannahClassicWeeks:int('hannahClassicWeeks')||0,
-          buffs:parse('buffs')||{},
-          bananaActive:bool('bananaActive')||false,
+          checked:p("checked")||{},coins:n("coins"),
+          gearCollection:p("gearCollection")||[],nutritionCollection:p("nutritionCollection")||[],
+          runnerCollection:p("runnerCollection")||[],unlockedAchievements:p("unlockedAchievements")||[],
+          claimedWeekCoins:p("claimedWeekCoins")||{},runs:p("runs")||[],
+          hannahClassicWeeks:n("hannahClassicWeeks"),buffs:p("buffs")||{},
+          bananaActive:b("bananaActive"),eggs:p("eggs")||[],menagerie:p("menagerie")||[],
         };
       }
     }
-  }catch(e){console.log('load fail',e);}
+  }catch(e){console.log("load fail",e);}
 }
 
 async function saveToCloud(){
   if(!syncCode)return;
   try{
-    await fetch(FB_URL+encodeURIComponent(syncCode)+'?key='+FB_KEY,{
-      method:'PATCH',
-      headers:{'Content-Type':'application/json'},
+    await fetch(FB_URL+encodeURIComponent(syncCode)+"?key="+FB_KEY,{
+      method:"PATCH",headers:{"Content-Type":"application/json"},
       body:JSON.stringify({fields:{
         checked:{stringValue:JSON.stringify(state.checked)},
         coins:{integerValue:String(state.coins)},
@@ -1395,102 +1556,289 @@ async function saveToCloud(){
         claimedWeekCoins:{stringValue:JSON.stringify(state.claimedWeekCoins)},
         runs:{stringValue:JSON.stringify(state.runs)},
         hannahClassicWeeks:{integerValue:String(state.hannahClassicWeeks)},
-        buffs:{stringValue:JSON.stringify(state.buffs)},
-        bananaActive:{booleanValue:state.bananaActive},
+        buffs:{stringValue:JSON.stringify(state.buffs||{})},
+        bananaActive:{booleanValue:!!state.bananaActive},
+        eggs:{stringValue:JSON.stringify(state.eggs||[])},
+        menagerie:{stringValue:JSON.stringify(state.menagerie||[])},
       }})
     });
-  }catch(e){console.log('save fail',e);}
+  }catch(e){console.log("save fail",e);}
 }
 
 // ── USABLES ───────────────────────────────────────────────────
-const USABLE_COSTS={gel:15,water:15,banana:10,foam:30};
-function buyUsable(type){
-  const cost=USABLE_COSTS[type];
-  if(state.coins<cost){showToast('Nicht genug Maratooneys!');return;}
-  state.coins-=cost;
-  const expiry=Date.now()+60*60*1000;
-  if(type==='gel')state.buffs.gel=expiry;
-  else if(type==='water')state.buffs.water=expiry;
-  else if(type==='banana')state.bananaActive=true;
-  else if(type==='foam')state.buffs.foam=true;
-  saveState();renderStore();renderPlan();
-  const names={gel:'⚡ Energy Gel aktiv! 2× Coins für 1h',water:'💧 Water Bottle aktiv! 2× XP für 1h',banana:'🍌 Race Banana ready!',foam:'🫧 Recovery Foam ready!'};
-  showToast(names[type]);
-}
-function isBuffActive(type){
-  if(type==='gel'||type==='water')return state.buffs&&state.buffs[type]&&Date.now()<state.buffs[type];
-  if(type==='banana')return state.bananaActive;
-  if(type==='foam')return state.buffs&&state.buffs.foam;
+var USABLES=[
+  {id:"gel",   icon:"⚡",name:"Energy Gel",    desc:"2× Coins 1h",        cost:15},
+  {id:"water", icon:"💧",name:"Water Bottle",  desc:"2× XP 1h",           cost:15},
+  {id:"banana",icon:"🍌",name:"Race Banana",   desc:"+20 nächste Session", cost:10},
+  {id:"foam",  icon:"🫧",name:"Recovery Foam", desc:"Streak geschützt",    cost:30},
+];
+function isBuffActive(t){
+  if(t==="gel"||t==="water")return state.buffs&&state.buffs[t]&&Date.now()<state.buffs[t];
+  if(t==="banana")return!!state.bananaActive;
+  if(t==="foam")return!!(state.buffs&&state.buffs.foam);
   return false;
 }
-function getBuffTimeLeft(type){
-  if(!state.buffs||!state.buffs[type])return'';
-  const mins=Math.ceil((state.buffs[type]-Date.now())/60000);
-  return mins>0?mins+'min':'';
+function getBuffMins(t){
+  if(!state.buffs||!state.buffs[t])return"";
+  var m=Math.ceil((state.buffs[t]-Date.now())/60000);
+  return m>0?m+"min":"";
+}
+function buyUsable(t){
+  var u=USABLES.find(function(x){return x.id===t;});
+  if(!u||state.coins<u.cost){showToast("Nicht genug Maratooneys!");return;}
+  state.coins-=u.cost;
+  var exp=Date.now()+3600000;
+  if(t==="gel")state.buffs.gel=exp;
+  else if(t==="water")state.buffs.water=exp;
+  else if(t==="banana")state.bananaActive=true;
+  else if(t==="foam")state.buffs.foam=true;
+  saveState();renderStore();renderPlan();
+  showToast(u.icon+" "+u.name+" aktiv!");
+}
+function renderUsables(){
+  var el=document.getElementById("usablesSection");
+  if(!el)return;
+  var h="";
+  USABLES.forEach(function(u){
+    var active=isBuffActive(u.id);
+    var mins=getBuffMins(u.id);
+    var disabled=state.coins<u.cost||active;
+    h+="<div class='usable-row'>";
+    h+="<div style='font-size:20px;'>"+u.icon+"</div>";
+    h+="<div style='flex:1;'><div style='font-size:13px;font-weight:500;'>"+u.name+"</div><div style='font-size:11px;color:var(--muted);'>"+u.desc+"</div></div>";
+    h+="<button class='usable-buy-btn' "+(disabled?'disabled':"onclick=\"buyUsable('"+u.id+"')\"")+">";
+    h+=active?(mins||"✓"):("🪙"+u.cost);
+    h+="</button></div>";
+  });
+  el.innerHTML=h;
 }
 function renderBuffs(){
-  const active=[];
-  if(isBuffActive('gel'))active.push('<div class="active-buff"><div class="active-buff-dot"></div>⚡ Energy Gel · 2× Coins · '+getBuffTimeLeft('gel')+'</div>');
-  if(isBuffActive('water'))active.push('<div class="active-buff"><div class="active-buff-dot"></div>💧 Water Bottle · 2× XP · '+getBuffTimeLeft('water')+'</div>');
-  if(isBuffActive('banana'))active.push('<div class="active-buff"><div class="active-buff-dot"></div>🍌 Race Banana · +20 nächste Session</div>');
-  if(isBuffActive('foam'))active.push('<div class="active-buff"><div class="active-buff-dot"></div>🫧 Recovery Foam · Streak geschützt</div>');
-  const el=document.getElementById('buffsSection');
-  if(el){el.innerHTML=active.join('');el.style.display=active.length?'block':'none';}
+  var el=document.getElementById("buffsSection");
+  if(!el)return;
+  var h="";
+  if(isBuffActive("gel"))h+="<div class='active-buff'><div class='buff-dot'></div>⚡ Energy Gel · 2× Coins · "+getBuffMins("gel")+"</div>";
+  if(isBuffActive("water"))h+="<div class='active-buff'><div class='buff-dot'></div>💧 Water Bottle · 2× XP · "+getBuffMins("water")+"</div>";
+  if(isBuffActive("banana"))h+="<div class='active-buff'><div class='buff-dot'></div>🍌 Race Banana · +20 nächste Session</div>";
+  if(isBuffActive("foam"))h+="<div class='active-buff'><div class='buff-dot'></div>🫧 Recovery Foam · Streak geschützt</div>";
+  el.innerHTML=h;
+  el.style.display=h?"block":"none";
 }
 
 // ── STRENGTH ──────────────────────────────────────────────────
-let strengthSessionId=null;
-let exDone={1:false,2:false,3:false};
+var strSessionId=null;var exDone={1:false,2:false,3:false};
 function openStrength(id){
-  strengthSessionId=id;exDone={1:false,2:false,3:false};
-  [1,2,3].forEach(i=>{const b=document.getElementById('ex'+i+'btn');if(b){b.classList.remove('done');b.textContent='✓ Erledigt';}});
-  const cb=document.getElementById('strengthCompleteBtn');if(cb)cb.classList.remove('visible');
-  const m=document.getElementById('strengthModal');if(m)m.classList.add('active');
+  strSessionId=id;exDone={1:false,2:false,3:false};
+  [1,2,3].forEach(function(i){var b=document.getElementById("ex"+i);if(b){b.classList.remove("done");b.textContent="✓ Erledigt";}});
+  var db=document.getElementById("strDoneBtn");if(db)db.classList.remove("visible");
+  var m=document.getElementById("strengthModal");if(m)m.classList.add("active");
 }
-function toggleExercise(n){
+function toggleEx(n){
   exDone[n]=!exDone[n];
-  const btn=document.getElementById('ex'+n+'btn');
-  if(btn){btn.classList.toggle('done',exDone[n]);btn.textContent=exDone[n]?'✓ Done!':'✓ Erledigt';}
-  const cb=document.getElementById('strengthCompleteBtn');
-  if(cb)cb.classList.toggle('visible',exDone[1]&&exDone[2]&&exDone[3]);
+  var b=document.getElementById("ex"+n);if(b){b.classList.toggle("done",exDone[n]);b.textContent=exDone[n]?"✓ Done!":"✓ Erledigt";}
+  var db=document.getElementById("strDoneBtn");if(db)db.classList.toggle("visible",exDone[1]&&exDone[2]&&exDone[3]);
 }
 function completeStrength(){
-  if(strengthSessionId){
-    state.checked[strengthSessionId]=true;state.coins+=5;
-    const newA=checkAchievements();saveState();renderPlan();renderStore();
-    showToast('+5 🪙 Strength done!');
-    newA.forEach((a,i)=>setTimeout(()=>showToast('🏅 '+a.name+'! +'+a.coins+'🪙'),1200+i*800));
-  }
+  if(strSessionId){state.checked[strSessionId]=true;state.coins+=5;checkAchievements();saveState();renderPlan();renderStore();showToast("+5 🪙 Strength done!");}
   closeStrength();
 }
-function closeStrength(){const m=document.getElementById('strengthModal');if(m)m.classList.remove('active');strengthSessionId=null;}
+function closeStrength(){var m=document.getElementById("strengthModal");if(m)m.classList.remove("active");strSessionId=null;}
+
+// ── EGGS ──────────────────────────────────────────────────────
+function buyEggPack(){
+  if(state.coins<20){showToast("Nicht genug Maratooneys!");return;}
+  if(!state.eggs)state.eggs=[];
+  if(state.eggs.length>=9){showToast("Max 9 Eier!");return;}
+  state.coins-=20;
+  var slots=Math.min(3,9-state.eggs.length);
+  for(var i=0;i<slots;i++){state.eggs.push({id:Date.now()+i,type:rollEggType(),progress:0,ready:false});}
+  saveState();renderEggs();renderStore();renderPlan();
+  showToast("🥚 "+slots+" neue Eier!");
+}
+function addKmToEggs(km){
+  if(!state.eggs||!state.eggs.length)return;
+  var anyReady=false;
+  state.eggs=state.eggs.map(function(e){
+    if(e.ready)return e;
+    e.progress=(e.progress||0)+km;
+    if(e.progress>=EGG_KM[e.type]){e.ready=true;anyReady=true;}
+    return e;
+  });
+  if(anyReady){renderEggs();showToast("🥚 Ei bereit!");}
+}
+var hatchingEgg=null;var hatchIdx=-1;var hatchDone=false;
+function openHatchFor(i){
+  var egg=state.eggs[i];
+  if(!egg||!egg.ready)return;
+  hatchingEgg=egg;hatchIdx=i;hatchDone=false;
+  document.getElementById("hatchEggEl").innerHTML=hatchEggVisual(egg.type);
+  document.getElementById("hatchEggEl").className="hatch-egg-big";
+  document.getElementById("hatchHint").style.display="block";
+  document.getElementById("hatchPhase").style.display="flex";
+  document.getElementById("animalReveal").classList.remove("active");
+  document.getElementById("hatchParticles").innerHTML="";
+  document.getElementById("hatchOverlay").classList.add("active");
+}
+function crackEgg(){
+  if(hatchDone||!hatchingEgg)return;
+  hatchDone=true;
+  var el=document.getElementById("hatchEggEl");
+  el.classList.add("hatch-cracking");
+  document.getElementById("hatchHint").style.display="none";
+  burstP("hatchParticles",20,["#c9a84c","#4ade80","#ffd700"]);
+  setTimeout(function(){
+    var pool=ANIMALS[hatchingEgg.type]||ANIMALS.common;
+    var animal=pool[Math.floor(Math.random()*pool.length)];
+    var shiny=Math.random()<0.05;
+    var result=Object.assign({},animal,{shiny:shiny,eggType:hatchingEgg.type,ts:Date.now()});
+    if(!state.menagerie)state.menagerie=[];
+    var isDuplicate=state.menagerie.some(function(m){return m.id===result.id&&!m.shiny===!result.shiny;});
+    if(isDuplicate){
+      state.coins+=5;
+      state.eggs.splice(hatchIdx,1);
+      checkAchievements();saveState();renderEggs();
+      setTimeout(function(){showToast("Duplikat! +5 🪙");},800);
+    }else{
+      state.menagerie.push(result);
+      state.eggs.splice(hatchIdx,1);
+      checkAchievements();saveState();renderEggs();
+    }
+    el.classList.remove("hatch-cracking");el.textContent=animal.emoji;
+    setTimeout(function(){
+      document.getElementById("hatchPhase").style.display="none";
+      document.getElementById("animalReveal").classList.add("active");
+      document.getElementById("revealTitle").textContent=shiny?"✨ SHINY!":(hatchingEgg.type==="mythic"?"⚡ MYTHIC!":"Geschlüpft!");
+      document.getElementById("revealSub").textContent=animal.name+" · "+animal.title;
+      var card=document.getElementById("animalCard");
+      card.className="animal-card "+(shiny?"shiny":(result.eggType||"common"));
+      document.getElementById("aEmoji").textContent=animal.emoji;
+      document.getElementById("aName").textContent=animal.name;
+      document.getElementById("aTitle").textContent=animal.title;
+      var pill=document.getElementById("aPill");
+      pill.className="a-pill "+(shiny?"shiny":"normal");
+      pill.textContent=shiny?"✨ SHINY":hatchingEgg.type.toUpperCase();
+      var sc={speed:"#fca5a5",stamina:"#93c5fd",vibe:"#4ade80"};
+      var sh="";
+      ["speed","stamina","vibe"].forEach(function(s){
+        sh+="<div class='a-stat'><div class='a-stat-lbl'>"+s.toUpperCase()+"</div>";
+        sh+="<div class='a-stat-bar'><div class='a-stat-fill' style='width:"+animal[s]+"%;background:"+sc[s]+";height:100%;border-radius:2px;'></div></div>";
+        sh+="<div class='a-stat-num'>"+animal[s]+"</div></div>";
+      });
+      document.getElementById("aStats").innerHTML=sh;
+      if(shiny)burstP("hatchParticles",40,["#a78bfa","#c4b5fd","#fff"]);
+      else if(hatchingEgg.type==="mythic")burstP("hatchParticles",50,["#a78bfa","#c4b5fd","#fff","#ffd700"]);
+      else if(hatchingEgg.type==="legendary")burstP("hatchParticles",30,["#ff6b6b","#ffd700"]);
+    },600);
+  },1000);
+}
+function closeHatch(){document.getElementById("hatchOverlay").classList.remove("active");hatchingEgg=null;hatchIdx=-1;hatchDone=false;switchScreen("eggs");}
+function burstP(cid,count,colors){
+  var c=document.getElementById(cid);if(!c)return;c.innerHTML="";
+  for(var i=0;i<count;i++){
+    var p=document.createElement("div");var w=3+Math.random()*5;
+    p.style.cssText="position:absolute;left:"+(40+Math.random()*20)+"%;top:"+(30+Math.random()*30)+"%;background:"+colors[i%colors.length]+";width:"+w+"px;height:"+w+"px;border-radius:50%;opacity:1;transition:transform "+(0.6+Math.random()*0.8)+"s ease-out,opacity 0.8s ease-out;";
+    c.appendChild(p);
+    var a=Math.random()*Math.PI*2,d=80+Math.random()*180;
+    (function(el,tx,ty){setTimeout(function(){el.style.transform="translate("+tx+"px,"+ty+"px)";el.style.opacity="0";},10);})(p,Math.cos(a)*d,Math.sin(a)*d-100);
+    setTimeout(function(el){el.remove();},1600,p);
+  }
+}
+function renderEggs(){
+  if(!state.eggs)state.eggs=[];if(!state.menagerie)state.menagerie=[];
+  var sub=document.getElementById("eggSub");
+  var mythicCount=state.menagerie.filter(function(a){return a.eggType==="mythic";}).length;
+  if(sub)sub.textContent=state.eggs.length+" Eier · "+state.menagerie.length+" Tiere"+(mythicCount?" · "+mythicCount+"⚡ Mythic":"");
+  var grid=document.getElementById("eggGrid");if(!grid)return;
+  var h="";
+  for(var i=0;i<9;i++){
+    var egg=state.eggs[i];
+    if(egg){
+      var km=EGG_KM[egg.type]||5;var prog=Math.min(egg.progress||0,km);
+      var pct=Math.round((prog/km)*100);var ready=egg.ready||prog>=km;
+      var rareCls=egg.type==="mythic"?" mythic-egg":"";
+      var borderStyle=egg.type==="rare"?"border-color:#93c5fd;":egg.type==="legendary"?"border-color:#ff6b6b;":egg.type==="mythic"?"border-color:#a78bfa;":"";
+      h+="<div class='egg-slot "+(ready?"ready":"has-egg")+"' style='"+borderStyle+"'"+(ready?" onclick='openHatchFor("+i+")'":'')+">";
+      h+=eggVisual(egg.type);
+      var barColor=egg.type==="rare"?"#93c5fd":egg.type==="legendary"?"#ff6b6b":egg.type==="mythic"?"#a78bfa":"var(--easy)";
+      h+="<div class='e-bar-wrap'><div class='e-bar-fill' style='width:"+pct+"%;background:"+barColor+"'></div></div>";
+      h+="<div class='e-km' style='color:"+(egg.type==="rare"?"#93c5fd":egg.type==="legendary"?"#ff6b6b":egg.type==="mythic"?"#a78bfa":"var(--muted)")+"'>"+(ready?"BEREIT!":prog.toFixed(1)+"/"+km+"km")+"</div></div>";
+    }else{h+="<div class='egg-slot'><div class='e-empty'>🥚</div></div>";}
+  }
+  grid.innerHTML=h;
+  var mg=document.getElementById("menGrid");if(!mg)return;
+  if(!state.menagerie.length){
+    mg.innerHTML="<div style='grid-column:span 3;text-align:center;font-size:11px;color:#6b6660;font-style:italic;padding:16px 0;'>Noch keine Tiere.</div>";
+  }else{
+    h="";
+    var rarityColors={common:"var(--gold-dim)",rare:"var(--long)",legendary:"var(--ultra)",mythic:"var(--shiny)"};
+    state.menagerie.forEach(function(a,idx){
+      var rc=rarityColors[a.eggType]||"var(--gold-dim)";
+      var bg=a.eggType==="mythic"?"linear-gradient(135deg,#0f0820,#1a0f35)":a.eggType==="legendary"?"linear-gradient(135deg,#1a0808,#200f20)":a.eggType==="rare"?"linear-gradient(135deg,#0a1220,#162035)":"var(--bg2)";
+      var anim=a.eggType==="mythic"?"animation:shinyPulse 2s infinite;":a.eggType==="legendary"?"animation:ultraGlow 2s infinite;":"";
+      h+="<div onclick='openMenDetail("+idx+")' style='border-radius:12px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;border:1.5px solid "+rc+";background:"+bg+";cursor:pointer;position:relative;overflow:hidden;"+anim+"'>";
+      h+="<div style='font-size:28px;'>"+a.emoji+"</div>";
+      h+="<div style='font-family:serif;font-size:9px;font-weight:700;text-align:center;line-height:1.3;'>"+a.name+"</div>";
+      h+="<div style='font-family:monospace;font-size:6px;letter-spacing:1px;color:"+rc+";'>"+(a.eggType||"common").toUpperCase()+(a.shiny?" ✨":"")+"</div>";
+      // Mini stat bars
+      h+="<div style='width:100%;display:flex;flex-direction:column;gap:2px;margin-top:2px;'>";
+      var sc={speed:"#fca5a5",stamina:"#93c5fd",vibe:"#4ade80"};
+      ["speed","stamina","vibe"].forEach(function(s){
+        h+="<div style='display:flex;align-items:center;gap:3px;'>";
+        h+="<div style='font-family:monospace;font-size:5px;color:var(--muted);width:32px;'>"+s.substring(0,3).toUpperCase()+"</div>";
+        h+="<div style='flex:1;height:2px;background:var(--faint);border-radius:1px;overflow:hidden;'><div style='width:"+a[s]+"%;height:100%;background:"+sc[s]+";'></div></div>";
+        h+="</div>";
+      });
+      h+="</div></div>";
+    });
+    mg.innerHTML=h;
+  }
+}
+
+function openMenDetail(idx){
+  var a=state.menagerie[idx];if(!a)return;
+  var rc={common:"var(--gold-dim)",rare:"var(--long)",legendary:"var(--ultra)",mythic:"var(--shiny)"};
+  var card=document.getElementById("mCardFull");
+  card.className="m-card-full "+(a.eggType||"common");
+  document.getElementById("mCardEmoji").textContent=a.emoji;
+  document.getElementById("mCardName").textContent=a.name;
+  document.getElementById("mCardTitle").textContent=a.title;
+  var pill=document.getElementById("mCardRarity");
+  pill.className="m-card-rarity "+(a.eggType||"common")+(a.shiny?" shiny":"");
+  pill.textContent=(a.eggType||"common").toUpperCase()+(a.shiny?" ✨":"");
+  var sc={speed:"#fca5a5",stamina:"#93c5fd",vibe:"#4ade80"};
+  var sh="";
+  ["speed","stamina","vibe"].forEach(function(s){
+    sh+="<div class='a-stat'><div class='a-stat-lbl'>"+s.toUpperCase()+"</div>";
+    sh+="<div class='a-stat-bar'><div class='a-stat-fill' style='width:"+a[s]+"%;background:"+sc[s]+";height:100%;border-radius:2px;'></div></div>";
+    sh+="<div class='a-stat-num'>"+a[s]+"</div></div>";
+  });
+  document.getElementById("mCardStats").innerHTML=sh;
+  document.getElementById("menDetailParticles").innerHTML="";
+  if(a.eggType==="mythic")burstP("menDetailParticles",30,["#a78bfa","#c4b5fd","#fff"]);
+  else if(a.eggType==="legendary")burstP("menDetailParticles",20,["#ff6b6b","#ffd700"]);
+  document.getElementById("menagerieDetail").classList.add("active");
+}
+function closeMenDetail(){document.getElementById("menagerieDetail").classList.remove("active");}
 
 // ── INIT ──────────────────────────────────────────────────────
 function initApp(){
-  const today=new Date();
-  const cw=PLAN.find(w=>{
-    const ws=new Date(w.weekStart);
-    const end=new Date(ws);end.setDate(end.getDate()+7);
+  var today=new Date();
+  var cw=PLAN.find(function(w){
+    var ws=new Date(w.weekStart);var end=new Date(ws);end.setDate(end.getDate()+7);
     return today>=ws&&today<end;
   });
   if(cw){activeWeek=cw.weekNum;activePhase=cw.phaseIndex;}
   renderPlan();
-  const isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
-  const isStandalone=window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone;
-  if(isIOS&&!isStandalone)document.getElementById('installHint').classList.add('visible');
+  var isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
+  var isStandalone=window.matchMedia("(display-mode: standalone)").matches||window.navigator.standalone;
+  if(isIOS&&!isStandalone)document.getElementById("installHint").classList.add("visible");
 }
 
-// Check saved sync code
-(async()=>{
+(async function(){
   try{
-    const saved=localStorage.getItem('sync_code');
-    if(saved){
-      syncCode=saved;
-      await loadCloudState();
-      document.getElementById('syncOverlay').classList.add('hidden');
-      initApp();
-    }
-  }catch(e){initApp();}
+    var saved=localStorage.getItem("sync_code");
+    if(saved){syncCode=saved;await loadCloudState();document.getElementById("syncOverlay").classList.add("hidden");}
+  }catch(e){}
+  initApp();
 })();
 </script>
 
