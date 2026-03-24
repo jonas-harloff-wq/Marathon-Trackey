@@ -396,6 +396,90 @@
 .m-card-rarity.mythic{background:#1a0a2e;color:var(--shiny);border:1px solid var(--shiny);}
 .m-card-rarity.shiny::after{content:' ✨';}
 .m-card-stats{width:100%;display:flex;flex-direction:column;gap:4px;z-index:1;}
+
+/* HOLOGRAPHIC SHINY */
+@keyframes holoShift{
+  0%{background-position:0% 50%;filter:hue-rotate(0deg);}
+  25%{background-position:100% 50%;filter:hue-rotate(90deg);}
+  50%{background-position:100% 0%;filter:hue-rotate(180deg);}
+  75%{background-position:0% 100%;filter:hue-rotate(270deg);}
+  100%{background-position:0% 50%;filter:hue-rotate(360deg);}
+}
+@keyframes holoSheen{
+  0%{transform:translateX(-150%) rotate(35deg);}
+  100%{transform:translateX(250%) rotate(35deg);}
+}
+@keyframes shinyBorderPulse{
+  0%,100%{border-color:#a78bfa;box-shadow:0 0 12px rgba(167,139,250,0.4),0 0 24px rgba(167,139,250,0.2);}
+  33%{border-color:#60a5fa;box-shadow:0 0 12px rgba(96,165,250,0.4),0 0 24px rgba(96,165,250,0.2);}
+  66%{border-color:#f472b6;box-shadow:0 0 12px rgba(244,114,182,0.4),0 0 24px rgba(244,114,182,0.2);}
+}
+.shiny-holo{
+  position:relative;overflow:hidden;
+  border:2px solid #a78bfa !important;
+  animation:shinyBorderPulse 3s infinite !important;
+  background:linear-gradient(135deg,#0f0820,#1a0f35,#0a1020,#0f1528,#1a0820) !important;
+  background-size:300% 300% !important;
+  animation:shinyBorderPulse 3s infinite, holoShift 4s infinite !important;
+}
+.shiny-holo::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(105deg,
+    transparent 20%,
+    rgba(255,255,255,0.05) 28%,
+    rgba(167,139,250,0.3) 32%,
+    rgba(96,165,250,0.3) 36%,
+    rgba(52,211,153,0.2) 40%,
+    rgba(251,191,36,0.2) 44%,
+    rgba(244,114,182,0.3) 48%,
+    rgba(255,255,255,0.05) 52%,
+    transparent 60%
+  );
+  background-size:200% 200%;
+  animation:holoSheen 2.5s ease-in-out infinite;
+  pointer-events:none;z-index:10;
+}
+.shiny-holo::after{
+  content:'✨';position:absolute;top:6px;right:6px;font-size:12px;z-index:11;
+  animation:pulse 1.5s infinite;
+}
+.shiny-holo-card{
+  border:2px solid #a78bfa;
+  background:linear-gradient(135deg,#0f0820,#1a0f35,#0a1020) !important;
+  background-size:300% 300%;
+  animation:shinyBorderPulse 3s infinite, holoShift 5s infinite;
+}
+.shiny-holo-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(105deg,
+    transparent 15%,
+    rgba(255,255,255,0.03) 25%,
+    rgba(167,139,250,0.25) 30%,
+    rgba(96,165,250,0.25) 35%,
+    rgba(52,211,153,0.15) 40%,
+    rgba(251,191,36,0.15) 45%,
+    rgba(244,114,182,0.25) 50%,
+    rgba(255,255,255,0.03) 55%,
+    transparent 65%
+  );
+  background-size:200% 200%;
+  animation:holoSheen 3s ease-in-out infinite;
+  pointer-events:none;z-index:2;
+}
+/* SHINY EGG HATCH ANIMATION */
+@keyframes shinyEggBeat{
+  0%,100%{transform:scale(1);filter:drop-shadow(0 0 8px #a78bfa);}
+  25%{transform:scale(1.08) rotate(-3deg);filter:drop-shadow(0 0 20px #60a5fa);}
+  50%{transform:scale(1.05);filter:drop-shadow(0 0 25px #f472b6);}
+  75%{transform:scale(1.08) rotate(3deg);filter:drop-shadow(0 0 20px #a78bfa);}
+}
+.shiny-egg-beating{animation:shinyEggBeat 0.8s infinite !important;}
+@keyframes shinyReveal{
+  0%{transform:scale(0) rotate(-180deg);opacity:0;filter:brightness(3);}
+  60%{transform:scale(1.2) rotate(5deg);opacity:1;}
+  100%{transform:scale(1) rotate(0deg);opacity:1;}
+}
+.shiny-revealed{animation:shinyReveal 0.8s cubic-bezier(.4,0,.2,1) forwards;}
 /* Screen shake */
 @keyframes shake{0%,100%{transform:translateX(0)}10%,30%,50%,70%,90%{transform:translateX(-6px)}20%,40%,60%,80%{transform:translateX(6px)}}
 .shaking{animation:shake 0.5s ease;}
@@ -451,7 +535,9 @@
     <div class="m-card-rarity common" id="mCardRarity">COMMON</div>
     <div class="m-card-stats" id="mCardStats"></div>
   </div>
-  <button style="margin-top:20px;padding:12px 28px;background:var(--bg2);border:1px solid var(--gold-dim);border-radius:8px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--gold);cursor:pointer;text-transform:uppercase;" onclick="closeMenDetail()">← Zurück</button>
+  <div id="menBuffDesc" style="font-family:'DM Mono',monospace;font-size:9px;color:var(--easy);letter-spacing:1px;text-align:center;display:none;padding:4px 0;"></div>
+  <button id="menCompBtn" style="margin-top:8px;width:200px;padding:13px;background:var(--gold);border:none;border-radius:8px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;color:#0a0a0a;font-weight:700;cursor:pointer;text-transform:uppercase;">⚡ Als Companion aktivieren</button>
+  <button style="margin-top:8px;padding:10px 24px;background:none;border:1px solid var(--faint);border-radius:8px;font-family:'DM Mono',monospace;font-size:9px;letter-spacing:2px;color:var(--muted);cursor:pointer;text-transform:uppercase;" onclick="closeMenDetail()">← Zurück</button>
 </div>
 
 <!-- STRENGTH MODAL -->
@@ -564,6 +650,7 @@
     <div class="legend-item"><div class="legend-dot" style="background:var(--long)"></div><div class="legend-text">Long</div></div>
     <div class="legend-item"><div class="legend-dot" style="background:var(--tempo)"></div><div class="legend-text">Tempo</div></div>
   </div>
+  <div id="companionSection" style="display:none;padding:8px 24px 0;"></div>
   <div id="buffsSection" style="display:none;"></div>
   <div class="install-hint" id="installHint"><strong>Als App:</strong> Teilen ↑ → „Zum Home-Bildschirm"</div>
 </div>
@@ -885,7 +972,7 @@ PHASES.forEach((p,pi)=>{
 const totalSessions=PLAN.reduce((s,w)=>s+w.sessions.length,0);
 
 // ── STATE ─────────────────────────────────────────────────────
-let state={checked:{},coins:0,gearCollection:[],nutritionCollection:[],runnerCollection:[],unlockedAchievements:[],claimedWeekCoins:{},runs:[],hannahClassicWeeks:0,buffs:{},bananaActive:false,eggs:[],menagerie:[]};
+let state={checked:{},coins:0,gearCollection:[],nutritionCollection:[],runnerCollection:[],unlockedAchievements:[],claimedWeekCoins:{},runs:[],hannahClassicWeeks:0,buffs:{},bananaActive:false,eggs:[],menagerie:[],companions:[],lastDailyCompanion:""};
 let activeWeek=1,activePhase=0,runType='easy',activeAlbumTab='gear';
 
 function loadState(){try{const s=localStorage.getItem('runners_log_v6');if(s)state={...state,...JSON.parse(s)};}catch{}}
@@ -1222,6 +1309,7 @@ function renderPlan(){
   document.getElementById('xpVal').textContent=xp;
   document.getElementById('coinVal').textContent=state.coins;
   renderBuffs();
+  renderCompanions();
 
   const uniquePhases=[...new Set(PLAN.map(w=>w.phase))];
   document.getElementById('phaseNav').innerHTML=uniquePhases.map((p,i)=>
@@ -1273,6 +1361,9 @@ function toggleSession(id,weekNum){
     var coins=10;
     if(isBuffActive('gel'))coins*=2;
     if(isBuffActive('banana')){coins+=20;state.bananaActive=false;}
+    coins+=getCompanionBonus('coins_session');
+    var cMult=getCompanionMultiplier('coins_multi');
+    if(cMult>1)coins=Math.round(coins*cMult);
     state.coins+=coins;
     showToast('+'+coins+' 🪙'+(coins>10?' 🔥':''));
   }
@@ -1280,7 +1371,11 @@ function toggleSession(id,weekNum){
   const wb=!was&&checkWeekBonus(weekNum);
   const newA=checkAchievements();
   saveState();renderPlan();renderStore();
-  if(wb)setTimeout(()=>showToast('📅 Woche komplett! +50 🪙'),800);
+  if(wb){
+    var wkBonus=50+getCompanionBonus('coins_weekly');
+    state.coins+=(wkBonus-50); // already got 50, add extra
+    setTimeout(function(){showToast('📅 Woche komplett! +'+(wkBonus)+' 🪙');},800);
+  }
   newA.forEach((a,i)=>setTimeout(()=>showToast(`🏅 ${a.name}! +${a.coins}🪙`),1200+i*800));
 }
 
@@ -1454,38 +1549,93 @@ function switchScreen(name){
   window.scrollTo(0,0);
 }
 
+
+// ── COMPANIONS ─────────────────────────────────────────────────
+function getActiveCompanionBuffs(){
+  if(!state.companions)return[];
+  var buffs=[];
+  state.companions.forEach(function(c){
+    var a=state.menagerie.find(function(m){return m.id===c;});
+    if(a&&a.buff)buffs.push({animalId:c,emoji:a.emoji,name:a.name,buff:a.buff});
+  });
+  return buffs;
+}
+
+function getCompanionMultiplier(type){
+  var mult=1;
+  getActiveCompanionBuffs().forEach(function(b){
+    if(b.buff.type===type)mult*=b.buff.val;
+  });
+  return mult;
+}
+
+function getCompanionBonus(type){
+  var bonus=0;
+  getActiveCompanionBuffs().forEach(function(b){
+    if(b.buff.type===type)bonus+=b.buff.val;
+  });
+  return bonus;
+}
+
+function toggleCompanion(animalId){
+  if(!state.companions)state.companions=[];
+  var idx=state.companions.indexOf(animalId);
+  if(idx>=0){
+    state.companions.splice(idx,1);
+    showToast("Companion entfernt");
+  }else{
+    if(state.companions.length>=3){showToast("Max 3 Companions!");return;}
+    state.companions.push(animalId);
+    var a=state.menagerie.find(function(m){return m.id===animalId;});
+    showToast((a?a.emoji:"") +" als Companion aktiviert!");
+  }
+  saveState();renderEggs();renderPlan();
+}
+
+function claimDailyCompanionCoins(){
+  var today=new Date().toISOString().slice(0,10);
+  if(state.lastDailyCompanion===today)return;
+  var bonus=getCompanionBonus("coins_daily");
+  if(bonus>0){
+    state.coins+=bonus;
+    state.lastDailyCompanion=today;
+    saveState();renderPlan();
+    showToast("🐾 Daily Companion Bonus: +"+bonus+" 🪙");
+  }
+}
+
 // ── ANIMALS ───────────────────────────────────────────────────
 const ANIMALS={
   common:[
-    {id:"s_turtle",  emoji:"🐢",name:"Speedy Turtle",      title:"The Slow Grinder",         speed:20,stamina:95,vibe:70,  rarity:"common"},
-    {id:"j_rabbit",  emoji:"🐰",name:"Jogger Rabbit",      title:"Always Late to Start",     speed:75,stamina:65,vibe:80,  rarity:"common"},
-    {id:"t_hamster", emoji:"🐹",name:"Track Hamster",      title:"Wheel Never Stops",        speed:55,stamina:70,vibe:90,  rarity:"common"},
-    {id:"p_pigeon",  emoji:"🕊️",name:"Pace Pigeon",       title:"The City Flyer",           speed:65,stamina:60,vibe:75,  rarity:"common"},
-    {id:"m_mouse",   emoji:"🐭",name:"Marathon Mouse",     title:"Tiny But Mighty",          speed:50,stamina:80,vibe:85,  rarity:"common"},
+    {id:"s_turtle",  emoji:"🐢",name:"Speedy Turtle",      title:"The Slow Grinder",         speed:20,stamina:95,vibe:70,  rarity:"common",   buff:null},
+    {id:"j_rabbit",  emoji:"🐰",name:"Jogger Rabbit",      title:"Always Late to Start",     speed:75,stamina:65,vibe:80,  rarity:"common",   buff:{type:"coins_session",val:2,  desc:"+2 🪙 pro Session"}},
+    {id:"t_hamster", emoji:"🐹",name:"Track Hamster",      title:"Wheel Never Stops",        speed:55,stamina:70,vibe:90,  rarity:"common",   buff:{type:"coins_session",val:3,  desc:"+3 🪙 pro Session"}},
+    {id:"p_pigeon",  emoji:"🕊️",name:"Pace Pigeon",       title:"The City Flyer",           speed:65,stamina:60,vibe:75,  rarity:"common",   buff:null},
+    {id:"m_mouse",   emoji:"🐭",name:"Marathon Mouse",     title:"Tiny But Mighty",          speed:50,stamina:80,vibe:85,  rarity:"common",   buff:{type:"coins_session",val:2,  desc:"+2 🪙 pro Session"}},
   ],
   rare:[
-    {id:"keta_kang", emoji:"🦘",name:"Keta Kangaroo",      title:"Bouncing Since 3AM",       speed:85,stamina:75,vibe:99,  rarity:"rare"},
-    {id:"sp_giraffe",emoji:"🦒",name:"Speedy Giraffe",     title:"Long Stride Energy",       speed:80,stamina:70,vibe:78,  rarity:"rare"},
-    {id:"n_cheetah", emoji:"🐆",name:"Nitro Cheetah",      title:"0 to 100 Real Quick",      speed:99,stamina:45,vibe:88,  rarity:"rare"},
-    {id:"e_elephant",emoji:"🐘",name:"Enduro Elephant",    title:"Never Stops Moving",       speed:40,stamina:99,vibe:72,  rarity:"rare"},
-    {id:"z2_zebra",  emoji:"🦓",name:"Zone2 Zebra",        title:"Heart Rate Police",        speed:60,stamina:88,vibe:65,  rarity:"rare"},
+    {id:"keta_kang", emoji:"🦘",name:"Keta Kangaroo",      title:"Bouncing Since 3AM",       speed:85,stamina:75,vibe:99,  rarity:"rare",     buff:{type:"coins_session",val:8,  desc:"+8 🪙 pro Session"}},
+    {id:"sp_giraffe",emoji:"🦒",name:"Speedy Giraffe",     title:"Long Stride Energy",       speed:80,stamina:70,vibe:78,  rarity:"rare",     buff:{type:"xp_multi",   val:1.5,  desc:"1.5× XP"}},
+    {id:"n_cheetah", emoji:"🐆",name:"Nitro Cheetah",      title:"0 to 100 Real Quick",      speed:99,stamina:45,vibe:88,  rarity:"rare",     buff:{type:"coins_multi", val:1.5, desc:"1.5× Maratooneys"}},
+    {id:"e_elephant",emoji:"🐘",name:"Enduro Elephant",    title:"Never Stops Moving",       speed:40,stamina:99,vibe:72,  rarity:"rare",     buff:{type:"streak_shield",val:1,  desc:"Streak Shield"}},
+    {id:"z2_zebra",  emoji:"🦓",name:"Zone2 Zebra",        title:"Heart Rate Police",        speed:60,stamina:88,vibe:65,  rarity:"rare",     buff:{type:"coins_session",val:6,  desc:"+6 🪙 pro Session"}},
   ],
   legendary:[
-    {id:"coke_gorilla",  emoji:"🦍",name:"Coke Gorilla",        title:"Wall Street Sprinter",   speed:99,stamina:80,vibe:100, rarity:"legendary"},
-    {id:"weed_wombat",   emoji:"🦡",name:"Weed Wombat",         title:"Chill but Deadly Pace",  speed:70,stamina:99,vibe:100, rarity:"legendary"},
-    {id:"crystal_uni",   emoji:"🦄",name:"Crystal Unicorn",     title:"Mythical PR Machine",    speed:95,stamina:95,vibe:99,  rarity:"legendary"},
-    {id:"turbo_tiger",   emoji:"🐯",name:"Turbo Tiger",         title:"Fuel: Pure Aggression",  speed:98,stamina:82,vibe:90,  rarity:"legendary"},
-    {id:"molly_dolphin", emoji:"🐬",name:"Molly Dolphin",       title:"Euphoric Endurance",     speed:88,stamina:97,vibe:100, rarity:"legendary"},
-    {id:"speed_ostrich", emoji:"🦤",name:"Speed Demon Ostrich", title:"No Brakes No Fear",      speed:97,stamina:75,vibe:88,  rarity:"legendary"},
-    {id:"mdma_marmot",   emoji:"🦫",name:"MDMA Marmot",         title:"Everyone loves this one",speed:72,stamina:90,vibe:100, rarity:"legendary"},
+    {id:"coke_gorilla",  emoji:"🦍",name:"Coke Gorilla",        title:"Wall Street Sprinter",   speed:99,stamina:80,vibe:100, rarity:"legendary",buff:{type:"coins_multi", val:2,   desc:"2× Maratooneys auf alles"}},
+    {id:"weed_wombat",   emoji:"🦡",name:"Weed Wombat",         title:"Chill but Deadly Pace",  speed:70,stamina:99,vibe:100, rarity:"legendary",buff:{type:"coins_multi", val:1.5, desc:"+50% Maratooneys"}},
+    {id:"crystal_uni",   emoji:"🦄",name:"Crystal Unicorn",     title:"Mythical PR Machine",    speed:95,stamina:95,vibe:99,  rarity:"legendary",buff:{type:"xp_multi",   val:2,   desc:"2× XP"}},
+    {id:"turbo_tiger",   emoji:"🐯",name:"Turbo Tiger",         title:"Fuel: Pure Aggression",  speed:98,stamina:82,vibe:90,  rarity:"legendary",buff:{type:"coins_weekly",val:50,  desc:"+50 🪙 pro Woche komplett"}},
+    {id:"molly_dolphin", emoji:"🐬",name:"Molly Dolphin",       title:"Euphoric Endurance",     speed:88,stamina:97,vibe:100, rarity:"legendary",buff:{type:"xp_multi",   val:1.5, desc:"1.5× XP"}},
+    {id:"speed_ostrich", emoji:"🦤",name:"Speed Demon Ostrich", title:"No Brakes No Fear",      speed:97,stamina:75,vibe:88,  rarity:"legendary",buff:{type:"coins_daily", val:50,  desc:"+50 🪙 täglich"}},
+    {id:"mdma_marmot",   emoji:"🦫",name:"MDMA Marmot",         title:"Everyone loves this one",speed:72,stamina:90,vibe:100, rarity:"legendary",buff:{type:"coins_session",val:15, desc:"+15 🪙 pro Session"}},
   ],
   mythic:[
-    {id:"arya",  emoji:"🐱",name:"Arya",  title:"British Shorthair · The Silent Predator",  speed:88,stamina:92,vibe:99,  rarity:"mythic"},
-    {id:"neela", emoji:"🐱",name:"Neela", title:"British Shorthair · Blue Steel Energy",    speed:91,stamina:89,vibe:99,  rarity:"mythic"},
-    {id:"merle", emoji:"🐈",name:"Merle", title:"OG · RIP Legend · GOAT",                   speed:99,stamina:99,vibe:99,  rarity:"mythic"},
-    {id:"tinka", emoji:"🐈",name:"Tinka", title:"OG · RIP Legend · GOAT",                   speed:99,stamina:99,vibe:99,  rarity:"mythic"},
+    {id:"arya",  emoji:"🐱",name:"Arya",  title:"British Shorthair · The Silent Predator",  speed:88,stamina:92,vibe:99,  rarity:"mythic",   buff:{type:"coins_daily", val:30,  desc:"+30 🪙 täglich"}},
+    {id:"neela", emoji:"🐱",name:"Neela", title:"British Shorthair · Blue Steel Energy",    speed:91,stamina:89,vibe:99,  rarity:"mythic",   buff:{type:"xp_multi",   val:2,   desc:"2× XP"}},
+    {id:"merle", emoji:"🐈",name:"Merle", title:"OG · RIP Legend · GOAT",                   speed:99,stamina:99,vibe:99,  rarity:"mythic",   buff:{type:"coins_daily", val:100, desc:"+100 🪙 täglich · GOAT Tax"}},
+    {id:"tinka", emoji:"🐈",name:"Tinka", title:"OG · RIP Legend · GOAT",                   speed:99,stamina:99,vibe:99,  rarity:"mythic",   buff:{type:"coins_multi", val:3,   desc:"3× Maratooneys auf alles"}},
   ],
-};
+}
 const EGG_KM={common:5,rare:10,legendary:20,mythic:30};
 const EGG_ICON={common:"🥚",rare:"🔵",legendary:"🔴",mythic:"⚡"};
 function eggVisual(type){
@@ -1560,6 +1710,8 @@ async function saveToCloud(){
         bananaActive:{booleanValue:!!state.bananaActive},
         eggs:{stringValue:JSON.stringify(state.eggs||[])},
         menagerie:{stringValue:JSON.stringify(state.menagerie||[])},
+        companions:{stringValue:JSON.stringify(state.companions||[])},
+        lastDailyCompanion:{stringValue:state.lastDailyCompanion||''},
       }})
     });
   }catch(e){console.log("save fail",e);}
@@ -1643,6 +1795,21 @@ function completeStrength(){
 }
 function closeStrength(){var m=document.getElementById("strengthModal");if(m)m.classList.remove("active");strSessionId=null;}
 
+function renderCompanions(){
+  var el=document.getElementById("companionSection");if(!el)return;
+  var active=getActiveCompanionBuffs();
+  if(!active.length){el.style.display="none";return;}
+  el.style.display="block";
+  var h="<div style='font-family:monospace;font-size:8px;letter-spacing:2px;color:var(--muted);margin-bottom:6px;'>COMPANIONS</div><div style='display:flex;gap:8px;flex-wrap:wrap;'>";
+  active.forEach(function(c){
+    h+="<div style='display:flex;align-items:center;gap:5px;padding:5px 10px;background:var(--bg2);border:1px solid var(--easy-border);border-radius:20px;'>";
+    h+="<span style='font-size:14px;'>"+c.emoji+"</span>";
+    h+="<span style='font-family:monospace,monospace;font-size:8px;color:var(--easy);'>"+c.buff.desc+"</span>";
+    h+="</div>";
+  });
+  h+="</div>";
+  el.innerHTML=h;
+}
 // ── EGGS ──────────────────────────────────────────────────────
 function buyEggPack(){
   if(state.coins<20){showToast("Nicht genug Maratooneys!");return;}
@@ -1682,13 +1849,35 @@ function crackEgg(){
   if(hatchDone||!hatchingEgg)return;
   hatchDone=true;
   var el=document.getElementById("hatchEggEl");
-  el.classList.add("hatch-cracking");
   document.getElementById("hatchHint").style.display="none";
-  burstP("hatchParticles",20,["#c9a84c","#4ade80","#ffd700"]);
+
+  // Pre-roll to see if shiny (for animation teaser)
+  var pool=ANIMALS[hatchingEgg.type]||ANIMALS.common;
+  var animal=pool[Math.floor(Math.random()*pool.length)];
+  var shiny=Math.random()<0.05;
+
+  // Store result for later
+  hatchingEgg._prerolled={animal:animal,shiny:shiny};
+
+  if(shiny){
+    // SHINY SPECIAL INTRO
+    el.classList.add("shiny-egg-beating");
+    burstP("hatchParticles",15,["#a78bfa","#60a5fa","#f472b6","#fff"]);
+    setTimeout(function(){
+      el.classList.remove("shiny-egg-beating");
+      el.classList.add("hatch-cracking");
+      burstP("hatchParticles",40,["#a78bfa","#60a5fa","#f472b6","#ffd700","#fff"]);
+      finishHatch(el,animal,shiny);
+    },1200);
+  }else{
+    el.classList.add("hatch-cracking");
+    burstP("hatchParticles",20,["#c9a84c","#4ade80","#ffd700"]);
+    finishHatch(el,animal,shiny);
+  }
+}
+
+function finishHatch(el,animal,shiny){
   setTimeout(function(){
-    var pool=ANIMALS[hatchingEgg.type]||ANIMALS.common;
-    var animal=pool[Math.floor(Math.random()*pool.length)];
-    var shiny=Math.random()<0.05;
     var result=Object.assign({},animal,{shiny:shiny,eggType:hatchingEgg.type,ts:Date.now()});
     if(!state.menagerie)state.menagerie=[];
     var isDuplicate=state.menagerie.some(function(m){return m.id===result.id&&!m.shiny===!result.shiny;});
@@ -1709,7 +1898,7 @@ function crackEgg(){
       document.getElementById("revealTitle").textContent=shiny?"✨ SHINY!":(hatchingEgg.type==="mythic"?"⚡ MYTHIC!":"Geschlüpft!");
       document.getElementById("revealSub").textContent=animal.name+" · "+animal.title;
       var card=document.getElementById("animalCard");
-      card.className="animal-card "+(shiny?"shiny":(result.eggType||"common"));
+      card.className="animal-card "+(shiny?"shiny-holo-card "+(result.eggType||"common"):(result.eggType||"common"));
       document.getElementById("aEmoji").textContent=animal.emoji;
       document.getElementById("aName").textContent=animal.name;
       document.getElementById("aTitle").textContent=animal.title;
@@ -1773,7 +1962,7 @@ function renderEggs(){
     state.menagerie.forEach(function(a,idx){
       var rc=rarityColors[a.eggType]||"var(--gold-dim)";
       var bg=a.eggType==="mythic"?"linear-gradient(135deg,#0f0820,#1a0f35)":a.eggType==="legendary"?"linear-gradient(135deg,#1a0808,#200f20)":a.eggType==="rare"?"linear-gradient(135deg,#0a1220,#162035)":"var(--bg2)";
-      var anim=a.eggType==="mythic"?"animation:shinyPulse 2s infinite;":a.eggType==="legendary"?"animation:ultraGlow 2s infinite;":"";
+      var anim=a.shiny?"":a.eggType==="mythic"?"animation:shinyPulse 2s infinite;":a.eggType==="legendary"?"animation:ultraGlow 2s infinite;":"";
       h+="<div onclick='openMenDetail("+idx+")' style='border-radius:12px;padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;border:1.5px solid "+rc+";background:"+bg+";cursor:pointer;position:relative;overflow:hidden;"+anim+"'>";
       h+="<div style='font-size:28px;'>"+a.emoji+"</div>";
       h+="<div style='font-family:serif;font-size:9px;font-weight:700;text-align:center;line-height:1.3;'>"+a.name+"</div>";
@@ -1797,7 +1986,7 @@ function openMenDetail(idx){
   var a=state.menagerie[idx];if(!a)return;
   var rc={common:"var(--gold-dim)",rare:"var(--long)",legendary:"var(--ultra)",mythic:"var(--shiny)"};
   var card=document.getElementById("mCardFull");
-  card.className="m-card-full "+(a.eggType||"common");
+  card.className="m-card-full "+(a.shiny?"shiny-holo-card "+(a.eggType||"common"):(a.eggType||"common"));
   document.getElementById("mCardEmoji").textContent=a.emoji;
   document.getElementById("mCardName").textContent=a.name;
   document.getElementById("mCardTitle").textContent=a.title;
@@ -1815,6 +2004,28 @@ function openMenDetail(idx){
   document.getElementById("menDetailParticles").innerHTML="";
   if(a.eggType==="mythic")burstP("menDetailParticles",30,["#a78bfa","#c4b5fd","#fff"]);
   else if(a.eggType==="legendary")burstP("menDetailParticles",20,["#ff6b6b","#ffd700"]);
+  // Companion button
+  if(!state.companions)state.companions=[];
+  var isComp=state.companions.indexOf(a.id)>=0;
+  var compBtn=document.getElementById("menCompBtn");
+  if(compBtn){
+    compBtn.textContent=isComp?"✓ Companion aktiv · Entfernen":"⚡ Als Companion aktivieren";
+    compBtn.style.background=isComp?"#1a3535":"var(--gold)";
+    compBtn.style.color=isComp?"#2dd4bf":"#0a0a0a";
+    compBtn.onclick=function(){toggleCompanion(a.id);closeMenDetail();};
+  }
+  // Show buff
+  var buffEl=document.getElementById("menBuffDesc");
+  if(buffEl){
+    var animal=state.menagerie[idx];
+    var animalData=Object.values(ANIMALS).flat().find(function(x){return x.id===animal.id;});
+    if(animalData&&animalData.buff){
+      buffEl.textContent="Companion Buff: "+animalData.buff.desc;
+      buffEl.style.display="block";
+    }else{
+      buffEl.style.display="none";
+    }
+  }
   document.getElementById("menagerieDetail").classList.add("active");
 }
 function closeMenDetail(){document.getElementById("menagerieDetail").classList.remove("active");}
@@ -1828,6 +2039,7 @@ function initApp(){
   });
   if(cw){activeWeek=cw.weekNum;activePhase=cw.phaseIndex;}
   renderPlan();
+  setTimeout(claimDailyCompanionCoins, 1000);
   var isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
   var isStandalone=window.matchMedia("(display-mode: standalone)").matches||window.navigator.standalone;
   if(isIOS&&!isStandalone)document.getElementById("installHint").classList.add("visible");
