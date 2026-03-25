@@ -2488,6 +2488,7 @@ function initApp(){
   });
   if(cw){activeWeek=cw.weekNum;activePhase=cw.phaseIndex;}
   renderPlan();
+  renderCompanions();
   setTimeout(claimDailyCompanionCoins, 1000);
   var isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent);
   var isStandalone=window.matchMedia("(display-mode: standalone)").matches||window.navigator.standalone;
