@@ -284,8 +284,8 @@
     .runner-slot.has-golden{border-color:var(--golden);background:linear-gradient(135deg,#1a1200,#2a1f00);animation:goldenGlow 2.5s infinite;}
     @keyframes goldenGlow{0%,100%{box-shadow:0 0 8px rgba(245,158,11,0.2)}50%{box-shadow:0 0 18px rgba(245,158,11,0.4)}}
     .runner-slot.has-shiny{border-color:var(--shiny);background:linear-gradient(135deg,#0f0820,#1a0f35);animation:shinyPulse 2s infinite;}
-    .runner-slot-emoji{font-size:28px;z-index:1;}
-    .runner-slot-name{font-family:'Playfair Display',serif;font-size:8px;font-weight:700;color:var(--text);text-align:center;padding:0 5px;z-index:1;line-height:1.3;}
+    .runner-slot-emoji{font-size:28px;z-index:1;position:relative;}
+    .runner-slot-name{font-family:'Playfair Display',serif;font-size:8px;font-weight:700;color:var(--text);text-align:center;padding:0 5px;z-index:1;line-height:1.3;position:relative;}
     .runner-slot-title{font-family:'DM Mono',monospace;font-size:5.5px;color:var(--gold);text-align:center;padding:0 4px;z-index:1;letter-spacing:0.5px;}
     .runner-slot-empty{font-size:22px;opacity:0.1;}
     .runner-slot-badge{position:absolute;top:4px;right:4px;font-size:9px;z-index:2;}
@@ -631,6 +631,85 @@
     .ultra-reveal{animation:mythicLegendaryReveal 0.9s cubic-bezier(.4,0,.2,1) forwards;}
 
 
+
+    /* EGG CRACK / DISCARD */
+    @keyframes eggCrackOut{
+      0%{transform:scale(1);opacity:1;}
+      20%{transform:scale(1.15) rotate(-5deg);}
+      40%{transform:scale(1.1) rotate(5deg);}
+      60%{transform:scale(0.9) rotate(-3deg);opacity:0.8;}
+      100%{transform:scale(0) rotate(15deg);opacity:0;}
+    }
+    .egg-cracking-out{animation:eggCrackOut 0.6s ease-in forwards;}
+
+    /* CRACK CONFIRM */
+    .crack-confirm{position:fixed;inset:0;background:rgba(5,4,3,0.92);z-index:600;display:none;flex-direction:column;align-items:center;justify-content:center;padding:32px;}
+    .crack-confirm.active{display:flex;}
+    .crack-confirm-box{background:var(--bg2);border:1px solid var(--faint);border-radius:14px;padding:24px;width:100%;max-width:300px;display:flex;flex-direction:column;align-items:center;gap:14px;text-align:center;}
+    .crack-confirm-emoji{font-size:48px;}
+    .crack-confirm-msg{font-size:14px;color:var(--text);line-height:1.6;}
+    .crack-confirm-btns{display:flex;gap:10px;width:100%;}
+    .crack-yes{flex:1;padding:13px;background:var(--tempo);border:none;border-radius:8px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;color:#0a0a0a;font-weight:700;cursor:pointer;text-transform:uppercase;}
+    .crack-no{flex:1;padding:13px;background:var(--bg3);border:1px solid var(--faint);border-radius:8px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1.5px;color:var(--text);font-weight:700;cursor:pointer;text-transform:uppercase;}
+
+    /* COMPANION ON MASTHEAD */
+    @keyframes companionRunBig{
+      0%,100%{transform:translateY(0) scaleX(1);}
+      25%{transform:translateY(-8px) scaleX(1);}
+      50%{transform:translateY(0) scaleX(1);}
+      75%{transform:translateY(-4px) scaleX(1);}
+    }
+    @keyframes companionRunBigShiny{
+      0%,100%{transform:translateY(0) scaleX(1);filter:drop-shadow(0 0 8px #a78bfa);}
+      25%{transform:translateY(-10px) scaleX(1);filter:drop-shadow(0 0 14px #60a5fa);}
+      50%{transform:translateY(0) scaleX(1);filter:drop-shadow(0 0 8px #f472b6);}
+      75%{transform:translateY(-5px) scaleX(1);filter:drop-shadow(0 0 12px #a78bfa);}
+    }
+    @keyframes companionRunBigGold{
+      0%,100%{transform:translateY(0);filter:drop-shadow(0 0 10px #ffd700);}
+      25%{transform:translateY(-10px);filter:drop-shadow(0 0 20px #ffd700) brightness(1.3);}
+      50%{transform:translateY(0);filter:drop-shadow(0 0 10px #ffaa00);}
+      75%{transform:translateY(-5px);filter:drop-shadow(0 0 16px #ffd700);}
+    }
+    .masthead-companion{
+      position:absolute;right:20px;top:50%;transform:translateY(-50%);
+      display:flex;flex-direction:column;align-items:center;gap:4px;
+    }
+    .masthead-companion-emoji{
+      font-size:52px;line-height:1;
+      animation:companionRunBig 0.7s ease-in-out infinite;
+      cursor:pointer;
+    }
+    .masthead-companion-emoji.shiny{animation:companionRunBigShiny 0.7s ease-in-out infinite;}
+    .masthead-companion-emoji.gold-comp{animation:companionRunBigGold 0.7s ease-in-out infinite;}
+    .masthead-companion-name{font-family:'DM Mono',monospace;font-size:6px;letter-spacing:1px;color:var(--muted);text-align:center;max-width:60px;}
+    .masthead-companion-buff{font-family:'DM Mono',monospace;font-size:6px;color:var(--easy);text-align:center;max-width:65px;line-height:1.4;}
+
+    /* RUNNER CARD SHINY/GOLD UPGRADES */
+    .runner-slot.has-shiny{
+      border-color:var(--shiny);
+      background:linear-gradient(135deg,#0f0820,#1a0f35);
+      animation:shinyBorderPulse 3s infinite;
+      position:relative;overflow:hidden;
+    }
+    .runner-slot.has-shiny::before{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(105deg,transparent 20%,rgba(167,139,250,0.2) 30%,rgba(96,165,250,0.2) 38%,rgba(244,114,182,0.15) 46%,transparent 56%);
+      animation:holoSheen 2.5s ease-in-out infinite;
+      pointer-events:none;z-index:0;
+    }
+    .runner-slot.has-golden{
+      border-color:#ffd700;
+      background:linear-gradient(135deg,#1a1200,#2a1f00,#1a1200);
+      animation:goldPulse 2s infinite;
+      position:relative;overflow:hidden;
+    }
+    .runner-slot.has-golden::before{
+      content:'';position:absolute;inset:0;
+      background:linear-gradient(105deg,transparent 20%,rgba(255,215,0,0.15) 30%,rgba(255,215,0,0.4) 36%,rgba(255,255,200,0.3) 42%,rgba(255,215,0,0.15) 48%,transparent 58%);
+      animation:holoSheen 1.8s ease-in-out infinite;
+      pointer-events:none;z-index:0;
+    }
     /* Screen shake */
     @keyframes shake{0%,100%{transform:translateX(0)}10%,30%,50%,70%,90%{transform:translateX(-6px)}20%,40%,60%,80%{transform:translateX(6px)}}
     .shaking{animation:shake 0.5s ease;}
@@ -655,6 +734,18 @@
   <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--easy);">EGG PACK GEÖFFNET!</div>
   <div class="egg-reveal-grid" id="eggRevealGrid"></div>
   <button style="padding:12px 28px;background:var(--bg2);border:1px solid var(--easy-border);border-radius:8px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--easy);cursor:pointer;text-transform:uppercase;" onclick="closeEggPackReveal()">Zu den Eiern →</button>
+</div>
+
+<!-- CRACK CONFIRM -->
+<div class="crack-confirm" id="crackConfirm">
+  <div class="crack-confirm-box">
+    <div class="crack-confirm-emoji" id="crackConfirmEmoji">🫣</div>
+    <div class="crack-confirm-msg" id="crackConfirmMsg">Bist du sicher?</div>
+    <div class="crack-confirm-btns">
+      <button class="crack-no" onclick="closeCrackConfirm()">Nope</button>
+      <button class="crack-yes" id="crackYesBtn" onclick="confirmCrack()">💥 Crack it</button>
+    </div>
+  </div>
 </div>
 
 <!-- HATCH OVERLAY -->
@@ -774,8 +865,17 @@
 <div id="screen-plan" class="screen active">
   <div class="masthead">
     <div class="issue-line">Berlin Marathon · September 2026</div>
-    <div class="masthead-title">THE<br>RUNNER'S<br>LOG</div>
-    <div class="masthead-sub">24 Wochen · Sub-3:00</div>
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;">
+      <div>
+        <div class="masthead-title">THE<br>RUNNER'S<br>LOG</div>
+        <div class="masthead-sub">24 Wochen · Sub-3:00</div>
+      </div>
+      <div class="masthead-companion" id="mastheadCompanion" style="display:none;position:relative;right:0;top:0;transform:none;margin-left:12px;flex-shrink:0;">
+        <div class="masthead-companion-emoji" id="mastheadCompEmoji">🐢</div>
+        <div class="masthead-companion-name" id="mastheadCompName"></div>
+        <div class="masthead-companion-buff" id="mastheadCompBuff"></div>
+      </div>
+    </div>
     <div class="xp-section">
       <div class="xp-row"><div class="xp-level" id="levelLabel">Lv.1 Jogger</div><div class="xp-count" id="xpCount">0 XP</div></div>
       <div class="xp-bar-outer"><div class="xp-bar-inner" id="xpBar" style="width:0%"></div></div>
@@ -1982,6 +2082,28 @@ function completeStrength(){
 function closeStrength(){var m=document.getElementById("strengthModal");if(m)m.classList.remove("active");strSessionId=null;}
 
 function renderCompanions(){
+  // Update masthead companion
+  var mc=document.getElementById("mastheadCompanion");
+  var mcEmoji=document.getElementById("mastheadCompEmoji");
+  var mcName=document.getElementById("mastheadCompName");
+  var mcBuff=document.getElementById("mastheadCompBuff");
+  var active=getActiveCompanionBuffs();
+  if(mc){
+    if(active.length){
+      var c=active[0];
+      var animal=state.menagerie.find(function(m){return m.id===c.animalId;});
+      var isShiny=animal&&animal.shiny;
+      var isGold=animal&&animal.gold;
+      mc.style.display="flex";
+      mcEmoji.textContent=c.emoji;
+      mcEmoji.className="masthead-companion-emoji"+(isGold?" gold-comp":isShiny?" shiny":"");
+      mcName.textContent=c.name;
+      mcBuff.textContent=c.buff.desc;
+    }else{
+      mc.style.display="none";
+    }
+  }
+
   var el=document.getElementById("companionSection");if(!el)return;
   var active=getActiveCompanionBuffs();
   if(!active.length){el.style.display="none";return;}
@@ -1997,6 +2119,42 @@ function renderCompanions(){
   el.innerHTML=h;
 }
 // ── EGGS ──────────────────────────────────────────────────────
+
+var _crackIdx=-1;
+function crackDiscardEgg(idx){
+  var egg=state.eggs[idx];
+  if(!egg)return;
+  _crackIdx=idx;
+  var emojis={mythic:"🫣",legendary:"😬",rare:"😅",common:"💀"};
+  var msgs={
+    mythic:"Bist du SICHER? Das ist ein MYTHIC Ei dawg…",
+    legendary:"Legendary Ei cracken? Wirklich?",
+    rare:"Rare Ei wegschmeißen? (+5 🪙)",
+    common:"Ei wegschmeißen? (+5 🪙)"
+  };
+  document.getElementById("crackConfirmEmoji").textContent=emojis[egg.type]||"💀";
+  document.getElementById("crackConfirmMsg").textContent=msgs[egg.type]||"Sicher?";
+  document.getElementById("crackConfirm").classList.add("active");
+}
+function closeCrackConfirm(){
+  document.getElementById("crackConfirm").classList.remove("active");
+  _crackIdx=-1;
+}
+function confirmCrack(){
+  document.getElementById("crackConfirm").classList.remove("active");
+  var idx=_crackIdx;_crackIdx=-1;
+  var egg=state.eggs[idx];if(!egg)return;
+  var slots=document.getElementById("eggSlotsGrid");
+  if(slots&&slots.children[idx])slots.children[idx].classList.add("egg-cracking-out");
+  burstP("hatchParticles",12,["#c9a84c","#ffd700","#fff"]);
+  setTimeout(function(){
+    state.eggs.splice(idx,1);
+    state.coins+=5;
+    saveState();renderEggs();renderPlan();
+    showToast("💥 Ei gecrackt! +5 🪙");
+  },600);
+}
+
 function buyEggPack(){
   if(state.coins<20){showToast("Nicht genug Maratooneys!");return;}
   if(!state.eggs)state.eggs=[];
@@ -2237,7 +2395,9 @@ function renderEggs(){
       h+=eggVisual(egg.type);
       var barColor=egg.type==="rare"?"#93c5fd":egg.type==="legendary"?"#ff6b6b":egg.type==="mythic"?"#a78bfa":"var(--easy)";
       h+="<div class='e-bar-wrap'><div class='e-bar-fill' style='width:"+pct+"%;background:"+barColor+"'></div></div>";
-      h+="<div class='e-km' style='color:"+(egg.type==="rare"?"#93c5fd":egg.type==="legendary"?"#ff6b6b":egg.type==="mythic"?"#a78bfa":"var(--muted)")+"'>"+(ready?"BEREIT!":prog.toFixed(1)+"/"+km+"km")+"</div></div>";
+      h+="<div class='e-km' style='color:"+(egg.type==="rare"?"#93c5fd":egg.type==="legendary"?"#ff6b6b":egg.type==="mythic"?"#a78bfa":"var(--muted)")+"'>"+(ready?"BEREIT!":prog.toFixed(1)+"/"+km+"km")+"</div>";
+      h+="<div onclick='event.stopPropagation();crackDiscardEgg("+i+")' style='font-family:monospace;font-size:6px;color:var(--muted);letter-spacing:1px;margin-top:2px;padding:2px 6px;border:1px solid var(--faint);border-radius:8px;cursor:pointer;'>💥 crack</div>";
+      h+="</div>";
     }else{h+="<div class='egg-slot'><div class='e-empty'>🥚</div></div>";}
   }
   grid.innerHTML=h;
