@@ -480,6 +480,159 @@
   100%{transform:scale(1) rotate(0deg);opacity:1;}
 }
 .shiny-revealed{animation:shinyReveal 0.8s cubic-bezier(.4,0,.2,1) forwards;}
+
+/* COMPANION RUNNER */
+@keyframes companionBounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes companionRun{0%{transform:translateX(0) scaleX(1)}49%{transform:translateX(6px) scaleX(1)}50%{transform:translateX(6px) scaleX(-1)}99%{transform:translateX(0) scaleX(-1)}100%{transform:translateX(0) scaleX(1)}}
+.companion-runner{display:inline-flex;align-items:center;animation:companionBounce 0.6s ease-in-out infinite;cursor:pointer;font-size:18px;line-height:1;}
+.companion-runner.shiny-runner{filter:drop-shadow(0 0 4px #a78bfa);animation:companionBounce 0.5s ease-in-out infinite,shinyBorderPulse 2s infinite;}
+.companion-row{display:flex;align-items:center;gap:6px;margin-top:6px;flex-wrap:wrap;}
+.companion-buff-tag{font-family:'DM Mono',monospace;font-size:8px;color:var(--easy);letter-spacing:0.5px;padding:2px 6px;background:var(--easy-bg);border:1px solid var(--easy-border);border-radius:10px;}
+.companion-weekly-btn{font-family:'DM Mono',monospace;font-size:7px;color:var(--gold);letter-spacing:0.5px;padding:2px 7px;background:#1a1608;border:1px solid var(--gold-dim);border-radius:10px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.companion-weekly-btn:active{opacity:0.7;}
+.companion-weekly-btn.used{color:var(--muted);border-color:var(--faint);background:var(--faint);cursor:default;}
+/* SHINY MENAGERIE CARDS */
+.m-shiny-card{
+  border-radius:12px;padding:12px 8px;
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  cursor:pointer;position:relative;overflow:hidden;
+  border:1.5px solid #a78bfa;
+  background:linear-gradient(135deg,#0f0820,#1a0f35,#0a1020);
+  animation:shinyBorderPulse 3s infinite;
+}
+.m-shiny-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(105deg,transparent 20%,rgba(167,139,250,0.2) 30%,rgba(96,165,250,0.2) 36%,rgba(52,211,153,0.15) 42%,rgba(251,191,36,0.15) 48%,rgba(244,114,182,0.2) 54%,transparent 64%);
+  background-size:200% 200%;
+  animation:holoSheen 2.5s ease-in-out infinite;
+  pointer-events:none;z-index:2;
+}
+.m-shiny-card::after{content:'✨';position:absolute;top:3px;right:3px;font-size:10px;z-index:3;animation:pulse 1.5s infinite;}
+
+/* EGG PACK OPENING */
+.egg-pack-overlay{position:fixed;inset:0;background:#030202;z-index:500;display:none;flex-direction:column;align-items:center;justify-content:center;gap:20px;}
+.egg-pack-overlay.active{display:flex;}
+@keyframes eggAppear{0%{transform:scale(0) rotate(-20deg);opacity:0;}60%{transform:scale(1.15) rotate(3deg);opacity:1;}100%{transform:scale(1) rotate(0deg);opacity:1;}}
+.egg-reveal-grid{display:flex;gap:16px;justify-content:center;}
+.egg-reveal-item{display:flex;flex-direction:column;align-items:center;gap:6px;opacity:0;transform:scale(0);}
+.egg-reveal-item.show{animation:eggAppear 0.5s cubic-bezier(.4,0,.2,1) forwards;}
+.egg-reveal-big{font-size:52px;line-height:1;}
+.egg-reveal-label{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:2px;}
+
+/* GOLD RARITY */
+@keyframes goldShift{
+  0%{background-position:0% 50%;filter:brightness(1.2) saturate(1.5);}
+  25%{background-position:100% 50%;filter:brightness(1.5) saturate(2);}
+  50%{background-position:100% 0%;filter:brightness(1.3) saturate(1.8);}
+  75%{background-position:0% 100%;filter:brightness(1.6) saturate(2.2);}
+  100%{background-position:0% 50%;filter:brightness(1.2) saturate(1.5);}
+}
+@keyframes goldPulse{
+  0%,100%{box-shadow:0 0 15px rgba(255,215,0,0.5),0 0 30px rgba(255,165,0,0.3),inset 0 0 15px rgba(255,215,0,0.1);}
+  50%{box-shadow:0 0 30px rgba(255,215,0,0.8),0 0 60px rgba(255,165,0,0.5),inset 0 0 30px rgba(255,215,0,0.2);}
+}
+@keyframes goldParticleRain{
+  0%{transform:translateY(-10px) rotate(0deg);opacity:1;}
+  100%{transform:translateY(120px) rotate(720deg);opacity:0;}
+}
+@keyframes goldTextShine{
+  0%,100%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+}
+@keyframes goldCardReveal{
+  0%{transform:scale(0.3) rotateY(90deg);opacity:0;filter:brightness(3);}
+  40%{transform:scale(1.15) rotateY(-5deg);opacity:1;filter:brightness(2);}
+  70%{transform:scale(0.95) rotateY(3deg);filter:brightness(1.5);}
+  100%{transform:scale(1) rotateY(0deg);filter:brightness(1);}
+}
+.gold-card{
+  border:3px solid #ffd700 !important;
+  background:linear-gradient(135deg,#2a1f00,#4a3500,#ffd700,#4a3500,#2a1f00) !important;
+  background-size:300% 300% !important;
+  animation:goldPulse 2s infinite, goldShift 4s infinite !important;
+  position:relative;overflow:hidden;
+}
+.gold-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(105deg,
+    transparent 20%,
+    rgba(255,215,0,0.1) 28%,
+    rgba(255,215,0,0.6) 32%,
+    rgba(255,255,200,0.8) 36%,
+    rgba(255,215,0,0.6) 40%,
+    rgba(255,215,0,0.1) 44%,
+    transparent 52%
+  );
+  animation:holoSheen 1.5s ease-in-out infinite;
+  pointer-events:none;z-index:10;
+}
+.gold-card::after{content:'👑';position:absolute;top:6px;right:6px;font-size:14px;z-index:11;animation:pulse 1s infinite;}
+.gold-card-full{
+  border:3px solid #ffd700;
+  background:linear-gradient(160deg,#1a1000,#3a2500,#ffd700,#3a2500,#1a1000);
+  background-size:300% 300%;
+  animation:goldPulse 2s infinite, goldShift 5s infinite;
+}
+.gold-reveal-title{
+  background:linear-gradient(90deg,#ffd700,#ffaa00,#ffe566,#ffd700,#ffaa00);
+  background-size:300% auto;
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  animation:goldTextShine 1.5s infinite;
+  font-family:'Playfair Display',serif;
+  font-size:28px;
+  font-weight:900;
+  text-align:center;
+  letter-spacing:3px;
+}
+@keyframes goldScreenFlash{
+  0%{opacity:0;}20%{opacity:1;}100%{opacity:0;}
+}
+.gold-screen-flash{
+  position:fixed;inset:0;
+  background:radial-gradient(circle,rgba(255,215,0,0.6) 0%,rgba(255,165,0,0.3) 40%,transparent 70%);
+  pointer-events:none;z-index:999;
+  animation:goldScreenFlash 1.5s ease-out forwards;
+}
+
+/* EPIC GOLD OPENING SEQUENCE */
+@keyframes goldExplosion{
+  0%{transform:scale(0);opacity:1;filter:brightness(5) blur(0px);}
+  20%{transform:scale(2);opacity:1;filter:brightness(3);}
+  50%{transform:scale(1.5);opacity:0.8;filter:brightness(2);}
+  100%{transform:scale(3);opacity:0;filter:brightness(1);}
+}
+@keyframes goldRain{
+  0%{transform:translateY(-20px) rotate(0deg) scale(1);opacity:1;}
+  100%{transform:translateY(150px) rotate(540deg) scale(0.3);opacity:0;}
+}
+@keyframes goldEggGlow{
+  0%,100%{filter:drop-shadow(0 0 10px #ffd700) drop-shadow(0 0 20px #ffaa00);}
+  50%{filter:drop-shadow(0 0 30px #ffd700) drop-shadow(0 0 60px #ffaa00) drop-shadow(0 0 80px #fff8dc) brightness(1.5);}
+}
+@keyframes superNova{
+  0%{transform:scale(0);opacity:0;border-radius:50%;}
+  30%{transform:scale(1.5);opacity:1;border-radius:50%;background:radial-gradient(circle,#fff8dc,#ffd700,#ffaa00,transparent);}
+  60%{transform:scale(3);opacity:0.5;}
+  100%{transform:scale(6);opacity:0;}
+}
+.gold-supernova{
+  position:fixed;top:50%;left:50%;width:100px;height:100px;
+  margin:-50px 0 0 -50px;
+  border-radius:50%;
+  background:radial-gradient(circle,#fff8dc,#ffd700,#ffaa00,transparent);
+  pointer-events:none;z-index:998;
+  animation:superNova 1s ease-out forwards;
+}
+@keyframes mythicLegendaryReveal{
+  0%{transform:scale(0) rotate(-10deg);opacity:0;filter:brightness(5);}
+  30%{transform:scale(1.3) rotate(2deg);opacity:1;filter:brightness(2);}
+  60%{transform:scale(0.95) rotate(-1deg);filter:brightness(1.5);}
+  100%{transform:scale(1) rotate(0);filter:brightness(1);}
+}
+.ultra-reveal{animation:mythicLegendaryReveal 0.9s cubic-bezier(.4,0,.2,1) forwards;}
+
+
 /* Screen shake */
 @keyframes shake{0%,100%{transform:translateX(0)}10%,30%,50%,70%,90%{transform:translateX(-6px)}20%,40%,60%,80%{transform:translateX(6px)}}
 .shaking{animation:shake 0.5s ease;}
@@ -498,6 +651,15 @@
   <input class="sync-input" id="syncCode" type="text" placeholder="DEIN CODE" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false"/>
   <div class="sync-error" id="syncError"></div>
   <button class="sync-btn" onclick="handleSync()">Los gehts →</button>
+</div>
+
+<!-- EGG PACK REVEAL -->
+
+<div class="egg-pack-overlay" id="eggPackOverlay">
+  <div id="eggPackParticles" style="position:absolute;inset:0;pointer-events:none;overflow:hidden;"></div>
+  <div style="font-family:'DM Mono',monospace;font-size:9px;letter-spacing:3px;color:var(--easy);">EGG PACK GEÖFFNET!</div>
+  <div class="egg-reveal-grid" id="eggRevealGrid"></div>
+  <button style="padding:12px 28px;background:var(--bg2);border:1px solid var(--easy-border);border-radius:8px;font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;color:var(--easy);cursor:pointer;text-transform:uppercase;" onclick="closeEggPackReveal()">Zu den Eiern →</button>
 </div>
 
 <!-- HATCH OVERLAY -->
@@ -631,10 +793,12 @@
       <div class="xp-row"><div class="xp-level" id="levelLabel">Lv.1 Jogger</div><div class="xp-count" id="xpCount">0 XP</div></div>
       <div class="xp-bar-outer"><div class="xp-bar-inner" id="xpBar" style="width:0%"></div></div>
     </div>
-    <div class="progress-wrap">
+    <div class="progress-wrap" style="align-items:center;">
+      <div id="companionEmoji" style="font-size:20px;flex-shrink:0;display:none;animation:companionBounce 0.6s ease-in-out infinite;"></div>
       <div class="progress-bar-outer"><div class="progress-bar-inner" id="progressBar" style="width:0%"></div></div>
       <div class="progress-label" id="progressLabel">0 / 0</div>
     </div>
+    <div id="companionBuffLine" style="display:none;margin-top:6px;align-items:center;gap:6px;flex-wrap:wrap;"></div>
   </div>
   <div class="stats-row">
     <div class="stat-box"><div class="stat-val streak" id="streakVal">0</div><div class="stat-label">Streak 🔥</div></div>
@@ -757,10 +921,11 @@
       <div style="text-align:center;width:100%;">
         <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:var(--easy);margin-bottom:4px;">Egg Pack</div>
         <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">3 Eier · Lauf sie aus · Tiere hatchen</div>
-        <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;">
-          <span style="font-family:'DM Mono',monospace;font-size:7px;padding:3px 8px;background:var(--faint);border-radius:20px;color:var(--muted);">🥚 5km 70%</span>
-          <span style="font-family:'DM Mono',monospace;font-size:7px;padding:3px 8px;background:var(--long-bg);border:1px solid var(--long-border);border-radius:20px;color:var(--long);">🔵 10km 20%</span>
-          <span style="font-family:'DM Mono',monospace;font-size:7px;padding:3px 8px;background:var(--tempo-bg);border:1px solid var(--tempo-border);border-radius:20px;color:var(--tempo);">🔴 20km 10%</span>
+        <div style="display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;">
+          <span style="font-family:'DM Mono',monospace;font-size:7px;padding:3px 7px;background:var(--faint);border-radius:20px;color:var(--muted);">🥚 5km 68%</span>
+          <span style="font-family:'DM Mono',monospace;font-size:7px;padding:3px 7px;background:var(--long-bg);border:1px solid var(--long-border);border-radius:20px;color:var(--long);">🔵 10km 20%</span>
+          <span style="font-family:'DM Mono',monospace;font-size:7px;padding:3px 7px;background:var(--tempo-bg);border:1px solid var(--tempo-border);border-radius:20px;color:var(--tempo);">🔴 20km 10%</span>
+          <span style="font-family:'DM Mono',monospace;font-size:7px;padding:3px 7px;background:#1a0a2e;border:1px solid #a78bfa;border-radius:20px;color:#a78bfa;">⚡ 30km 2%</span>
         </div>
         <button id="buyEggBtn" onclick="buyEggPack()" style="width:100%;padding:12px;background:var(--easy);border:none;border-radius:8px;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;color:#0a1a0a;font-weight:700;cursor:pointer;text-transform:uppercase;">🪙 20 Maratooneys</button>
       </div>
@@ -972,7 +1137,7 @@ PHASES.forEach((p,pi)=>{
 const totalSessions=PLAN.reduce((s,w)=>s+w.sessions.length,0);
 
 // ── STATE ─────────────────────────────────────────────────────
-let state={checked:{},coins:0,gearCollection:[],nutritionCollection:[],runnerCollection:[],unlockedAchievements:[],claimedWeekCoins:{},runs:[],hannahClassicWeeks:0,buffs:{},bananaActive:false,eggs:[],menagerie:[],companions:[],lastDailyCompanion:""};
+let state={checked:{},coins:0,gearCollection:[],nutritionCollection:[],runnerCollection:[],unlockedAchievements:[],claimedWeekCoins:{},runs:[],hannahClassicWeeks:0,buffs:{},bananaActive:false,eggs:[],menagerie:[],companions:[],lastDailyCompanion:"",weeklyAbilityUsed:{}};
 let activeWeek=1,activePhase=0,runType='easy',activeAlbumTab='gear';
 
 function loadState(){try{const s=localStorage.getItem('runners_log_v6');if(s)state={...state,...JSON.parse(s)};}catch{}}
@@ -1551,6 +1716,43 @@ function switchScreen(name){
 
 
 // ── COMPANIONS ─────────────────────────────────────────────────
+
+function getWeekKey(){return new Date().toISOString().slice(0,7)+"-W"+Math.ceil(new Date().getDate()/7);}
+
+function useWeeklyAbility(animalId){
+  var wk=getWeekKey();
+  var key=animalId+"_"+wk;
+  if(state.weeklyAbilityUsed&&state.weeklyAbilityUsed[key]){showToast("Already used this week!");return;}
+  var animal=state.menagerie.find(function(m){return m.id===animalId&&m.shiny;});
+  if(!animal)return;
+  var animalData=Object.values(ANIMALS).flat().find(function(x){return x.id===animalId;});
+  if(!animalData||!animalData.weeklyAbility)return;
+  var ab=animalData.weeklyAbility;
+  if(!state.weeklyAbilityUsed)state.weeklyAbilityUsed={};
+  state.weeklyAbilityUsed[key]=true;
+  if(ab.type==="coins_weekly_shiny"){
+    state.coins+=ab.val;
+    showToast("✨ "+animal.emoji+" Weekly: +"+ab.val+" 🪙!");
+  }else if(ab.type==="xp_weekly_shiny"){
+    // Grant XP via bonus coins (XP tied to sessions, so give coins equivalent)
+    state.coins+=Math.round(ab.val/5);
+    showToast("✨ "+animal.emoji+" Weekly: +"+ab.val+" XP Boost!");
+    // Add to checked for XP tracking
+    var xpKey="weekly_xp_"+Date.now();
+    state.checked[xpKey]=ab.val;
+  }else if(ab.type==="eggs_weekly_shiny"){
+    if(!state.eggs)state.eggs=[];
+    state.eggs=state.eggs.map(function(e){e.progress=(e.progress||0)+ab.val;if(e.progress>=EGG_KM[e.type]&&!e.ready)e.ready=true;return e;});
+    showToast("✨ "+animal.emoji+" Weekly: alle Eier +"+ab.val+"km!");
+    renderEggs();
+  }else if(ab.type==="double_daily_shiny"){
+    var bonus=getCompanionBonus("coins_daily")*2;
+    state.coins+=bonus;
+    showToast("✨ "+animal.emoji+" Weekly: Daily Coins 2×! +"+bonus+" 🪙");
+  }
+  saveState();renderPlan();
+}
+
 function getActiveCompanionBuffs(){
   if(!state.companions)return[];
   var buffs=[];
@@ -1584,7 +1786,7 @@ function toggleCompanion(animalId){
     state.companions.splice(idx,1);
     showToast("Companion entfernt");
   }else{
-    if(state.companions.length>=3){showToast("Max 3 Companions!");return;}
+    if(state.companions.length>=1){showToast("Erst aktiven Companion entfernen!");return;}
     state.companions.push(animalId);
     var a=state.menagerie.find(function(m){return m.id===animalId;});
     showToast((a?a.emoji:"") +" als Companion aktiviert!");
@@ -1607,33 +1809,35 @@ function claimDailyCompanionCoins(){
 // ── ANIMALS ───────────────────────────────────────────────────
 const ANIMALS={
   common:[
-    {id:"s_turtle",  emoji:"🐢",name:"Speedy Turtle",      title:"The Slow Grinder",         speed:20,stamina:95,vibe:70,  rarity:"common",   buff:null},
-    {id:"j_rabbit",  emoji:"🐰",name:"Jogger Rabbit",      title:"Always Late to Start",     speed:75,stamina:65,vibe:80,  rarity:"common",   buff:{type:"coins_session",val:2,  desc:"+2 🪙 pro Session"}},
-    {id:"t_hamster", emoji:"🐹",name:"Track Hamster",      title:"Wheel Never Stops",        speed:55,stamina:70,vibe:90,  rarity:"common",   buff:{type:"coins_session",val:3,  desc:"+3 🪙 pro Session"}},
-    {id:"p_pigeon",  emoji:"🕊️",name:"Pace Pigeon",       title:"The City Flyer",           speed:65,stamina:60,vibe:75,  rarity:"common",   buff:null},
-    {id:"m_mouse",   emoji:"🐭",name:"Marathon Mouse",     title:"Tiny But Mighty",          speed:50,stamina:80,vibe:85,  rarity:"common",   buff:{type:"coins_session",val:2,  desc:"+2 🪙 pro Session"}},
+    {id:"s_turtle",  emoji:"🐢",name:"Pudding Pace",      title:"Slowest Finisher, Still Finishes",         speed:20,stamina:95,vibe:70,  rarity:"common",   buff:null},
+    {id:"j_rabbit",  emoji:"🐰",name:"Morning Jogger",      title:"Never Misses Leg Day",     speed:75,stamina:65,vibe:80,  rarity:"common",   buff:{type:"coins_session",val:2,  desc:"+2 🪙 pro Session"}},
+    {id:"t_hamster", emoji:"🐹",name:"Wheel Of Suffering",      title:"Zone 2 Or Death",        speed:55,stamina:70,vibe:90,  rarity:"common",   buff:{type:"coins_session",val:3,  desc:"+3 🪙 pro Session"}},
+    {id:"p_pigeon",  emoji:"🕊️",name:"The Berlin Flapper",       title:"Knows Every Shortcut",           speed:65,stamina:60,vibe:75,  rarity:"common",   buff:null},
+    {id:"m_mouse",   emoji:"🐭",name:"Tiny Strides, Big Dreams",     title:"Qualified By Age Group",          speed:50,stamina:80,vibe:85,  rarity:"common",   buff:{type:"coins_session",val:2,  desc:"+2 🪙 pro Session"}},
   ],
   rare:[
-    {id:"keta_kang", emoji:"🦘",name:"Keta Kangaroo",      title:"Bouncing Since 3AM",       speed:85,stamina:75,vibe:99,  rarity:"rare",     buff:{type:"coins_session",val:8,  desc:"+8 🪙 pro Session"}},
-    {id:"sp_giraffe",emoji:"🦒",name:"Speedy Giraffe",     title:"Long Stride Energy",       speed:80,stamina:70,vibe:78,  rarity:"rare",     buff:{type:"xp_multi",   val:1.5,  desc:"1.5× XP"}},
-    {id:"n_cheetah", emoji:"🐆",name:"Nitro Cheetah",      title:"0 to 100 Real Quick",      speed:99,stamina:45,vibe:88,  rarity:"rare",     buff:{type:"coins_multi", val:1.5, desc:"1.5× Maratooneys"}},
-    {id:"e_elephant",emoji:"🐘",name:"Enduro Elephant",    title:"Never Stops Moving",       speed:40,stamina:99,vibe:72,  rarity:"rare",     buff:{type:"streak_shield",val:1,  desc:"Streak Shield"}},
-    {id:"z2_zebra",  emoji:"🦓",name:"Zone2 Zebra",        title:"Heart Rate Police",        speed:60,stamina:88,vibe:65,  rarity:"rare",     buff:{type:"coins_session",val:6,  desc:"+6 🪙 pro Session"}},
+    {id:"keta_kang", emoji:"🦘",name:"Keta Kangaroo",      title:"Still Bouncing, Still Running",       speed:85,stamina:75,vibe:99,  rarity:"rare",     buff:{type:"coins_session",val:8,  desc:"+8 🪙 pro Session"}},
+    {id:"sp_giraffe",emoji:"🦒",name:"Speedy Giraffe",     title:"Neck Deep In Pace Goals",       speed:80,stamina:70,vibe:78,  rarity:"rare",     buff:{type:"xp_multi",   val:1.5,  desc:"1.5× XP"}},
+    {id:"n_cheetah", emoji:"🐆",name:"Nitro Cheetah",      title:"Starts Sprint at KM 40",      speed:99,stamina:45,vibe:88,  rarity:"rare",     buff:{type:"coins_multi", val:1.5, desc:"1.5× Maratooneys"}},
+    {id:"e_elephant",emoji:"🐘",name:"Enduro Elephant",    title:"Has Been Running Since 2009",       speed:40,stamina:99,vibe:72,  rarity:"rare",     buff:{type:"streak_shield",val:1,  desc:"Streak Shield"}},
+    {id:"c_koala",   emoji:"🐨",name:"Cracky Koala",        title:"Wide Awake At KM 35",          speed:88,stamina:78,vibe:95,  rarity:"rare",     buff:{type:"coins_session",val:10, desc:"+10 🪙 pro Session"},weeklyAbility:{type:"coins_weekly_shiny",val:80,desc:"Once a week: +80 🪙 sofort"}},
+    {id:"z2_zebra",  emoji:"🦓",name:"Zone2 Zebra",        title:"Will Tell You Your Pace Is Wrong",        speed:60,stamina:88,vibe:65,  rarity:"rare",     buff:{type:"coins_session",val:6,  desc:"+6 🪙 pro Session"}},
   ],
   legendary:[
-    {id:"coke_gorilla",  emoji:"🦍",name:"Coke Gorilla",        title:"Wall Street Sprinter",   speed:99,stamina:80,vibe:100, rarity:"legendary",buff:{type:"coins_multi", val:2,   desc:"2× Maratooneys auf alles"}},
-    {id:"weed_wombat",   emoji:"🦡",name:"Weed Wombat",         title:"Chill but Deadly Pace",  speed:70,stamina:99,vibe:100, rarity:"legendary",buff:{type:"coins_multi", val:1.5, desc:"+50% Maratooneys"}},
-    {id:"crystal_uni",   emoji:"🦄",name:"Crystal Unicorn",     title:"Mythical PR Machine",    speed:95,stamina:95,vibe:99,  rarity:"legendary",buff:{type:"xp_multi",   val:2,   desc:"2× XP"}},
-    {id:"turbo_tiger",   emoji:"🐯",name:"Turbo Tiger",         title:"Fuel: Pure Aggression",  speed:98,stamina:82,vibe:90,  rarity:"legendary",buff:{type:"coins_weekly",val:50,  desc:"+50 🪙 pro Woche komplett"}},
-    {id:"molly_dolphin", emoji:"🐬",name:"Molly Dolphin",       title:"Euphoric Endurance",     speed:88,stamina:97,vibe:100, rarity:"legendary",buff:{type:"xp_multi",   val:1.5, desc:"1.5× XP"}},
-    {id:"speed_ostrich", emoji:"🦤",name:"Speed Demon Ostrich", title:"No Brakes No Fear",      speed:97,stamina:75,vibe:88,  rarity:"legendary",buff:{type:"coins_daily", val:50,  desc:"+50 🪙 täglich"}},
-    {id:"mdma_marmot",   emoji:"🦫",name:"MDMA Marmot",         title:"Everyone loves this one",speed:72,stamina:90,vibe:100, rarity:"legendary",buff:{type:"coins_session",val:15, desc:"+15 🪙 pro Session"}},
+    {id:"coke_gorilla",  emoji:"🦍",name:"Cocaine Gorilla",        title:"Financed The Race With One Trade",   speed:99,stamina:80,vibe:100, rarity:"legendary",buff:{type:"coins_multi", val:2,   desc:"2× Maratooneys auf alles"},weeklyAbility:{type:"coins_weekly_shiny",val:200, desc:"Once a week: +200 🪙 sofort"}},
+    {id:"weed_wombat",   emoji:"🦡",name:"Weed Wombat",         title:"Somehow Always Negative Splits",  speed:70,stamina:99,vibe:100, rarity:"legendary",buff:{type:"coins_multi", val:1.5, desc:"+50% Maratooneys"},weeklyAbility:{type:"eggs_weekly_shiny", val:5,   desc:"Once a week: alle Eier +5km"}},
+    {id:"crystal_uni",   emoji:"🦄",name:"Crystal Unicorn",     title:"Not From This World",    speed:95,stamina:95,vibe:99,  rarity:"legendary",buff:{type:"xp_multi",   val:2,   desc:"2× XP"},weeklyAbility:{type:"xp_weekly_shiny",   val:500, desc:"Once a week: +500 XP Boost"}},
+    {id:"turbo_tiger",   emoji:"🐯",name:"LSD Tiger",         title:"Sees Colors At KM 30",  speed:98,stamina:82,vibe:90,  rarity:"legendary",buff:{type:"coins_weekly",val:50,  desc:"+50 🪙 pro Woche komplett"},weeklyAbility:{type:"coins_weekly_shiny",val:150, desc:"Once a week: +150 🪙 sofort"}},
+    {id:"molly_dolphin", emoji:"🐬",name:"Molly Dolphin",       title:"Euphoric Endurance King",     speed:88,stamina:97,vibe:100, rarity:"legendary",buff:{type:"xp_multi",   val:1.5, desc:"1.5× XP"},weeklyAbility:{type:"xp_weekly_shiny",   val:300, desc:"Once a week: +300 XP Boost"}},
+    {id:"speed_ostrich", emoji:"🦤",name:"Stimulant Ostrich", title:"Legally Cannot Stop Moving",      speed:97,stamina:75,vibe:88,  rarity:"legendary",buff:{type:"coins_daily", val:50,  desc:"+50 🪙 täglich"},weeklyAbility:{type:"coins_weekly_shiny",val:100, desc:"Once a week: +100 🪙 sofort"}},
+    {id:"h_hermelin",    emoji:"🐾",name:"Hero Hermelin",       title:"Saved Three Runners At KM 40", speed:92,stamina:96,vibe:100, rarity:"legendary",buff:{type:"xp_multi",   val:2,   desc:"2× XP"},weeklyAbility:{type:"xp_weekly_shiny",val:400,desc:"Once a week: +400 XP Boost"}},
+    {id:"mdma_marmot",   emoji:"🦫",name:"Serotonin Marmot",         title:"Has Hugged Every Volunteer",speed:72,stamina:90,vibe:100, rarity:"legendary",buff:{type:"coins_session",val:15, desc:"+15 🪙 pro Session"},weeklyAbility:{type:"coins_weekly_shiny",val:100, desc:"Once a week: +100 🪙 sofort"}},
   ],
   mythic:[
-    {id:"arya",  emoji:"🐱",name:"Arya",  title:"British Shorthair · The Silent Predator",  speed:88,stamina:92,vibe:99,  rarity:"mythic",   buff:{type:"coins_daily", val:30,  desc:"+30 🪙 täglich"}},
-    {id:"neela", emoji:"🐱",name:"Neela", title:"British Shorthair · Blue Steel Energy",    speed:91,stamina:89,vibe:99,  rarity:"mythic",   buff:{type:"xp_multi",   val:2,   desc:"2× XP"}},
-    {id:"merle", emoji:"🐈",name:"Merle", title:"OG · RIP Legend · GOAT",                   speed:99,stamina:99,vibe:99,  rarity:"mythic",   buff:{type:"coins_daily", val:100, desc:"+100 🪙 täglich · GOAT Tax"}},
-    {id:"tinka", emoji:"🐈",name:"Tinka", title:"OG · RIP Legend · GOAT",                   speed:99,stamina:99,vibe:99,  rarity:"mythic",   buff:{type:"coins_multi", val:3,   desc:"3× Maratooneys auf alles"}},
+    {id:"arya",  emoji:"😼",name:"Arya",  title:"Boss Cat · Fights Everyone · Always Outside",  speed:95,stamina:88,vibe:82,  rarity:"mythic",   buff:{type:"coins_daily", val:30,  desc:"+30 🪙 täglich",lore:"Absolute Boss. Ist eigentlich immer draußen — egal ob Regen oder nicht. Fighted mit anderen Katzen im Revier und gewinnt. Relativ füllig, isst ordentlich. Schlägt Neela manchmal. Chef im Haus."},weeklyAbility:{type:"xp_weekly_shiny",   val:200, desc:"Once a week: +200 XP Boost"}},
+    {id:"neela", emoji:"🐱",name:"Neela", title:"Weird Cat · Goofy · Daughter of Arya · Maunzt Komisch",    speed:60,stamina:72,vibe:45,  rarity:"mythic",   buff:{type:"xp_multi",   val:2,   desc:"2× XP",lore:"Tochter von Arya. Benimmt sich irgendwie weird — keiner weiß genau warum. Sehr scheu, lässt sich selten streicheln. Maunzt auf eine Art die man nicht erklären kann. Geht ungern raus. Goofy energy on a different level."},weeklyAbility:{type:"xp_weekly_shiny",   val:200, desc:"Once a week: +200 XP Boost"}},
+    {id:"merle", emoji:"🐈",name:"Merle", title:"OG · RIP Legend · GOAT",                   speed:85,stamina:88,vibe:78,  rarity:"mythic",   buff:{type:"coins_daily", val:100, desc:"+100 🪙 täglich · GOAT Tax",lore:"RIP. Tochter von Tinka. Bisschen Neela-lite-energy — nicht ganz so weird, aber immer die scheuere gewesen. Wurde auch mal von Tinka geboxt. Hat trotzdem jeden Raum besser gemacht. Wird vermisst."},weeklyAbility:{type:"double_daily_shiny", val:1,   desc:"Once a week: alle Daily Coins 2×"}},
+    {id:"tinka", emoji:"🐈",name:"Tinka", title:"OG · RIP Legend · GOAT",                   speed:85,stamina:88,vibe:78,  rarity:"mythic",   buff:{type:"coins_multi", val:3,   desc:"3× Maratooneys auf alles",lore:"RIP. THE OG BOSS. Mutter von Merle. Grumpy by default. Hat Füchse im Garten angegriffen und sie verjagt. Kratzte auch mal wenn sie nicht wollte. Keine halben Sachen. Absolute Legende."},weeklyAbility:{type:"double_daily_shiny", val:1,   desc:"Once a week: alle Daily Coins 2×"}},
   ],
 }
 const EGG_KM={common:5,rare:10,legendary:20,mythic:30};
@@ -1648,7 +1852,7 @@ function hatchEggVisual(type){
   var s={rare:"drop-shadow(0 0 14px #93c5fd)",legendary:"drop-shadow(0 0 18px #ff6b6b)",mythic:"drop-shadow(0 0 22px #a78bfa)"};
   return "<span style='font-size:96px;filter:"+(s[type]||"none")+";line-height:1;'>🥚</span>";
 }
-function rollEggType(){var r=Math.random();return r<0.02?"mythic":r<0.12?"legendary":r<0.32?"rare":"common";}
+function rollEggType(){var r=Math.random();return r<0.50?"mythic":r<0.62?"legendary":r<0.82?"rare":"common";}
 
 // ── FIREBASE SYNC ─────────────────────────────────────────────
 var FB_URL="https://firestore.googleapis.com/v1/projects/marathon-tracker-49d16/databases/(default)/documents/users/";
@@ -1710,8 +1914,9 @@ async function saveToCloud(){
         bananaActive:{booleanValue:!!state.bananaActive},
         eggs:{stringValue:JSON.stringify(state.eggs||[])},
         menagerie:{stringValue:JSON.stringify(state.menagerie||[])},
-        companions:{stringValue:JSON.stringify(state.companions||[])},
+        companions:{stringValue:JSON.stringify((state.companions||[]).slice(0,1))},
         lastDailyCompanion:{stringValue:state.lastDailyCompanion||''},
+        weeklyAbilityUsed:{stringValue:JSON.stringify(state.weeklyAbilityUsed||{})},
       }})
     });
   }catch(e){console.log("save fail",e);}
@@ -1814,12 +2019,47 @@ function renderCompanions(){
 function buyEggPack(){
   if(state.coins<20){showToast("Nicht genug Maratooneys!");return;}
   if(!state.eggs)state.eggs=[];
-  if(state.eggs.length>=9){showToast("Max 9 Eier!");return;}
+  if(state.eggs.length>=9){showToast("Max 9 Eier! Erst welche ausbrüten.");return;}
   state.coins-=20;
   var slots=Math.min(3,9-state.eggs.length);
-  for(var i=0;i<slots;i++){state.eggs.push({id:Date.now()+i,type:rollEggType(),progress:0,ready:false});}
-  saveState();renderEggs();renderStore();renderPlan();
-  showToast("🥚 "+slots+" neue Eier!");
+  var newEggs=[];
+  for(var i=0;i<slots;i++){
+    var egg={id:Date.now()+i,type:rollEggType(),progress:0,ready:false};
+    newEggs.push(egg);
+    state.eggs.push(egg);
+  }
+  saveState();renderStore();renderPlan();
+  showEggPackReveal(newEggs);
+}
+
+function showEggPackReveal(eggs){
+  var overlay=document.getElementById("eggPackOverlay");
+  var grid=document.getElementById("eggRevealGrid");
+  if(!overlay||!grid)return;
+  grid.innerHTML="";
+  var typeColors={common:"var(--muted)",rare:"#93c5fd",legendary:"#ff6b6b",mythic:"#a78bfa"};
+  var typeLabels={common:"5km",rare:"10km",legendary:"20km",mythic:"30km ⚡"};
+  eggs.forEach(function(egg,i){
+    var div=document.createElement("div");
+    div.className="egg-reveal-item";
+    var glow=egg.type==="mythic"?"drop-shadow(0 0 20px #a78bfa)":egg.type==="legendary"?"drop-shadow(0 0 16px #ff6b6b)":egg.type==="rare"?"drop-shadow(0 0 10px #93c5fd)":"none";
+    div.innerHTML="<div class='egg-reveal-big' style='filter:"+glow+";'>🥚</div>"
+      +"<div class='egg-reveal-label' style='color:"+typeColors[egg.type]+";'>"+typeLabels[egg.type]+"</div>"
+      +"<div style='font-family:monospace;font-size:7px;color:var(--muted);text-transform:uppercase;'>"+egg.type+"</div>";
+    grid.appendChild(div);
+    setTimeout(function(el,idx){
+      el.classList.add("show");
+      if(egg.type==="mythic")burstP("eggPackParticles",40,["#a78bfa","#c4b5fd","#ffd700"]);
+      else if(egg.type==="legendary")burstP("eggPackParticles",20,["#ff6b6b","#ffd700"]);
+    },300+i*300,div,i);
+  });
+  overlay.classList.add("active");
+  renderEggs();
+}
+
+function closeEggPackReveal(){
+  document.getElementById("eggPackOverlay").classList.remove("active");
+  switchScreen("eggs");
 }
 function addKmToEggs(km){
   if(!state.eggs||!state.eggs.length)return;
@@ -1854,57 +2094,58 @@ function crackEgg(){
   // Pre-roll to see if shiny (for animation teaser)
   var pool=ANIMALS[hatchingEgg.type]||ANIMALS.common;
   var animal=pool[Math.floor(Math.random()*pool.length)];
-  var shiny=Math.random()<0.05;
+  var roll=Math.random();
+  var gold=roll<0.50;
+  var shiny=!gold&&roll<0.75;
 
   // Store result for later
   hatchingEgg._prerolled={animal:animal,shiny:shiny};
 
-  if(shiny){
-    // SHINY SPECIAL INTRO
+  if(gold||shiny){
+    // SPECIAL INTRO
     el.classList.add("shiny-egg-beating");
     burstP("hatchParticles",15,["#a78bfa","#60a5fa","#f472b6","#fff"]);
     setTimeout(function(){
       el.classList.remove("shiny-egg-beating");
       el.classList.add("hatch-cracking");
-      burstP("hatchParticles",40,["#a78bfa","#60a5fa","#f472b6","#ffd700","#fff"]);
-      finishHatch(el,animal,shiny);
+      var burstColors=gold?["#ffd700","#ffaa00","#ffe566","#fff8dc"]:["#a78bfa","#60a5fa","#f472b6","#ffd700","#fff"];
+      burstP("hatchParticles",gold?60:40,burstColors);
+      finishHatch(el,animal,shiny,gold);
     },1200);
   }else{
     el.classList.add("hatch-cracking");
     burstP("hatchParticles",20,["#c9a84c","#4ade80","#ffd700"]);
-    finishHatch(el,animal,shiny);
+    finishHatch(el,animal,shiny,gold||false);
   }
 }
 
-function finishHatch(el,animal,shiny){
+function finishHatch(el,animal,shiny,gold){
   setTimeout(function(){
-    var result=Object.assign({},animal,{shiny:shiny,eggType:hatchingEgg.type,ts:Date.now()});
+    var eggType=hatchingEgg.type||"common";
+    var result=Object.assign({},animal,{shiny:shiny,gold:gold,eggType:eggType,ts:Date.now()});
     if(!state.menagerie)state.menagerie=[];
-    var isDuplicate=state.menagerie.some(function(m){return m.id===result.id&&!m.shiny===!result.shiny;});
+    var isDuplicate=state.menagerie.some(function(m){return m.id===result.id&&!m.shiny===!result.shiny&&!m.gold===!result.gold;});
     if(isDuplicate){
-      state.coins+=5;
-      state.eggs.splice(hatchIdx,1);
+      state.coins+=5;state.eggs.splice(hatchIdx,1);
       checkAchievements();saveState();renderEggs();
       setTimeout(function(){showToast("Duplikat! +5 🪙");},800);
     }else{
-      state.menagerie.push(result);
-      state.eggs.splice(hatchIdx,1);
+      state.menagerie.push(result);state.eggs.splice(hatchIdx,1);
       checkAchievements();saveState();renderEggs();
     }
     el.classList.remove("hatch-cracking");el.textContent=animal.emoji;
     setTimeout(function(){
       document.getElementById("hatchPhase").style.display="none";
       document.getElementById("animalReveal").classList.add("active");
-      document.getElementById("revealTitle").textContent=shiny?"✨ SHINY!":(hatchingEgg.type==="mythic"?"⚡ MYTHIC!":"Geschlüpft!");
       document.getElementById("revealSub").textContent=animal.name+" · "+animal.title;
-      var card=document.getElementById("animalCard");
-      card.className="animal-card "+(shiny?"shiny-holo-card "+(result.eggType||"common"):(result.eggType||"common"));
+      var titleEl=document.getElementById("revealTitle");
+      var cardEl=document.getElementById("animalCard");
+      var isMythicOrLeg=eggType==="mythic"||eggType==="legendary";
+
+      // ── STATS (same for all) ─────────────────────────────
       document.getElementById("aEmoji").textContent=animal.emoji;
       document.getElementById("aName").textContent=animal.name;
       document.getElementById("aTitle").textContent=animal.title;
-      var pill=document.getElementById("aPill");
-      pill.className="a-pill "+(shiny?"shiny":"normal");
-      pill.textContent=shiny?"✨ SHINY":hatchingEgg.type.toUpperCase();
       var sc={speed:"#fca5a5",stamina:"#93c5fd",vibe:"#4ade80"};
       var sh="";
       ["speed","stamina","vibe"].forEach(function(s){
@@ -1913,9 +2154,75 @@ function finishHatch(el,animal,shiny){
         sh+="<div class='a-stat-num'>"+animal[s]+"</div></div>";
       });
       document.getElementById("aStats").innerHTML=sh;
-      if(shiny)burstP("hatchParticles",40,["#a78bfa","#c4b5fd","#fff"]);
-      else if(hatchingEgg.type==="mythic")burstP("hatchParticles",50,["#a78bfa","#c4b5fd","#fff","#ffd700"]);
-      else if(hatchingEgg.type==="legendary")burstP("hatchParticles",30,["#ff6b6b","#ffd700"]);
+
+      // ── GOLD ─────────────────────────────────────────────
+      if(gold){
+        var nova=document.createElement("div");nova.className="gold-supernova";document.body.appendChild(nova);
+        setTimeout(function(){nova.remove();},1000);
+        var flash=document.createElement("div");flash.className="gold-screen-flash";document.body.appendChild(flash);
+        setTimeout(function(){flash.remove();},1500);
+        titleEl.className="gold-reveal-title";
+        titleEl.style.cssText="";
+        titleEl.textContent=isMythicOrLeg?(eggType==="mythic"?"👑⚡ GOLD MYTHIC ⚡👑":"👑🔥 GOLD LEGENDARY 🔥👑"):"👑 G O L D 👑";
+        cardEl.className="animal-card gold-card ultra-reveal";
+        document.getElementById("aPill").className="a-pill";
+        document.getElementById("aPill").style.cssText="background:#2a1f00;color:#ffd700;border:1px solid #ffd700;";
+        document.getElementById("aPill").textContent="👑 GOLD";
+        document.getElementById("aEmoji").style.filter="drop-shadow(0 0 15px #ffd700)";
+        burstP("hatchParticles",100,["#ffd700","#ffaa00","#ffe566","#fff8dc","#ffa500","#fff"]);
+        setTimeout(function(){burstP("hatchParticles",60,["#ffd700","#ffaa00","#ffe566"]);},400);
+        setTimeout(function(){burstP("hatchParticles",40,["#ffd700","#fff8dc"]);},800);
+        shakeScreen();setTimeout(shakeScreen,600);
+        if(navigator.vibrate)navigator.vibrate([100,30,100,30,100,30,300]);
+
+      // ── SHINY ────────────────────────────────────────────
+      }else if(shiny){
+        titleEl.style.cssText="background:linear-gradient(90deg,#a78bfa,#60a5fa,#34d399,#fbbf24,#f472b6,#a78bfa);background-size:300% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:holoShift 1.5s infinite;font-family:serif;font-size:22px;font-weight:900;";
+        titleEl.textContent=isMythicOrLeg?(eggType==="mythic"?"✨⚡ SHINY MYTHIC ⚡✨":"✨🔥 SHINY LEGENDARY 🔥✨"):"✨ S H I N Y ✨";
+        cardEl.className="animal-card shiny-holo-card "+eggType+" ultra-reveal";
+        document.getElementById("aPill").className="a-pill shiny";
+        document.getElementById("aPill").style.cssText="";
+        document.getElementById("aPill").textContent="✨ SHINY";
+        document.getElementById("aEmoji").style.filter="";
+        if(isMythicOrLeg){
+          var pf=document.createElement("div");
+          pf.style.cssText="position:fixed;inset:0;background:radial-gradient(circle,rgba(167,139,250,0.7),rgba(96,165,250,0.4),transparent);pointer-events:none;z-index:998;animation:goldScreenFlash 1.5s ease-out forwards;";
+          document.body.appendChild(pf);setTimeout(function(){pf.remove();},1500);
+          burstP("hatchParticles",100,["#a78bfa","#60a5fa","#f472b6","#34d399","#fff","#fbbf24"]);
+          setTimeout(function(){burstP("hatchParticles",60,["#a78bfa","#fff"]);},400);
+          setTimeout(function(){burstP("hatchParticles",40,["#60a5fa","#f472b6"]);},800);
+          shakeScreen();setTimeout(shakeScreen,500);
+          if(navigator.vibrate)navigator.vibrate([80,20,80,20,80,20,200]);
+        }else{
+          burstP("hatchParticles",60,["#a78bfa","#60a5fa","#f472b6","#34d399","#fbbf24","#fff"]);
+          setTimeout(function(){burstP("hatchParticles",30,["#a78bfa","#fff"]);},500);
+          if(navigator.vibrate)navigator.vibrate([50,30,100]);
+        }
+
+      // ── LEGENDARY / MYTHIC NORMAL ────────────────────────
+      }else if(isMythicOrLeg){
+        titleEl.style.cssText="";
+        titleEl.textContent=eggType==="mythic"?"⚡ M Y T H I C ⚡":"🔥 L E G E N D A R Y 🔥";
+        cardEl.className="animal-card "+eggType+" ultra-reveal";
+        document.getElementById("aPill").className="a-pill "+eggType;
+        document.getElementById("aPill").style.cssText="";
+        document.getElementById("aPill").textContent=eggType.toUpperCase();
+        document.getElementById("aEmoji").style.filter="";
+        var bc=eggType==="mythic"?["#a78bfa","#c4b5fd","#fff","#ffd700"]:["#ff6b6b","#ffd700","#ff8c00"];
+        burstP("hatchParticles",50,bc);
+        setTimeout(function(){burstP("hatchParticles",30,bc);},500);
+        if(navigator.vibrate)navigator.vibrate([50,30,80]);
+
+      // ── NORMAL ───────────────────────────────────────────
+      }else{
+        titleEl.style.cssText="";
+        titleEl.textContent="Geschlüpft!";
+        cardEl.className="animal-card "+eggType;
+        document.getElementById("aPill").className="a-pill normal";
+        document.getElementById("aPill").style.cssText="";
+        document.getElementById("aPill").textContent=eggType.toUpperCase();
+        document.getElementById("aEmoji").style.filter="";
+      }
     },600);
   },1000);
 }
@@ -1986,8 +2293,9 @@ function openMenDetail(idx){
   var a=state.menagerie[idx];if(!a)return;
   var rc={common:"var(--gold-dim)",rare:"var(--long)",legendary:"var(--ultra)",mythic:"var(--shiny)"};
   var card=document.getElementById("mCardFull");
-  card.className="m-card-full "+(a.shiny?"shiny-holo-card "+(a.eggType||"common"):(a.eggType||"common"));
+  card.className="m-card-full "+(a.gold?"gold-card-full":a.shiny?"shiny-holo-card "+(a.eggType||"common"):(a.eggType||"common"));
   document.getElementById("mCardEmoji").textContent=a.emoji;
+
   document.getElementById("mCardName").textContent=a.name;
   document.getElementById("mCardTitle").textContent=a.title;
   var pill=document.getElementById("mCardRarity");
