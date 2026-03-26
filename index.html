@@ -998,8 +998,8 @@
 /* ── BRUSH UP CSS ─────────────────────────────────────── */
 
 /* Screen transitions */
-.screen{opacity:0;transition:opacity 0.25s ease;}
-.screen.active{opacity:1;}
+.screen{opacity:0;transition:opacity 0.25s ease;pointer-events:none;}
+.screen.active{opacity:1;pointer-events:auto;}
 
 /* Session card tap feedback */
 .session-card{transition:transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;-webkit-tap-highlight-color:transparent;}
