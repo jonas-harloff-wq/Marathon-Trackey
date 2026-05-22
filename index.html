@@ -1388,6 +1388,28 @@ body{font-family:'Space Mono',monospace;background:var(--bg);color:var(--text);m
       </div>
       <div id="cosmeticShopItems" style="padding:0 20px 16px;"></div>
     </div>
+    <!-- Consumables -->
+    <div class="pack-card" style="cursor:default;">
+      <div class="pack-card-header" style="padding-bottom:0;">
+        <div class="pack-thumb" style="background:linear-gradient(135deg,#0a1a08,#1a3510);"><span style="font-size:26px;">⚡</span></div>
+        <div class="pack-info">
+          <div class="pack-card-title" style="color:#5dff8a;">Consumables</div>
+          <div class="pack-card-desc">Einmalig nutzbar · Nur aus Dungeon Drops</div>
+        </div>
+      </div>
+      <div id="consumablesItems" style="padding:0 16px 16px;display:flex;flex-direction:column;gap:8px;"></div>
+    </div>
+    <!-- Permanents -->
+    <div class="pack-card" style="cursor:default;">
+      <div class="pack-card-header" style="padding-bottom:0;">
+        <div class="pack-thumb" style="background:linear-gradient(135deg,#1a1400,#2a2000);"><span style="font-size:26px;">📈</span></div>
+        <div class="pack-info">
+          <div class="pack-card-title" style="color:#ffd700;">Permanents</div>
+          <div class="pack-card-desc">Für immer aktiv · Ultra-rare Drops</div>
+        </div>
+      </div>
+      <div id="permanentsItems" style="padding:0 16px 16px;display:flex;flex-direction:column;gap:8px;"></div>
+    </div>
     <!-- Earn info -->
     <div class="pack-card" style="cursor:default;">
       <div class="earn-info">
@@ -2049,6 +2071,7 @@ let state = {
   ketaKapseln: 0, capturedMutants: [],
   ownedCosmetics: [], equippedCosmetic: null,
   ownedPets: [], activePet: null,
+  consumables: {}, permanents: [], activeBuffs: {}, catchRateBoost:0, critBoost:0, shinyBoostPerm:0,
 };
 let activeWeek = 1, activePhase = 0, runType = 'easy';
 
@@ -2992,7 +3015,8 @@ let SQ = {
 
 // ── ENTRY POINT ──────────────────────────
 function showMutantEncounter(mutant) {
-  const isShiny = (Math.random() < 0.005) || (state.shinyBoost && Math.random() < state.shinyBoost);
+  const shinyChance = 0.005 + (state.shinyBoostPerm||0) + (state.shinyBoost||0);
+  const isShiny = Math.random() < shinyChance;
   if (state.shinyBoost) state.shinyBoost = 0; // consume boost
   if (!state.menagerie || state.menagerie.length === 0) {
     showToast('Du hast keine Tiere! Brüte zuerst Eier aus.');
@@ -3540,9 +3564,13 @@ function squadCatch() {
   const hpPct   = SQ.enemyHp / SQ.enemyMaxHp;
   const hpBonus = 1.0 + (1 - hpPct) * 1.6;
   const shinyP  = SQ.isShiny ? 0.45 : 1.0;
-  const rate    = Math.min(0.95, SQ.mutant.catchRate * hpBonus * shinyP);
+  // Guaranteed catch from consumable
+  const guaranteed = state.activeBuffs && state.activeBuffs.guaranteedCatch;
+  if (guaranteed) { state.activeBuffs.guaranteedCatch = false; }
+  const catchBoost = state.catchRateBoost || 0;
+  const rate = guaranteed ? 1.0 : Math.min(0.95, (SQ.mutant.catchRate + catchBoost) * hpBonus * shinyP);
 
-  setLog('Keta-Kapsel! Fangchance: ' + Math.round(rate * 100) + '%...');
+  setLog('Keta-Kapsel! Fangchance: ' + Math.round(rate * 100) + '%...' + (guaranteed ? ' 💊 GUARANTEED!' : ''));
   spawnDmg('🎯', 'e', false, true);
   saveState(); renderStore();
 
@@ -3751,7 +3779,7 @@ function switchScreen(name) {
   if (ns) ns.classList.add('active');
   const nn = document.getElementById('nav-'+name);
   if (nn) nn.classList.add('active');
-  if (name==='store') { renderStore(); renderCosmeticShop(); }
+  if (name==='store') { renderStore(); renderCosmeticShop(); renderConsumables(); }
   if (name==='eggs')  renderEggs();
   if (name==='album') renderAlbum();
   if (name==='log')   renderLog();
@@ -4528,6 +4556,244 @@ function getPetBonus(type) {
   return pet.buffVal;
 }
 
+// ══════════════════════════════════════════
+// NEW ITEMS — Cosmetics, Pets, Consumables, Permanents
+// ══════════════════════════════════════════
+
+// ── EXTRA COSMETICS (append to COSMETICS array via init) ──
+const EXTRA_COSMETICS = [
+  { id:'trenchcoat',  emoji:'🧥', name:'Techno-Trenchcoat', desc:'Der lange Mantel. Niemand fragt Fragen.',               rarity:'epic',   dropOnly:true },
+  { id:'clown_fit',   emoji:'🎪', name:'Clown Fit',          desc:'Absicht oder Berghain Dresscode? Keiner weiß.',        rarity:'rare',   dropOnly:true },
+  { id:'warnweste',   emoji:'🦺', name:'Warnweste',          desc:'U-Bahn Arbeiter Energy. Maximaler Straßenrespekt.',    rarity:'common', dropOnly:true },
+  { id:'schiri',      emoji:'🧢', name:'Schiri-Outfit',      desc:'Pfeife. Schwarzweiß. Very Berlin.',                   rarity:'rare',   dropOnly:true },
+  { id:'taucher',     emoji:'🤿', name:'Taucher',            desc:'Vollständige Taucherausrüstung. Nobody asks.',         rarity:'epic',   dropOnly:true },
+  { id:'skeleton',    emoji:'💀', name:'Skeleton Suit',      desc:'Halloween aber 365 Tage im Jahr.',                    rarity:'epic',   dropOnly:true },
+];
+
+// ── EXTRA PETS (ultra rare 0.5%) ──
+const EXTRA_PETS = [
+  {
+    id:'spree_echse',     emoji:'🦎', name:'Spree-Echse',
+    desc:'Lebt unter der Oberbaumbrücke. Uralt. Unverstörbar.',
+    buff:'+15🪙 täglich',  buffType:'coins_daily', buffVal:15,
+    rarity:'ultra_rare',  dropChance:0.005, color:'#22c55e',
+  },
+  {
+    id:'kanal_krokodil',  emoji:'🐊', name:'Landwehrkanal-Krokodil',
+    desc:'Urban legend. Wer ihn hat hat ihn. Keiner fragt wie.',
+    buff:'+20🪙 pro Session', buffType:'coins_session', buffVal:20,
+    rarity:'ultra_rare',  dropChance:0.005, color:'#16a34a',
+  },
+  {
+    id:'berghain_bat',    emoji:'🦇', name:'Berghain-Fledermaus',
+    desc:'Nur aktiv nach 22 Uhr. Dann aber AKTIV.',
+    buff:'+50🪙 täglich (nachts)', buffType:'coins_night', buffVal:50,
+    rarity:'ultra_rare',  dropChance:0.005, color:'#7c3aed',
+  },
+  {
+    id:'gorlitzer_snake', emoji:'🐍', name:'Görlitzer Schlange',
+    desc:'Hat zu viel gesehen im Park. Gibt dir nach jedem Dungeon guaranteed Drop.',
+    buff:'Garantierter Kapsel-Drop',  buffType:'dungeon_kapseln', buffVal:3,
+    rarity:'ultra_rare',  dropChance:0.005, color:'#84cc16',
+  },
+];
+
+// ── CONSUMABLES ──
+const CONSUMABLES = [
+  {
+    id:'energy_gel',     emoji:'⚡', name:'Energy Gel',
+    desc:'Nächste Session zählt doppelt für Coins.',
+    effect:'double_session', rarity:'uncommon',
+  },
+  {
+    id:'club_mate',      emoji:'🍺', name:'Club-Mate',
+    desc:'Dein Squad heilt zwischen Waves vollständig.',
+    effect:'heal_squad', rarity:'uncommon',
+  },
+  {
+    id:'guaranteed_catch', emoji:'💊', name:'Keta-Kapsel XL',
+    desc:'Nächster Catch ist guaranteed (100% Fangrate).',
+    effect:'guaranteed_catch', rarity:'rare',
+  },
+  {
+    id:'eight_ball',     emoji:'🎱', name:'8-Ball',
+    desc:'Rerollt deinen kompletten Dungeon Loot nochmal.',
+    effect:'reroll_loot', rarity:'rare',
+  },
+  {
+    id:'vip_wristband',  emoji:'🔑', name:'VIP-Wristband',
+    desc:'Überspringe eine Wave — direkt zum nächsten Gegner.',
+    effect:'skip_wave', rarity:'epic',
+  },
+];
+
+// ── PERMANENT UPGRADES ──
+const PERMANENTS = [
+  {
+    id:'street_cred',    emoji:'📈', name:'Street Cred',
+    desc:'Alle Catch Rates permanent +5%.',
+    effect:'catch_rate_boost', value:0.05, rarity:'legendary',
+  },
+  {
+    id:'muscle_memory',  emoji:'💪', name:'Muscle Memory',
+    desc:'Ein zufälliges Tier: +15 Max HP für immer.',
+    effect:'animal_hp_boost', value:15, rarity:'legendary',
+  },
+  {
+    id:'sharpshooting',  emoji:'🎯', name:'Sharpshooting',
+    desc:'Alle Special Moves: +10% Crit Chance.',
+    effect:'crit_boost', value:0.1, rarity:'legendary',
+  },
+  {
+    id:'mutant_dna',     emoji:'🧬', name:'Mutant DNA',
+    desc:'Shiny Encounter Chance permanent +1%.',
+    effect:'shiny_boost_perm', value:0.01, rarity:'legendary',
+  },
+];
+
+// ── INIT — merge extra items into main arrays ──
+function initExtraItems() {
+  // Merge cosmetics
+  EXTRA_COSMETICS.forEach(c => {
+    if (!COSMETICS.find(x => x.id === c.id)) COSMETICS.push(c);
+  });
+  // Merge pets
+  EXTRA_PETS.forEach(p => {
+    if (!PETS.find(x => x.id === p.id)) PETS.push(p);
+  });
+}
+
+// ── CONSUMABLE USE ────────────────────────
+function useConsumable(id) {
+  if (!state.consumables) state.consumables = {};
+  const count = state.consumables[id] || 0;
+  if (count <= 0) { showToast('Keines mehr!'); return; }
+
+  const item = CONSUMABLES.find(c => c.id === id);
+  if (!item) return;
+
+  switch (item.effect) {
+    case 'double_session':
+      state.activeBuffs = state.activeBuffs || {};
+      state.activeBuffs.doubleCoins = true;
+      showToast('⚡ Nächste Session: 2× Coins!');
+      break;
+    case 'heal_squad':
+      if (SQ.squad && SQ.squad.length) {
+        SQ.squad.forEach(m => { m.hp = m.maxHp; });
+        showToast('🍺 Squad vollständig geheilt!');
+        updateSquadBars && updateSquadBars();
+      } else {
+        showToast('🍺 Squad bereit für nächsten Fight!');
+        state.squadHealPending = true;
+      }
+      break;
+    case 'guaranteed_catch':
+      state.activeBuffs = state.activeBuffs || {};
+      state.activeBuffs.guaranteedCatch = true;
+      showToast('💊 Nächster Catch: 100% guaranteed!');
+      break;
+    case 'reroll_loot':
+      showToast('🎱 Loot wird gererollt...');
+      // handled in dungeon complete
+      break;
+    case 'skip_wave':
+      if (DG.active) {
+        DG.enemyIdx = 0;
+        DG.waveIdx++;
+        showToast('🔑 Wave übersprungen!');
+        setTimeout(startNextDungeonEnemy, 400);
+      } else {
+        showToast('🔑 Nur im Dungeon nutzbar!');
+        return; // don't consume
+      }
+      break;
+  }
+
+  state.consumables[id] = count - 1;
+  saveState();
+  renderConsumables();
+}
+
+// ── PERMANENT APPLY ───────────────────────
+function applyPermanent(id) {
+  if (!state.permanents) state.permanents = [];
+  if (state.permanents.includes(id)) return; // already applied
+
+  const item = PERMANENTS.find(p => p.id === id);
+  if (!item) return;
+
+  state.permanents.push(id);
+
+  switch (item.effect) {
+    case 'catch_rate_boost':
+      state.catchRateBoost = (state.catchRateBoost || 0) + item.value;
+      showToast('📈 Catch Rate permanent +5%!');
+      break;
+    case 'animal_hp_boost':
+      if (state.menagerie && state.menagerie.length) {
+        const target = state.menagerie[Math.floor(Math.random() * state.menagerie.length)];
+        target.bonusHp = (target.bonusHp || 0) + item.value;
+        showToast('💪 ' + target.name + ' +15 Max HP!');
+      }
+      break;
+    case 'crit_boost':
+      state.critBoost = (state.critBoost || 0) + item.value;
+      showToast('🎯 Crit Chance +10% auf alle Specials!');
+      break;
+    case 'shiny_boost_perm':
+      state.shinyBoostPerm = (state.shinyBoostPerm || 0) + item.value;
+      showToast('🧬 Shiny Chance permanent +1%!');
+      break;
+  }
+
+  saveState();
+}
+
+// ── RENDER CONSUMABLES IN STORE ───────────
+function renderConsumables() {
+  const el = document.getElementById('consumablesItems');
+  if (!el) return;
+  if (!state.consumables) state.consumables = {};
+
+  const rarityColor = { uncommon:'#5dff8a', rare:'#60a5fa', epic:'#a78bfa', legendary:'#ffd700' };
+
+  el.innerHTML = CONSUMABLES.map(item => {
+    const count = state.consumables[item.id] || 0;
+    const rc = rarityColor[item.rarity] || 'var(--muted)';
+    return `<div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--bg2);border:1.5px solid var(--faint);border-radius:8px;${count===0?'opacity:0.4;':''}">
+      <div style="font-size:28px;flex-shrink:0;">${item.emoji}</div>
+      <div style="flex:1;">
+        <div style="font-family:CormorantGaramond,serif;font-size:15px;font-weight:700;">${item.name} <span style="font-size:11px;opacity:0.6;">×${count}</span></div>
+        <div style="font-family:SpaceMono,monospace;font-size:7px;color:${rc};text-transform:uppercase;margin-bottom:2px;">${item.rarity}</div>
+        <div style="font-family:SpaceMono,monospace;font-size:8px;color:var(--muted);">${item.desc}</div>
+      </div>
+      ${count > 0
+        ? `<button onclick="useConsumable('${item.id}')" style="padding:7px 12px;background:rgba(93,255,138,0.1);border:1px solid var(--easy);border-radius:4px;font-family:SpaceMono,monospace;font-size:8px;color:var(--easy);cursor:pointer;flex-shrink:0;">Nutzen</button>`
+        : `<div style="font-family:SpaceMono,monospace;font-size:7px;color:var(--muted);text-align:center;flex-shrink:0;">🔒 Drop</div>`
+      }
+    </div>`;
+  }).join('');
+
+  // Permanents
+  const pEl = document.getElementById('permanentsItems');
+  if (!pEl) return;
+  if (!state.permanents) state.permanents = [];
+
+  pEl.innerHTML = PERMANENTS.map(item => {
+    const owned = state.permanents.includes(item.id);
+    return `<div style="display:flex;align-items:center;gap:12px;padding:12px 14px;background:var(--bg2);border:1.5px solid ${owned?'#ffd700':'var(--faint)'};border-radius:8px;${!owned?'opacity:0.4;':''}">
+      <div style="font-size:28px;flex-shrink:0;">${item.emoji}</div>
+      <div style="flex:1;">
+        <div style="font-family:CormorantGaramond,serif;font-size:15px;font-weight:700;">${item.name}</div>
+        <div style="font-family:SpaceMono,monospace;font-size:7px;color:#ffd700;text-transform:uppercase;margin-bottom:2px;">PERMANENT · ${item.rarity}</div>
+        <div style="font-family:SpaceMono,monospace;font-size:8px;color:var(--muted);">${item.desc}</div>
+      </div>
+      <div style="font-family:SpaceMono,monospace;font-size:8px;color:${owned?'#ffd700':'var(--muted)'};flex-shrink:0;">${owned?'✓ AKTIV':'🔒 Drop'}</div>
+    </div>`;
+  }).join('');
+}
+
 // ── FIGHT HELPERS ────────────────────────────
 function setLog(txt) {
   const el = document.getElementById('fightLog');
@@ -4574,8 +4840,10 @@ async function handleSync() {
   document.getElementById('syncError').textContent = '';
   initApp();
 }
+let _loadingCloud = false;
 async function loadCloudState() {
   if (!syncCode) return;
+  _loadingCloud = true;
   try {
     const r = await fetch(FB_URL+encodeURIComponent(syncCode)+'?key='+FB_KEY);
     if (r.ok) {
@@ -4600,13 +4868,19 @@ async function loadCloudState() {
           ownedCosmetics: p('ownedCosmetics')||[], ownedPets: p('ownedPets')||[],
           equippedCosmetic: f.equippedCosmetic ? f.equippedCosmetic.stringValue : null,
           activePet: f.activePet ? f.activePet.stringValue || null : null,
+          consumables: p('consumables')||{}, permanents: p('permanents')||[],
+          catchRateBoost: parseFloat((f.catchRateBoost||{}).stringValue||'0'),
+          critBoost: parseFloat((f.critBoost||{}).stringValue||'0'),
+          shinyBoostPerm: parseFloat((f.shinyBoostPerm||{}).stringValue||'0'),
         };
       }
     }
   } catch(e) { console.log('load fail', e); }
+  _loadingCloud = false;
 }
 async function saveToCloud() {
   if (!syncCode) return;
+  if (_loadingCloud) return;  // never save during initial load
   try {
     await fetch(FB_URL+encodeURIComponent(syncCode)+'?key='+FB_KEY, {
       method: 'PATCH', headers: {'Content-Type':'application/json'},
@@ -4633,6 +4907,11 @@ async function saveToCloud() {
         ownedPets:            {stringValue: JSON.stringify(state.ownedPets||[])},
         equippedCosmetic:     {stringValue: state.equippedCosmetic||''},
         activePet:            {stringValue: state.activePet||''},
+        consumables:          {stringValue: JSON.stringify(state.consumables||{})},
+        permanents:           {stringValue: JSON.stringify(state.permanents||[])},
+        catchRateBoost:       {stringValue: String(state.catchRateBoost||0)},
+        critBoost:            {stringValue: String(state.critBoost||0)},
+        shinyBoostPerm:       {stringValue: String(state.shinyBoostPerm||0)},
         capturedMutants:      {stringValue: JSON.stringify(state.capturedMutants||[])},
       }})
     });
@@ -4641,6 +4920,7 @@ async function saveToCloud() {
 
 // ── INIT ────────────────────────────────────
 function initApp() {
+  initExtraItems();
   const today = new Date();
   const cw = PLAN.find(w => {
     const ws = new Date(w.weekStart); const end = new Date(ws); end.setDate(end.getDate()+7);
